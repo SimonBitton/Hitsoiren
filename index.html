@@ -152,6 +152,16 @@ main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
 .top50-item.interactive {
   cursor: pointer;
 }
+.event,
+.date-marker,
+.top50-item {
+  scroll-margin-top: 180px;
+}
+.event:target,
+.date-marker:target,
+.top50-item:target {
+  background: rgba(201,146,42,0.14);
+}
 .event.interactive:focus-visible,
 .date-marker.interactive:focus-visible,
 .top50-item.interactive:focus-visible,
@@ -239,18 +249,30 @@ main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
 .stat { text-align: center; }
 .stat strong { display: block; font-size: 1.4rem; font-family: 'Playfair Display', serif; color: var(--rust); }
 .stat span { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.6; }
-.detail-panel {
+.detail-page {
   display: none;
-  margin-bottom: 2rem;
-  padding: 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+body.detail-mode .top-menu,
+body.detail-mode header,
+body.detail-mode nav,
+body.detail-mode .search-bar,
+body.detail-mode main,
+body.detail-mode footer {
+  display: none;
+}
+body.detail-mode .detail-page {
+  display: block;
+}
+.detail-shell {
   border: 1px solid var(--border);
   background:
-    linear-gradient(135deg, rgba(201,146,42,0.07), rgba(245,240,232,0.95)),
+    linear-gradient(135deg, rgba(201,146,42,0.08), rgba(245,240,232,0.98)),
     var(--cream);
   box-shadow: 0 12px 30px rgba(26,18,8,0.08);
-}
-.detail-panel.open {
-  display: block;
+  padding: 1.6rem;
 }
 .detail-top {
   display: flex;
@@ -285,6 +307,7 @@ main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
   font: inherit;
   padding: 0.45rem 0.8rem;
   cursor: pointer;
+  text-decoration: none;
 }
 .detail-grid {
   display: grid;
@@ -358,6 +381,12 @@ main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
 }
 .detail-link {
   text-decoration: none;
+}
+.detail-backline {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
 }
 footer { background: var(--ink); color: rgba(245,240,232,0.4); text-align: center; padding: 2rem; font-size: 0.78rem; font-style: italic; }
 @media (max-width: 900px) {
@@ -448,32 +477,37 @@ footer { background: var(--ink); color: rgba(245,240,232,0.4); text-align: cente
   <span style="border-left:2px solid var(--rust);padding-left:0.5rem">Événement majeur</span>
 </div>
 
-<section class="detail-panel" id="detailPanel" aria-live="polite">
-  <div class="detail-top">
-    <div>
-      <div class="detail-kicker" id="detailKicker">Fiche historique</div>
-      <div class="detail-date" id="detailDate">Clique sur une date ou un événement</div>
-      <h3 id="detailTitle">Le résumé détaillé s'affichera ici.</h3>
+<section class="detail-page" id="detailPage" aria-live="polite">
+  <div class="detail-shell">
+    <div class="detail-backline">
+      <a class="detail-close" id="detailBackLink" href="/index.html">Retour à la frise</a>
+      <a class="detail-close" id="detailSearchLink" href="#" target="_blank" rel="noreferrer noopener">Chercher un article</a>
     </div>
-    <button class="detail-close" id="detailClose" type="button">Fermer</button>
-  </div>
-  <div class="detail-grid">
-    <article class="detail-card">
-      <h4>Résumé</h4>
-      <p class="detail-summary" id="detailSummary">La frise devient maintenant interactive : chaque événement pourra ouvrir un résumé, les acteurs clés et un mini article de contexte.</p>
-      <div class="detail-meta" id="detailMeta"></div>
-    </article>
-    <article class="detail-card">
-      <h4>Points clés</h4>
-      <ul class="detail-list" id="detailBullets"></ul>
-    </article>
-    <article class="detail-card detail-article" style="grid-column: 1 / -1;">
-      <div class="detail-article-head">
-        <strong>Article express</strong>
-        <p id="detailArticleTitle">Une lecture courte type presse sera générée à partir de l'événement sélectionné.</p>
+    <div class="detail-top">
+      <div>
+        <div class="detail-kicker" id="detailKicker">Fiche historique</div>
+        <div class="detail-date" id="detailDate">Chargement…</div>
+        <h3 id="detailTitle">Chargement de la fiche</h3>
       </div>
-      <div class="detail-article-body" id="detailArticleBody"></div>
-    </article>
+    </div>
+    <div class="detail-grid">
+      <article class="detail-card">
+        <h4>Résumé</h4>
+        <p class="detail-summary" id="detailSummary"></p>
+        <div class="detail-meta" id="detailMeta"></div>
+      </article>
+      <article class="detail-card">
+        <h4>Points clés</h4>
+        <ul class="detail-list" id="detailBullets"></ul>
+      </article>
+      <article class="detail-card detail-article" style="grid-column: 1 / -1;">
+        <div class="detail-article-head">
+          <strong>Article express</strong>
+          <p id="detailArticleTitle"></p>
+        </div>
+        <div class="detail-article-body" id="detailArticleBody"></div>
+      </article>
+    </div>
   </div>
 </section>
 
@@ -1076,7 +1110,7 @@ footer { background: var(--ink); color: rgba(245,240,232,0.4); text-align: cente
 <script>
 const featuredDatesLimit = 150;
 const searchInput = document.getElementById('searchInput');
-const detailPanel = document.getElementById('detailPanel');
+const detailPage = document.getElementById('detailPage');
 const detailKicker = document.getElementById('detailKicker');
 const detailDate = document.getElementById('detailDate');
 const detailTitle = document.getElementById('detailTitle');
@@ -1085,7 +1119,9 @@ const detailBullets = document.getElementById('detailBullets');
 const detailArticleTitle = document.getElementById('detailArticleTitle');
 const detailArticleBody = document.getElementById('detailArticleBody');
 const detailMeta = document.getElementById('detailMeta');
-const detailClose = document.getElementById('detailClose');
+const detailBackLink = document.getElementById('detailBackLink');
+const detailSearchLink = document.getElementById('detailSearchLink');
+const urlParams = new URLSearchParams(window.location.search);
 const state = { era: 'all', type: 'all', search: '' };
 
 const eraConfigs = {
@@ -1095,6 +1131,98 @@ const eraConfigs = {
   modernes: { label: 'Temps modernes', kind: 'ère', start: 1492, end: 1789, majorStep: 5, midStep: 2, closeStep: 1 },
   contemporain: { label: 'Époque contemporaine', kind: 'ère', start: 1789, end: 2025, majorStep: 2, midStep: 1, closeStep: 1 },
   top50: { label: 'Top 150', kind: 'sélection' }
+};
+
+const supplementalEventsByEra = {
+  prehist: [
+    { date: '≈ 2 600 000 av. J.-C.', name: 'Premières industries lithiques oldowayennes d’Afrique de l’Est', context: 'Les galets aménagés montrent une production répétée d’outils et un apprentissage technique.', people: 'Homo habilis', category: 'Science' },
+    { date: '≈ 1 400 000 av. J.-C.', name: 'Développement du biface acheuléen', context: 'L’outil standardisé témoigne d’une meilleure planification technique et d’une longue transmission culturelle.', people: 'Homo erectus', category: 'Science' },
+    { date: '≈ 700 000 av. J.-C.', name: 'Occupation humaine durable de l’Europe occidentale', context: 'Les sites européens attestent une adaptation progressive aux climats tempérés puis froids.', category: 'Exploration' },
+    { date: '≈ 120 000 av. J.-C.', name: 'Sépultures néandertaliennes attestées au Proche-Orient', context: 'Les inhumations suggèrent des comportements symboliques et des formes de rites funéraires.', people: 'Homo neanderthalensis', category: 'Culture' },
+    { date: '≈ 45 000 av. J.-C.', name: 'Arrivée d’Homo sapiens en Europe', context: 'La diffusion de Sapiens transforme les cultures matérielles et l’occupation du continent.', category: 'Exploration' },
+    { date: '≈ 23 000 av. J.-C.', name: 'Maximum glaciaire du Dernier Âge glaciaire', context: 'Le climat mondial très froid modifie les migrations humaines, la faune et les paysages.', category: 'Science' },
+    { date: '≈ 9 600 av. J.-C.', name: 'Göbekli Tepe : sanctuaires monumentaux en Anatolie', context: 'Les piliers sculptés indiquent des rassemblements rituels antérieurs aux grandes villes agricoles.', category: 'Culture' },
+    { date: '≈ 6 500 av. J.-C.', name: 'Diffusion du Néolithique en Europe du Sud-Est', context: 'Agriculture, élevage et céramique se propagent des Balkans vers le continent européen.', category: 'Exploration' },
+    { date: '≈ 4 000 av. J.-C.', name: 'Premières grandes nécropoles mégalithiques atlantiques', context: 'Dolmens et tombes collectives manifestent des sociétés plus hiérarchisées et organisées.', category: 'Culture' },
+    { date: '≈ 3 300 av. J.-C.', name: 'Ötzi, homme des glaces des Alpes', context: 'Son équipement offre une photographie exceptionnelle de la vie chalcolithique européenne.', category: 'Science' }
+  ],
+  antiquite: [
+    { date: '≈ 2 700 av. J.-C.', name: 'Début de la civilisation minoenne en Crète', context: 'Palais, échanges maritimes et écriture linéaire A annoncent une Méditerranée déjà connectée.', category: 'Culture' },
+    { date: '≈ 1 600 av. J.-C.', name: 'Apogée mycénienne en Grèce', context: 'Des royaumes guerriers dominent la mer Égée et inspireront plus tard la tradition homérique.', category: 'Politique' },
+    { date: '≈ 1 050 av. J.-C.', name: 'Diffusion de l’alphabet phénicien', context: 'Ce système d’écriture simple facilite les échanges et inspire les alphabets grec puis latin.', category: 'Culture' },
+    { date: '814 av. J.-C.', name: 'Fondation traditionnelle de Carthage', context: 'La cité phénicienne devient une grande puissance commerciale et maritime de Méditerranée.', people: 'Didon selon la tradition', category: 'Politique' },
+    { date: '776 av. J.-C.', name: 'Premiers Jeux olympiques grecs traditionnellement datés', context: 'Le sanctuaire d’Olympie devient un rendez-vous panhellénique majeur.', category: 'Culture' },
+    { date: '753 av. J.-C.', name: 'Fondation légendaire de Rome', context: 'Ce repère structure la mémoire romaine et la narration politique de la cité.', people: 'Romulus et Rémus', category: 'Politique' },
+    { date: '509 av. J.-C.', name: 'Naissance de la République romaine', context: 'La chute des rois marque le début d’institutions républicaines durables.', category: 'Politique' },
+    { date: '499 av. J.-C.', name: 'Révolte ionienne contre les Perses', context: 'Elle ouvre le cycle des guerres médiques entre Grecs et Perses.', category: 'Politique' },
+    { date: '490 av. J.-C.', name: 'Bataille de Marathon', context: 'La victoire athénienne devient un symbole majeur de résistance face à l’Empire perse.', category: 'Politique' },
+    { date: '443 av. J.-C.', name: 'Périclès domine la vie politique d’Athènes', context: 'Le Parthénon, la démocratie athénienne et l’impérialisme maritime atteignent leur apogée.', people: 'Périclès', category: 'Culture' },
+    { date: '431–404 av. J.-C.', name: 'Guerre du Péloponnèse', context: 'Athènes et Sparte épuisent le monde grec dans un conflit long et destructeur.', category: 'Politique' },
+    { date: '221 av. J.-C.', name: 'Qin Shi Huang unifie la Chine', context: 'Mesures, écriture et administration sont standardisées à l’échelle impériale.', people: 'Qin Shi Huang', category: 'Politique' },
+    { date: '146 av. J.-C.', name: 'Rome détruit Carthage', context: 'La troisième guerre punique consacre la domination romaine en Méditerranée occidentale.', category: 'Politique' },
+    { date: '44 av. J.-C.', name: 'Assassinat de Jules César', context: 'Le meurtre relance les guerres civiles et précipite la fin de la République.', people: 'Jules César, Brutus, Cassius', category: 'Politique' },
+    { date: '79', name: 'Éruption du Vésuve : destruction de Pompéi et Herculanum', context: 'La catastrophe offre un témoignage archéologique exceptionnel sur la vie romaine.', category: 'Science' }
+  ],
+  'moyen-age': [
+    { date: '711', name: 'Conquête musulmane de la péninsule Ibérique', context: 'La chute rapide du royaume wisigoth ouvre l’histoire d’al-Andalus.', category: 'Politique' },
+    { date: '793', name: 'Raid viking contre le monastère de Lindisfarne', context: 'L’événement marque symboliquement le début des grandes incursions vikings.', category: 'Politique' },
+    { date: '987', name: 'Hugues Capet devient roi de France', context: 'La dynastie capétienne s’installe durablement au cœur de l’histoire française.', people: 'Hugues Capet', category: 'Politique' },
+    { date: '1066', name: 'Domesday Book en préparation après la conquête normande', context: 'Le grand inventaire foncier anglais illustre l’administration du nouveau pouvoir normand.', category: 'Politique' },
+    { date: '1098', name: 'Fondation de l’ordre cistercien', context: 'L’ordre réforme la vie monastique et devient une puissance économique et spirituelle.', category: 'Culture' },
+    { date: '1122', name: 'Concordat de Worms', context: 'Le compromis met fin à la querelle des Investitures entre papauté et Empire.', category: 'Politique' },
+    { date: '1189–1192', name: 'Troisième Croisade', context: 'Richard Cœur de Lion, Philippe Auguste et Frédéric Barberousse affrontent Saladin.', category: 'Politique' },
+    { date: '1204', name: 'Saccage de Constantinople par la quatrième croisade', context: 'Le monde byzantin est durablement affaibli par les croisés latins.', category: 'Politique' },
+    { date: '1231', name: 'Inquisition pontificale institutionnalisée', context: 'La papauté met en place des tribunaux spécialisés contre les hérésies.', category: 'Culture' },
+    { date: '1274', name: 'Mort de Thomas d’Aquin', context: 'La scolastique atteint un sommet avec l’articulation de la foi et de la raison.', people: 'Thomas d’Aquin', category: 'Culture' },
+    { date: '1302', name: 'États généraux convoqués en France', context: 'Le roi cherche un appui politique élargi dans son conflit avec la papauté.', category: 'Politique' },
+    { date: '1307', name: 'Arrestation des Templiers', context: 'Philippe le Bel frappe l’ordre du Temple et renforce la monarchie.', category: 'Politique' },
+    { date: '1358', name: 'Grande Jacquerie en France', context: 'Les campagnes se soulèvent dans un contexte de guerre, d’impôts et de crise.', category: 'Politique' },
+    { date: '1381', name: 'Révolte des paysans en Angleterre', context: 'La contestation fiscale et sociale secoue le royaume anglais.', category: 'Politique' },
+    { date: '1485', name: 'Bataille de Bosworth et début des Tudor', context: 'La guerre des Deux-Roses s’achève et une nouvelle dynastie prend le pouvoir.', category: 'Politique' }
+  ],
+  modernes: [
+    { date: '1498', name: 'Savonarole exécuté à Florence', context: 'La crise religieuse florentine symbolise les tensions morales de la Renaissance italienne.', category: 'Culture' },
+    { date: '1503', name: 'Début du pontificat de Jules II', context: 'Le pape mécène fait de Rome un immense chantier artistique et politique.', category: 'Culture' },
+    { date: '1513', name: 'Machiavel rédige Le Prince', context: 'Le texte renouvelle profondément la réflexion sur le pouvoir et l’État.', people: 'Nicolas Machiavel', category: 'Culture' },
+    { date: '1525', name: 'Bataille de Pavie', context: 'François Ier est capturé par Charles Quint, bouleversant l’équilibre européen.', category: 'Politique' },
+    { date: '1533', name: 'Pizarro fait exécuter Atahualpa', context: 'La conquête espagnole de l’empire inca franchit alors un point de non-retour.', category: 'Politique' },
+    { date: '1547', name: 'Couronnement d’Ivan IV dit le Terrible', context: 'Le titre de tsar affirme une nouvelle ambition impériale russe.', category: 'Politique' },
+    { date: '1555', name: 'Paix d’Augsbourg', context: 'Le compromis “cujus regio, ejus religio” tente de stabiliser l’Empire germanique.', category: 'Politique' },
+    { date: '1588', name: 'Défaite de l’Invincible Armada', context: 'L’échec espagnol renforce durablement la puissance maritime anglaise.', category: 'Politique' },
+    { date: '1605', name: 'Plot des Poudres en Angleterre', context: 'La tentative contre le Parlement marque durablement l’histoire politique anglaise.', category: 'Politique' },
+    { date: '1607', name: 'Fondation de Jamestown', context: 'La première implantation anglaise durable en Amérique du Nord s’enracine.', category: 'Exploration' },
+    { date: '1633', name: 'Procès de Galilée à Rome', context: 'Le savant est condamné, illustrant la tension entre science et autorité religieuse.', category: 'Science' },
+    { date: '1682', name: 'La cour de Louis XIV s’installe à Versailles', context: 'Le palais devient l’outil politique central de la monarchie absolue.', category: 'Politique' },
+    { date: '1683', name: 'Siège de Vienne repoussé', context: 'L’échec ottoman devant Vienne reconfigure le rapport de force en Europe centrale.', category: 'Politique' },
+    { date: '1773', name: 'Boston Tea Party', context: 'Le geste radical accélère la rupture entre les colonies américaines et Londres.', category: 'Politique' },
+    { date: '1787', name: 'Constitution des États-Unis adoptée', context: 'Le texte fonde un nouvel État fédéral moderne et durable.', category: 'Politique' }
+  ],
+  contemporain: [
+    { date: '1830', name: 'Révolution de Juillet en France', context: 'La monarchie de Charles X s’effondre et laisse place à la monarchie de Juillet.', category: 'Politique' },
+    { date: '1831', name: 'Soulèvement polonais contre la Russie', context: 'L’insurrection devient un symbole européen des luttes nationales.', category: 'Politique' },
+    { date: '1837', name: 'Le télégraphe électrique progresse vers l’usage pratique', context: 'La communication longue distance entre dans une nouvelle ère technique.', people: 'Samuel Morse', category: 'Science' },
+    { date: '1846–1848', name: 'Grande famine en Irlande', context: 'La catastrophe démographique provoque une émigration massive et durable.', category: 'Politique' },
+    { date: '1851', name: 'Grande Exposition de Londres', context: 'Le Crystal Palace célèbre la puissance industrielle britannique.', category: 'Culture' },
+    { date: '1869', name: 'Ouverture du canal de Suez', context: 'La route maritime entre Europe et Asie est profondément raccourcie.', category: 'Exploration' },
+    { date: '1870', name: 'Concile Vatican I et affirmation de l’infaillibilité pontificale', context: 'La papauté redéfinit son autorité dans un siècle de bouleversements politiques.', category: 'Culture' },
+    { date: '1884–1885', name: 'Conférence de Berlin sur le partage de l’Afrique', context: 'Les puissances européennes fixent les règles de la conquête coloniale.', category: 'Politique' },
+    { date: '1899', name: 'Première conférence de La Haye', context: 'Les États tentent de codifier la guerre et l’arbitrage international.', category: 'Politique' },
+    { date: '1900', name: 'Révolte des Boxers en Chine', context: 'La crise révèle la fragilité de l’empire Qing face aux puissances étrangères.', category: 'Politique' },
+    { date: '1911', name: 'Révolution chinoise et chute des Qing', context: 'La Chine impériale s’effondre et la République est proclamée.', category: 'Politique' },
+    { date: '1922', name: 'Marche sur Rome et arrivée de Mussolini au pouvoir', context: 'Le fascisme s’installe en Italie et inspire d’autres régimes autoritaires.', category: 'Politique' },
+    { date: '1928', name: 'Découverte de la pénicilline', context: 'Le hasard de laboratoire ouvre l’ère des antibiotiques.', people: 'Alexander Fleming', category: 'Science' },
+    { date: '1947', name: 'Indépendance et partition de l’Inde', context: 'La décolonisation s’accompagne de violences massives entre Inde et Pakistan.', category: 'Politique' },
+    { date: '1955', name: 'Conférence de Bandung', context: 'Les pays d’Asie et d’Afrique affirment une voie indépendante dans la guerre froide.', category: 'Politique' },
+    { date: '1964', name: 'Civil Rights Act aux États-Unis', context: 'Le texte devient un jalon majeur de la lutte contre la ségrégation.', category: 'Politique' },
+    { date: '1971', name: 'Naissance de Bangladesh', context: 'La guerre d’indépendance redessine l’Asie du Sud.', category: 'Politique' },
+    { date: '1989', name: 'World Wide Web proposé au CERN', context: 'Avant sa mise en ligne publique, le projet pose les bases du web moderne.', people: 'Tim Berners-Lee', category: 'Science' },
+    { date: '1999', name: 'Création de l’euro scriptural', context: 'Une nouvelle étape d’intégration économique européenne est franchie.', category: 'Politique' },
+    { date: '2001', name: 'Entrée de la Chine dans l’OMC', context: 'L’intégration commerciale accélère la mondialisation des chaînes de production.', category: 'Politique' },
+    { date: '2004', name: 'Élargissement majeur de l’Union européenne à l’Est', context: 'L’UE change d’échelle avec l’entrée de dix nouveaux États.', category: 'Politique' },
+    { date: '2011', name: 'Catastrophe nucléaire de Fukushima', context: 'Le séisme et le tsunami provoquent une crise nucléaire mondiale au Japon.', category: 'Science' },
+    { date: '2013', name: 'Révélations Snowden sur la surveillance mondiale', context: 'Le débat sur la vie privée numérique prend une dimension planétaire.', category: 'Politique' },
+    { date: '2020', name: 'Premiers vaccins à ARN messager déployés à grande échelle', context: 'La biotechnologie entre dans une nouvelle phase d’application massive.', category: 'Science' }
+  ]
 };
 
 function normalizeText(value) {
@@ -1141,6 +1269,56 @@ function getStepForYear(era, year) {
   }
   return year >= -500 ? config.midStep : config.majorStep;
 }
+
+function escapeHtml(value) {
+  return (value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getCategoryClass(category) {
+  const normalized = normalizeText(category);
+  if (normalized.includes('science')) return 'cat-science';
+  if (normalized.includes('culture')) return 'cat-culture';
+  if (normalized.includes('exploration')) return 'cat-exploration';
+  return 'cat-politique';
+}
+
+function createEventMarkup(item, era, index) {
+  const peopleMarkup = item.people ? `<span class="event-people">${escapeHtml(item.people)}</span>` : '';
+  return `
+    <div class="event${item.isMajor ? ' major' : ''}" data-era="${era}" data-supplemental="true" data-supplemental-index="${index}">
+      <div class="event-dot"></div>
+      <div class="event-content">
+        <span class="event-date">${escapeHtml(item.date)}</span>
+        <span class="event-text">
+          <span class="event-name">${escapeHtml(item.name)}</span>
+          <span class="event-context">${escapeHtml(item.context)}</span>
+          ${peopleMarkup}
+        </span>
+        <span class="event-cat ${getCategoryClass(item.category)}">${escapeHtml(item.category)}</span>
+      </div>
+    </div>
+  `;
+}
+
+function injectSupplementalEvents() {
+  Object.entries(supplementalEventsByEra).forEach(([era, items]) => {
+    const section = document.getElementById(`era-${era}`);
+    const markerGroup = section?.querySelector('.marker-group');
+    if (!section || !markerGroup || !items.length) return;
+    const html = `
+      <div class="geo-label">➕ Événements complémentaires</div>
+      ${items.map((item, index) => createEventMarkup(item, era, index)).join('')}
+    `;
+    markerGroup.insertAdjacentHTML('afterend', html);
+  });
+}
+
+injectSupplementalEvents();
 
 function buildMarkerDetail(era, year, index) {
   const eraLabel = eraConfigs[era]?.label || 'Période';
@@ -1209,6 +1387,7 @@ const eventEntries = Array.from(document.querySelectorAll('.event')).map((event,
     sourceLabel: event.classList.contains('major') ? 'Événement majeur' : 'Événement'
   };
   event.dataset.entryId = entry.id;
+  event.id = entry.id;
   event.classList.add('interactive');
   event.tabIndex = 0;
   event.setAttribute('role', 'button');
@@ -1229,7 +1408,7 @@ Object.entries(eraConfigs).forEach(([era, config]) => {
     const detail = buildMarkerDetail(era, year, markerIndex);
     markers.push(detail);
     html.push(`
-      <div class="date-marker interactive" data-era="${era}" data-entry-id="${detail.id}" tabindex="0" role="button">
+      <div class="date-marker interactive" id="${detail.id}" data-era="${era}" data-entry-id="${detail.id}" tabindex="0" role="button">
         <div class="event-dot"></div>
         <div class="event-content">
           <span class="event-date">${detail.date}</span>
@@ -1264,7 +1443,7 @@ const featuredDates = [...eventEntries]
 
 const grid = document.getElementById('top50Grid');
 grid.innerHTML = featuredDates.map(item => `
-  <div class="top50-item interactive" data-entry-id="${item.id}" tabindex="0" role="button">
+  <div class="top50-item interactive" id="top-${item.id}" data-entry-id="${item.id}" tabindex="0" role="button">
     <div class="top50-num">${item.num}</div>
     <div class="top50-content">
       <div class="top50-date">${item.date}</div>
@@ -1274,7 +1453,8 @@ grid.innerHTML = featuredDates.map(item => `
 `).join('');
 
 function updateStats() {
-  document.getElementById('statDates').textContent = `${allEntries.length}+`;
+  const uniqueDates = new Set(eventEntries.map(entry => entry.date)).size;
+  document.getElementById('statDates').textContent = `${uniqueDates}+`;
   document.getElementById('statEvents').textContent = `${eventEntries.length}+`;
   const peopleCount = new Set(eventEntries.flatMap(entry => entry.people ? entry.people.split(',').map(item => item.trim()) : []).filter(Boolean)).size;
   document.getElementById('statPeople').textContent = `${peopleCount}+`;
@@ -1285,9 +1465,17 @@ function getEntryById(id) {
   return eventMap.get(id) || markerMap.get(id) || null;
 }
 
+function buildDetailUrl(entryId, backId) {
+  const url = new URL(window.location.href);
+  url.searchParams.set('view', 'detail');
+  url.searchParams.set('id', entryId);
+  url.searchParams.set('back', backId || entryId);
+  url.hash = '';
+  return url.toString();
+}
+
 function renderDetail(entry) {
   if (!entry) return;
-  detailPanel.classList.add('open');
   detailKicker.textContent = `${entry.sourceLabel} · ${eraConfigs[entry.era]?.label || 'Chronologie'}`;
   detailDate.textContent = entry.date;
   detailTitle.textContent = entry.name;
@@ -1311,25 +1499,15 @@ function renderDetail(entry) {
   });
 
   if (entry.type === 'event') {
-    const articleLink = document.createElement('a');
-    articleLink.className = 'detail-link';
-    articleLink.href = `https://www.google.com/search?q=${encodeURIComponent(entry.name + ' ' + entry.date + ' article presse')}`;
-    articleLink.target = '_blank';
-    articleLink.rel = 'noreferrer noopener';
-    articleLink.textContent = 'Chercher un article';
-    detailMeta.appendChild(articleLink);
+    detailSearchLink.href = `https://www.google.com/search?q=${encodeURIComponent(entry.name + ' ' + entry.date + ' article presse')}`;
+  } else {
+    detailSearchLink.href = `https://www.google.com/search?q=${encodeURIComponent(entry.name + ' ' + entry.date)}`;
   }
-
-  detailPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function closeDetail() {
-  detailPanel.classList.remove('open');
 }
 
 function activateEntryFromElement(element) {
-  const entry = getEntryById(element.dataset.entryId);
-  renderDetail(entry);
+  const backId = element.classList.contains('top50-item') ? element.dataset.entryId : (element.id || element.dataset.entryId);
+  window.location.href = buildDetailUrl(element.dataset.entryId, backId);
 }
 
 function syncActiveButtons(selector, matcher) {
@@ -1455,9 +1633,27 @@ document.addEventListener('keydown', event => {
   activateEntryFromElement(target);
 });
 
-detailClose.addEventListener('click', closeDetail);
 updateStats();
 applyFilters();
+
+const detailMode = urlParams.get('view') === 'detail';
+if (detailMode) {
+  document.body.classList.add('detail-mode');
+  const entry = getEntryById(urlParams.get('id'));
+  const backId = urlParams.get('back');
+  detailBackLink.href = `${window.location.pathname}${backId ? `#${backId}` : ''}`;
+  if (entry) {
+    renderDetail(entry);
+  } else {
+    detailKicker.textContent = 'Fiche historique';
+    detailDate.textContent = '';
+    detailTitle.textContent = 'Événement introuvable';
+    detailSummary.textContent = 'Cette fiche n’a pas pu être chargée. Utilise le bouton de retour pour revenir à la frise.';
+    detailBullets.innerHTML = '<li>Le lien ne correspond peut-être plus à un événement existant.</li>';
+    detailArticleTitle.textContent = 'Retour conseillé';
+    detailArticleBody.innerHTML = '<p>Reviens à la frise et reclique sur une date pour ouvrir une fiche à jour.</p>';
+  }
+}
 </script>
 </body>
 </html>

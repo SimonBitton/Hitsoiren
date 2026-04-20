@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frise Chronologique Mondiale</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1208;
+  --parchment: #f5f0e8;
+  --gold: #c9922a;
+  --gold-light: #e8c96a;
+  --rust: #8b3a1a;
+  --olive: #5a6b2a;
+  --slate: #2d3d4f;
+  --cream: #faf7f0;
+  --border: #d4c4a0;
+  --prehist: #7a5c3a;
+  --antiquite: #8b1a3a;
+  --moyen-age: #2d4a6b;
+  --modernes: #3a6b3a;
+  --contemporain: #4a2d6b;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background-color: var(--parchment);
+  color: var(--ink);
+  font-family: 'Source Serif 4', Georgia, serif;
+  min-height: 100vh;
+  background-image: radial-gradient(ellipse at 20% 50%, rgba(201,146,42,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(139,58,26,0.04) 0%, transparent 50%);
+}
+.top-menu {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(26,18,8,0.96);
+  color: var(--parchment);
+  border-bottom: 1px solid rgba(201,146,42,0.28);
+  backdrop-filter: blur(12px);
+}
+.top-menu-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.6rem 1.2rem 0.8rem;
+  display: grid;
+  gap: 0.55rem;
+}
+.menu-group {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+.menu-title {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  min-width: 155px;
+}
+.menu-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+.menu-buttons button {
+  background: rgba(245,240,232,0.05);
+  border: 1px solid rgba(201,146,42,0.18);
+  color: rgba(245,240,232,0.78);
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  padding: 0.42rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 999px;
+}
+.menu-buttons button:hover,
+.menu-buttons button.active {
+  color: var(--ink);
+  background: var(--gold);
+  border-color: var(--gold);
+}
+header {
+  background: var(--ink);
+  color: var(--parchment);
+  padding: 3rem 2rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(201,146,42,0.03) 40px, rgba(201,146,42,0.03) 41px);
+}
+header .ornament { color: var(--gold); font-size: 1.5rem; letter-spacing: 0.5em; margin-bottom: 0.8rem; }
+header h1 { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; }
+header h1 span { color: var(--gold); }
+header p { margin-top: 0.8rem; font-size: 1rem; opacity: 0.7; font-style: italic; letter-spacing: 0.05em; }
+.header-meta { margin-top: 1.5rem; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+.header-meta span { font-size: 0.8rem; opacity: 0.6; letter-spacing: 0.1em; text-transform: uppercase; }
+nav {
+  background: var(--ink);
+  border-top: 1px solid rgba(201,146,42,0.3);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 72px;
+  z-index: 100;
+}
+nav button {
+  background: none; border: none; color: rgba(245,240,232,0.6);
+  font-family: 'Source Serif 4', serif; font-size: 0.78rem; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 0.7rem 1.1rem; cursor: pointer; transition: all 0.2s;
+  border-bottom: 2px solid transparent; white-space: nowrap;
+}
+nav button:hover, nav button.active { color: var(--gold); border-bottom-color: var(--gold); }
+.search-bar {
+  background: var(--cream); border-bottom: 1px solid var(--border);
+  padding: 0.8rem 2rem; display: flex; align-items: center; gap: 1rem; justify-content: center;
+}
+.search-bar input {
+  width: 100%; max-width: 500px; padding: 0.5rem 1rem;
+  border: 1px solid var(--border); border-radius: 2px; background: var(--parchment);
+  font-family: 'Source Serif 4', serif; font-size: 0.9rem; color: var(--ink); outline: none;
+}
+.search-bar input:focus { border-color: var(--gold); }
+.search-bar label { font-size: 0.8rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; }
+main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.era-section { margin-bottom: 4rem; animation: fadeIn 0.5s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.era-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid currentColor; }
+.era-badge { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0; }
+.era-title-block h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; line-height: 1.1; }
+.era-title-block p { font-size: 0.82rem; opacity: 0.65; margin-top: 0.2rem; font-style: italic; }
+.era-prehist { color: var(--prehist); } .era-prehist .era-badge { background: var(--prehist); color: white; }
+.era-antiquite { color: var(--antiquite); } .era-antiquite .era-badge { background: var(--antiquite); color: white; }
+.era-moyen-age { color: var(--moyen-age); } .era-moyen-age .era-badge { background: var(--moyen-age); color: white; }
+.era-modernes { color: var(--modernes); } .era-modernes .era-badge { background: var(--modernes); color: white; }
+.era-contemporain { color: var(--contemporain); } .era-contemporain .era-badge { background: var(--contemporain); color: white; }
+.geo-section { margin-bottom: 1.5rem; }
+.geo-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.5; margin-bottom: 0.5rem; padding-left: 1.5rem; margin-top: 1.2rem; }
+.event { display: flex; gap: 0; margin-bottom: 0.1rem; border-radius: 2px; transition: background 0.15s; }
+.event:hover { background: rgba(201,146,42,0.06); }
+.event.hidden { display: none; }
+.marker-group { margin-bottom: 1.6rem; }
+.marker-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  opacity: 0.46;
+  margin-bottom: 0.45rem;
+  padding-left: 1.5rem;
+}
+.date-marker {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0.08rem;
+  opacity: 0.82;
+}
+.date-marker.hidden { display: none; }
+.date-marker .event-dot {
+  width: 6px;
+  height: 6px;
+  margin-top: 0.58rem;
+  opacity: 0.32;
+  background: currentColor;
+}
+.date-marker .event-content {
+  border-left: 2px dashed rgba(201,146,42,0.18);
+}
+.date-marker .event-date {
+  color: rgba(26,18,8,0.72);
+}
+.date-marker .event-text {
+  opacity: 0.78;
+}
+.marker-tag {
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.12rem 0.36rem;
+  border-radius: 999px;
+  background: rgba(201,146,42,0.12);
+  color: var(--rust);
+  align-self: flex-start;
+  margin-top: 0.14rem;
+}
+.event-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); margin-top: 0.55rem; flex-shrink: 0; opacity: 0.5; margin-left: 0.3rem; }
+.event.major .event-dot { opacity: 1; width: 10px; height: 10px; background: var(--rust); margin-top: 0.45rem; }
+.event-content { flex: 1; padding: 0.3rem 0.6rem; display: flex; gap: 0.8rem; align-items: baseline; flex-wrap: wrap; border-left: 2px solid transparent; }
+.event.major .event-content { border-left-color: var(--rust); }
+.event-date { font-size: 0.76rem; font-weight: 600; color: var(--gold); min-width: 135px; font-variant-numeric: tabular-nums; letter-spacing: 0.01em; flex-shrink: 0; }
+.event-text { flex: 1; font-size: 0.86rem; line-height: 1.4; }
+.event.major .event-text { font-weight: 600; }
+.event-name { display: inline; }
+.event-context { display: inline; opacity: 0.6; font-style: italic; font-size: 0.8rem; }
+.event-context::before { content: ' — '; }
+.event-people { display: block; font-size: 0.7rem; opacity: 0.48; margin-top: 0.08rem; font-style: italic; }
+.event-cat { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.1rem 0.35rem; border-radius: 2px; opacity: 0.7; flex-shrink: 0; align-self: flex-start; margin-top: 0.18rem; }
+.cat-politique { background: rgba(139,58,26,0.12); color: var(--rust); }
+.cat-science { background: rgba(42,90,139,0.12); color: #2a5a8b; }
+.cat-culture { background: rgba(90,107,42,0.12); color: var(--olive); }
+.cat-exploration { background: rgba(90,42,107,0.12); color: #5a2a6b; }
+.top50-section { background: var(--ink); color: var(--parchment); border-radius: 4px; padding: 2.5rem; margin-top: 2rem; }
+.top50-section h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold); margin-bottom: 0.3rem; }
+.top50-section > p { opacity: 0.6; font-size: 0.82rem; font-style: italic; margin-bottom: 2rem; }
+.top50-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.4rem; }
+.top50-item { display: flex; gap: 0.75rem; align-items: flex-start; padding: 0.45rem 0.5rem; border-radius: 3px; transition: background 0.15s; }
+.top50-item:hover { background: rgba(201,146,42,0.08); }
+.top50-num { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold); min-width: 2rem; text-align: right; font-weight: 700; opacity: 0.7; }
+.top50-content { flex: 1; }
+.top50-date { font-size: 0.7rem; color: var(--gold-light); opacity: 0.8; }
+.top50-name { font-size: 0.83rem; font-weight: 600; line-height: 1.3; }
+.legend { display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.75rem; opacity: 0.7; margin-bottom: 1.5rem; padding: 0.7rem 1rem; background: var(--cream); border: 1px solid var(--border); border-radius: 2px; }
+.legend span { display: flex; align-items: center; gap: 0.4rem; }
+.stats-bar { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; padding: 1rem 1.5rem; background: var(--cream); border: 1px solid var(--border); }
+.stat { text-align: center; }
+.stat strong { display: block; font-size: 1.4rem; font-family: 'Playfair Display', serif; color: var(--rust); }
+.stat span { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.6; }
+footer { background: var(--ink); color: rgba(245,240,232,0.4); text-align: center; padding: 2rem; font-size: 0.78rem; font-style: italic; }
+@media (max-width: 900px) {
+  .top-menu-inner { padding-inline: 0.8rem; }
+  .menu-title { min-width: 100%; }
+  nav { top: 116px; }
+}
+@media (max-width: 640px) {
+  nav { top: 146px; }
+  .search-bar { padding: 0.8rem 1rem; flex-direction: column; align-items: stretch; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-menu">
+  <div class="top-menu-inner">
+    <div class="menu-group">
+      <div class="menu-title">Périodes historiques</div>
+      <div class="menu-buttons" id="periodMenu">
+        <button class="active" data-era="all" onclick="setEraFilter('all', this)">Toutes</button>
+        <button data-era="prehist" onclick="setEraFilter('prehist', this)">Préhistoire</button>
+        <button data-era="antiquite" onclick="setEraFilter('antiquite', this)">Antiquité</button>
+        <button data-era="moyen-age" onclick="setEraFilter('moyen-age', this)">Moyen Âge</button>
+        <button data-era="modernes" onclick="setEraFilter('modernes', this)">Temps modernes</button>
+        <button data-era="contemporain" onclick="setEraFilter('contemporain', this)">Contemporain</button>
+        <button data-era="top50" onclick="setEraFilter('top50', this)">Top 150</button>
+      </div>
+    </div>
+    <div class="menu-group">
+      <div class="menu-title">Affichage</div>
+      <div class="menu-buttons" id="typeMenu">
+        <button class="active" data-type="all" onclick="setTypeFilter('all', this)">Tout voir</button>
+        <button data-type="events" onclick="setTypeFilter('events', this)">Événements</button>
+        <button data-type="people" onclick="setTypeFilter('people', this)">Personnes importantes</button>
+        <button data-type="markers" onclick="setTypeFilter('markers', this)">Repères chronologiques</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="ornament">✦ ✦ ✦</div>
+  <h1>Frise Chronologique<br><span>de l'Histoire Mondiale</span></h1>
+  <p>De la Préhistoire à l'ère numérique — Rigueur historique & précision documentaire</p>
+  <div class="header-meta">
+    <span>🦴 Préhistoire</span>
+    <span>🏛 Antiquité</span>
+    <span>⚔️ Moyen Âge</span>
+    <span>🔭 Temps Modernes</span>
+    <span>⚡ Contemporain</span>
+  </div>
+</header>
+
+<nav id="mainNav">
+  <button class="active" onclick="showAll(this)">Toutes les périodes</button>
+  <button onclick="filterEra('prehist',this)">Préhistoire</button>
+  <button onclick="filterEra('antiquite',this)">Antiquité</button>
+  <button onclick="filterEra('moyen-age',this)">Moyen Âge</button>
+  <button onclick="filterEra('modernes',this)">Temps Modernes</button>
+  <button onclick="filterEra('contemporain',this)">Contemporain</button>
+  <button onclick="filterEra('top50',this)">⭐ Top 150</button>
+</nav>
+
+<div class="search-bar">
+  <label>Rechercher :</label>
+  <input type="text" id="searchInput" placeholder="Mot-clé, date, personnage, événement…" oninput="filterSearch()">
+</div>
+
+<main>
+
+<div class="stats-bar">
+  <div class="stat"><strong id="statDates">700+</strong><span>Dates</span></div>
+  <div class="stat"><strong id="statEvents">700+</strong><span>Événements</span></div>
+  <div class="stat"><strong id="statPeople">300+</strong><span>Personnes</span></div>
+  <div class="stat"><strong>5</strong><span>Grandes périodes</span></div>
+  <div class="stat"><strong>3,3M</strong><span>Années couvertes</span></div>
+  <div class="stat"><strong id="statMarkers">0</strong><span>Repères auto</span></div>
+</div>
+
+<div class="legend">
+  <span><span class="event-cat cat-politique">Politique</span> Guerres, révolutions, traités</span>
+  <span><span class="event-cat cat-science">Science</span> Découvertes, inventions</span>
+  <span><span class="event-cat cat-culture">Culture</span> Art, religion, philosophie</span>
+  <span><span class="event-cat cat-exploration">Exploration</span> Voyages, géographie</span>
+  <span style="border-left:2px solid var(--rust);padding-left:0.5rem">Événement majeur</span>
+</div>
+
+<!-- ══════════════════ PRÉHISTOIRE ══════════════════ -->
+<section class="era-section" id="era-prehist">
+<div class="era-header era-prehist">
+  <div class="era-badge">🦴</div>
+  <div class="era-title-block">
+    <h2>1 — Préhistoire</h2>
+    <p>≈ 3 300 000 av. J.-C. → ≈ 3 200 av. J.-C. | De l'apparition des hominidés à l'écriture</p>
+  </div>
+</div>
+<div class="marker-group" data-era="prehist"></div>
+
+<div class="geo-label">🌍 Hominidés & Paléolithique</div>
+<div class="event major" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 7 000 000 av. J.-C.</span><span class="event-text"><span class="event-name">Toumaï — plus ancien hominidé connu (Sahelanthropus tchadensis)</span><span class="event-context">Crâne découvert au Tchad en 2001 ; ancêtre potentiel de la lignée humaine</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 4 000 000 av. J.-C.</span><span class="event-text"><span class="event-name">Australopithèques — bipédie attestée en Afrique orientale</span><span class="event-context">Lucy (Australopithecus afarensis, Éthiopie) : preuve d'une marche verticale</span><span class="event-people">Australopithecus afarensis</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event major" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 3 300 000 av. J.-C.</span><span class="event-text"><span class="event-name">Premiers outils en pierre taillée — industrie oldowayenne</span><span class="event-context">Éclats et galets taillés ; premières traces d'un comportement technique</span><span class="event-people">Homo habilis</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 2 000 000 av. J.-C.</span><span class="event-text"><span class="event-name">Homo erectus — expansion hors d'Afrique vers l'Asie</span><span class="event-context">Premiers hominidés à quitter le continent africain (Géorgie, Java, Pékin)</span><span class="event-people">Homo erectus</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1 800 000 av. J.-C.</span><span class="event-text"><span class="event-name">Maîtrise du feu</span><span class="event-context">Cuisson des aliments ; socialisation autour du feu ; cerveau augmenté par nutrition améliorée</span><span class="event-people">Homo erectus</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 400 000 av. J.-C.</span><span class="event-text"><span class="event-name">Apparition des Néandertaliens en Europe</span><span class="event-context">Espèce adaptée au froid ; sépultures, parures ; coexistence avec Homo sapiens</span><span class="event-people">Homo neanderthalensis</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event major" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 300 000 av. J.-C.</span><span class="event-text"><span class="event-name">Apparition d'Homo sapiens en Afrique du Nord</span><span class="event-context">Fossiles de Jebel Irhoud (Maroc) ; homme anatomiquement moderne</span><span class="event-people">Homo sapiens</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 165 000 av. J.-C.</span><span class="event-text"><span class="event-name">Premiers comportements symboliques — ocre et coquillages percés (Blombos, Afrique du Sud)</span><span class="event-context">Premières parures et pigments utilisés à des fins symboliques</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 70 000 av. J.-C.</span><span class="event-text"><span class="event-name">Grande migration hors d'Afrique d'Homo sapiens</span><span class="event-context">Dispersion vers l'Asie, l'Australie, puis l'Europe ; peuplement progressif de la planète</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 50 000 av. J.-C.</span><span class="event-text"><span class="event-name">Peuplement de l'Australie par les ancêtres des Aborigènes</span><span class="event-context">Traversée maritime depuis l'Asie du Sud-Est ; présence humaine continue depuis</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 40 000 av. J.-C.</span><span class="event-text"><span class="event-name">Extinction des Néandertaliens</span><span class="event-context">Remplacement progressif par Homo sapiens ; métissage partiel attesté par ADN</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event major" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 36 000 av. J.-C.</span><span class="event-text"><span class="event-name">Art pariétal de la grotte Chauvet (Ardèche)</span><span class="event-context">Rhinocéros laineux, lions, mammouths ; plus ancienne grande fresque connue d'Europe</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 28 000 av. J.-C.</span><span class="event-text"><span class="event-name">Vénus de Willendorf et statuettes féminines</span><span class="event-context">Premières sculptures en ronde-bosse ; culte probable de la fertilité</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 17 000 av. J.-C.</span><span class="event-text"><span class="event-name">Peintures de Lascaux (Dordogne)</span><span class="event-context">Chef-d'œuvre de l'art magdalénien : chevaux, bisons, cerfs ; perspectivisme proto-cinétique</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 15 000 av. J.-C.</span><span class="event-text"><span class="event-name">Peuplement des Amériques via le détroit de Béring</span><span class="event-context">Migration par le pont terrestre de Béringie pendant le maximum glaciaire</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 12 000 av. J.-C.</span><span class="event-text"><span class="event-name">Fin du dernier âge glaciaire — réchauffement climatique</span><span class="event-context">Fonte des glaces, montée des mers, disparition de nombreux mégafaunes</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event major" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 10 000 av. J.-C.</span><span class="event-text"><span class="event-name">Révolution néolithique — invention de l'agriculture (Croissant fertile)</span><span class="event-context">Domestication du blé, de l'orge, des moutons ; sédentarisation ; villages permanents</span><span class="event-people">Cultures natoufienne et proto-néolithique</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 9 000 av. J.-C.</span><span class="event-text"><span class="event-name">Fondation de Jéricho — première cité fortifiée connue</span><span class="event-context">Tour de pierre de 8 m, remparts ; 3 000 habitants ; source permanente d'eau</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 8 000 av. J.-C.</span><span class="event-text"><span class="event-name">Domestication du chien, cochon, chèvre, vache</span><span class="event-context">Révolution zootechnique accompagnant la sédentarisation agricole</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 7 000 av. J.-C.</span><span class="event-text"><span class="event-name">Çatalhöyük (Anatolie) — ville néolithique de 10 000 habitants</span><span class="event-context">Habitations mitoyennes sans rues ; peintures murales domestiques ; société égalitaire</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 6 000 av. J.-C.</span><span class="event-text"><span class="event-name">Apparition de la métallurgie du cuivre (Balkans, Moyen-Orient)</span><span class="event-context">Début du Chalcolithique ; le métal remplace progressivement la pierre</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 5 500 av. J.-C.</span><span class="event-text"><span class="event-name">Agriculture indépendante en Chine (millet, riz) et en Méso-Amérique (maïs)</span><span class="event-context">Foyers indépendants de néolithisation prouvant que l'agriculture est une invention convergente</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 4 500 av. J.-C.</span><span class="event-text"><span class="event-name">Début de l'âge du Bronze (Moyen-Orient)</span><span class="event-context">Alliage cuivre-étain ; outils et armes plus solides ; essor des échanges commerciaux</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 3 500 av. J.-C.</span><span class="event-text"><span class="event-name">Invention de la roue et du tour de potier (Mésopotamie)</span><span class="event-context">Révolution des transports et de l'artisanat ; base de toute mécanique ultérieure</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="prehist"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 3 200 av. J.-C.</span><span class="event-text"><span class="event-name">Construction de Stonehenge (phase initiale, Angleterre)</span><span class="event-context">Monument mégalithique à fonction astronomique et cultuelle ; chantier de plusieurs siècles</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+</section>
+
+<!-- ══════════════════ ANTIQUITÉ ══════════════════ -->
+<section class="era-section" id="era-antiquite">
+<div class="era-header era-antiquite">
+  <div class="era-badge">🏛</div>
+  <div class="era-title-block">
+    <h2>2 — Antiquité</h2>
+    <p>≈ 3 200 av. J.-C. → 476 ap. J.-C. | Des premières écritures à la chute de Rome</p>
+  </div>
+</div>
+<div class="marker-group" data-era="antiquite"></div>
+
+<div class="geo-label">📜 Mésopotamie & Proche-Orient</div>
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 3 200 av. J.-C.</span><span class="event-text"><span class="event-name">Invention de l'écriture cunéiforme (Sumer, Uruk)</span><span class="event-context">Née de besoins comptables sur tablettes d'argile ; 3 000 signes → 600 signes phonétiques</span><span class="event-people">Civilisation sumérienne</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 2 900 av. J.-C.</span><span class="event-text"><span class="event-name">Cités-États sumériennes — Ur, Lagash, Nippur</span><span class="event-context">Premières organisations politiques urbaines avec temples (ziggourats) et rois-prêtres</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 2 350 av. J.-C.</span><span class="event-text"><span class="event-name">Empire akkadien de Sargon d'Akkad — premier empire connu</span><span class="event-context">Unification de la Mésopotamie par la conquête ; première administration centralisée</span><span class="event-people">Sargon d'Akkad</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1 754 av. J.-C.</span><span class="event-text"><span class="event-name">Code de Hammurabi — Babylone</span><span class="event-context">282 lois gravées sur stèle de basalte noir ; principe de lex talionis ; droit codifié</span><span class="event-people">Roi Hammurabi</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1 200 av. J.-C.</span><span class="event-text"><span class="event-name">Effondrement de l'âge du Bronze — catastrophe civilisationnelle</span><span class="event-context">Disparition simultanée des empires hittite, mycénien, ugaritien ; causes encore débattues</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 900 av. J.-C.</span><span class="event-text"><span class="event-name">Empire assyrien à son apogée (Assyriens)</span><span class="event-context">Premier empire disposant d'une armée professionnelle et d'une administration impériale</span><span class="event-people">Assurnasirpal II, Sargon II, Assurbanipal</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">539 av. J.-C.</span><span class="event-text"><span class="event-name">Cyrus le Grand prend Babylone — Perse achéménide</span><span class="event-context">Libération des Juifs captifs ; Cyrus publie le premier "édit de tolérance" religieuse</span><span class="event-people">Cyrus II le Grand</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="geo-label">🏺 Égypte ancienne</div>
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 3 100 av. J.-C.</span><span class="event-text"><span class="event-name">Unification de l'Égypte — naissance du pharaonisme</span><span class="event-context">Narmer unifie Haute et Basse Égypte ; début de la période dynastique (I à XXX)</span><span class="event-people">Pharaon Narmer / Méni</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 2 650 av. J.-C.</span><span class="event-text"><span class="event-name">Pyramide de Djoser à Saqqara — première pyramide à degrés</span><span class="event-context">Conçue par l'architecte Imhotep ; première grande construction en pierre de taille</span><span class="event-people">Pharaon Djoser, Imhotep</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 2 560 av. J.-C.</span><span class="event-text"><span class="event-name">Construction de la Grande Pyramide de Gizeh</span><span class="event-context">2,3 millions de blocs ; 146 m de haut ; seule des 7 Merveilles du monde encore debout</span><span class="event-people">Pharaon Khéops (Khnoum-Khouf)</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1 550 av. J.-C.</span><span class="event-text"><span class="event-name">Nouvel Empire égyptien — apogée de la puissance pharaonique</span><span class="event-context">Expulsion des Hyksos ; expansion vers la Nubie et le Levant ; Karnak et Louxor</span><span class="event-people">Ahmosis Ier, Thoutmosis III, Ramsès II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1 350 av. J.-C.</span><span class="event-text"><span class="event-name">Révolution religieuse d'Akhénaton — monothéisme d'Aton</span><span class="event-context">Fermeture des temples traditionnels ; capital déplacée à Akhetaton ; effacé post-mortem</span><span class="event-people">Akhénaton, Néfertiti, Toutankhamon</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1 274 av. J.-C.</span><span class="event-text"><span class="event-name">Bataille de Qadesh & premier traité de paix écrit</span><span class="event-context">Égypte vs Hittites ; résultat indécis ; traité sigillé en argent conservé à Istanbul et à l'ONU</span><span class="event-people">Ramsès II, Hattousil III</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">30 av. J.-C.</span><span class="event-text"><span class="event-name">Mort de Cléopâtre VII — fin de l'Égypte pharaonique</span><span class="event-context">Suicide après la défaite d'Antoine ; l'Égypte devient province romaine</span><span class="event-people">Cléopâtre VII, Marc Antoine, Octave</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="geo-label">🌏 Inde & Asie ancienne</div>
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 2 600 av. J.-C.</span><span class="event-text"><span class="event-name">Civilisation de l'Indus — Mohenjo-daro et Harappa</span><span class="event-context">Cités planifiées en damier avec égouts, bains ; 50 000 habitants ; écriture non déchiffrée</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1 500 av. J.-C.</span><span class="event-text"><span class="event-name">Rédaction des Védas — fondements de l'hindouisme</span><span class="event-context">Textes sacrés sanskrits ; base de la civilisation indienne ; transmis oralement pendant des siècles</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1 046 av. J.-C.</span><span class="event-text"><span class="event-name">Fondation de la dynastie Zhou en Chine</span><span class="event-context">Longest dynasty in Chinese history ; mandat du ciel ; féodalité chinoise</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 563 av. J.-C.</span><span class="event-text"><span class="event-name">Naissance du Bouddha (Siddhārtha Gautama) à Lumbini</span><span class="event-context">Prince renonçant ; Éveil à Bodh Gaya ; fondation du bouddhisme, religion mondiale</span><span class="event-people">Siddhārtha Gautama</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 551 av. J.-C.</span><span class="event-text"><span class="event-name">Naissance de Confucius — philosophie éthique chinoise</span><span class="event-context">Ren (bienveillance), Li (rite), Zhengming (rectification des noms) ; 2 500 ans d'influence</span><span class="event-people">Kongzi / Confucius</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 500 av. J.-C.</span><span class="event-text"><span class="event-name">Lao-Tseu & rédaction du Tao Te Ching — fondation du taoïsme</span><span class="event-context">Philosophie de l'harmonie avec la nature ; 81 chapitres ; texte le plus traduit après la Bible</span><span class="event-people">Lao-Tseu (légendaire)</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">221 av. J.-C.</span><span class="event-text"><span class="event-name">Qin Shi Huang unifie la Chine — premier empire</span><span class="event-context">Standardisation écriture, poids, mesures, monnaie ; Grande Muraille ; armée de terre cuite</span><span class="event-people">Qin Shi Huang</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">206 av. J.-C.</span><span class="event-text"><span class="event-name">Fondation de la dynastie Han — âge d'or chinois</span><span class="event-context">Route de la Soie, papier, boussole, Confucianisme d'État ; 60 millions d'habitants</span><span class="event-people">Liu Bang (Gaozu)</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">269–232 av. J.-C.</span><span class="event-text"><span class="event-name">Règne d'Ashoka — Empire Maurya et diffusion du bouddhisme</span><span class="event-context">Après Kalinga, se convertit au bouddhisme ; envoie des missionnaires jusqu'en Grèce</span><span class="event-people">Ashoka le Grand</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="geo-label">🏛 Grèce antique</div>
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 800 av. J.-C.</span><span class="event-text"><span class="event-name">Homère — composition de l'Iliade et de l'Odyssée</span><span class="event-context">Fondements de la littérature et de la culture occidentale ; transmission orale puis écrite</span><span class="event-people">Homère (attribué)</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">776 av. J.-C.</span><span class="event-text"><span class="event-name">Premiers Jeux Olympiques à Olympie</span><span class="event-context">Trêve sacrée (ekecheiria) ; unification symbolique des cités ; tous les 4 ans pendant 1 000 ans</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 750 av. J.-C.</span><span class="event-text"><span class="event-name">Grande colonisation grecque — Méditerranée et mer Noire</span><span class="event-context">Fondation de Marseille (Massalia), Naples, Syracuse ; diffusion de la culture grecque</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">594 av. J.-C.</span><span class="event-text"><span class="event-name">Réformes de Solon à Athènes</span><span class="event-context">Abolition de l'esclavage pour dettes ; classes censitaires ; base du droit athénien</span><span class="event-people">Solon</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">508 av. J.-C.</span><span class="event-text"><span class="event-name">Réformes de Clisthène — démocratie athénienne</span><span class="event-context">10 tribus civiques ; assemblée (Ecclesia) ; ostracisme ; naissance de la démocratie directe</span><span class="event-people">Clisthène d'Athènes</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">13 septembre 490 av. J.-C.</span><span class="event-text"><span class="event-name">Bataille de Marathon</span><span class="event-context">10 000 Athéniens et Platéens battent 25 000 Perses de Darios ; la course du messager</span><span class="event-people">Miltiade, Darios Ier</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">480 av. J.-C.</span><span class="event-text"><span class="event-name">Thermopyles & Salamine — guerres médiques (IIe invasion)</span><span class="event-context">300 Spartiates de Léonidas ; victoire navale de Thémistocle ; fin de l'expansion perse</span><span class="event-people">Léonidas, Thémistocle, Xerxès Ier</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">461–429 av. J.-C.</span><span class="event-text"><span class="event-name">Siècle de Périclès — âge d'or d'Athènes</span><span class="event-context">Construction du Parthénon ; tragédie grecque ; Socrate, Sophocle, Hérodote</span><span class="event-people">Périclès, Phidias, Sophocle, Hérodote</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">431–404 av. J.-C.</span><span class="event-text"><span class="event-name">Guerre du Péloponnèse — Athènes vs Sparte</span><span class="event-context">27 ans de guerre ; défaite d'Athènes ; fin de l'hégémonie athénienne</span><span class="event-people">Thucydide (historien), Alcibiade</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">399 av. J.-C.</span><span class="event-text"><span class="event-name">Procès et mort de Socrate</span><span class="event-context">Condamné pour impiété et corruption de la jeunesse ; boit la ciguë ; fondateur de la philosophie morale</span><span class="event-people">Socrate, Platon (témoin)</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">387 av. J.-C.</span><span class="event-text"><span class="event-name">Platon fonde l'Académie à Athènes</span><span class="event-context">Première université du monde occidental ; enseignement de 900 ans jusqu'en 529 ap. J.-C.</span><span class="event-people">Platon</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">334–323 av. J.-C.</span><span class="event-text"><span class="event-name">Conquêtes d'Alexandre le Grand</span><span class="event-context">De la Grèce à l'Inde en 10 ans ; hellénisation de l'Orient ; fondation d'Alexandrie</span><span class="event-people">Alexandre III de Macédoine</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">323 av. J.-C.</span><span class="event-text"><span class="event-name">Mort d'Alexandre — démembrement de l'empire (Diadoques)</span><span class="event-context">Trois royaumes hellénistiques : Séleucides, Ptolémées, Antigonides ; koiné grecque répandue</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 300 av. J.-C.</span><span class="event-text"><span class="event-name">Euclide — Éléments de géométrie</span><span class="event-context">13 livres fondant la géométrie axiomatic ; manuel de mathématiques le plus utilisé pendant 2 000 ans</span><span class="event-people">Euclide d'Alexandrie</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 240 av. J.-C.</span><span class="event-text"><span class="event-name">Ératosthène calcule la circonférence de la Terre</span><span class="event-context">Résultat à 1% d'erreur par la géométrie des ombres ; preuve de la sphéricité terrestre</span><span class="event-people">Ératosthène de Cyrène</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 250 av. J.-C.</span><span class="event-text"><span class="event-name">Archimède — principe du levier et de la poussée</span><span class="event-context">Vis d'Archimède, calcul de π, loi de la flottaison ; génie universel de l'Antiquité</span><span class="event-people">Archimède de Syracuse</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="geo-label">🦅 Rome antique</div>
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">753 av. J.-C.</span><span class="event-text"><span class="event-name">Fondation légendaire de Rome</span><span class="event-context">Romulus aurait fondé Rome le 21 avril ; tradition maintenue dans le calendrier romain</span><span class="event-people">Romulus (légendaire)</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">509 av. J.-C.</span><span class="event-text"><span class="event-name">Fondation de la République romaine</span><span class="event-context">Expulsion de Tarquin le Superbe ; deux consuls élus ; Sénat ; tribuns de la plèbe</span><span class="event-people">Brutus l'Ancien, Publius Valerius Publicola</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">450 av. J.-C.</span><span class="event-text"><span class="event-name">Loi des Douze Tables — premier code de droit romain écrit</span><span class="event-context">Droit public, privé, pénal ; exposé sur le Forum pour que tous puissent le lire</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">264–146 av. J.-C.</span><span class="event-text"><span class="event-name">Guerres Puniques I, II et III — Rome vs Carthage</span><span class="event-context">Hégémonie méditerranéenne en jeu ; Hannibal passe les Alpes ; Carthago delenda est</span><span class="event-people">Hannibal Barca, Scipion l'Africain, Caton</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">133–121 av. J.-C.</span><span class="event-text"><span class="event-name">Réformes agraires des Gracques — crises de la République</span><span class="event-context">Tiberius et Caius Gracchus assassinés ; début de 100 ans d'instabilité politique romaine</span><span class="event-people">Tiberius et Caius Gracchus</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">73–71 av. J.-C.</span><span class="event-text"><span class="event-name">Révolte de Spartacus</span><span class="event-context">70 000 esclaves en armes ; écrasée par Crassus ; 6 000 crucifiés sur la via Appia</span><span class="event-people">Spartacus, Marcus Crassus</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">60 av. J.-C.</span><span class="event-text"><span class="event-name">Premier triumvirat — César, Pompée, Crassus</span><span class="event-context">Alliance informelle qui concentre le pouvoir réel hors du Sénat</span><span class="event-people">Jules César, Pompée, Crassus</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">58–50 av. J.-C.</span><span class="event-text"><span class="event-name">Conquête de la Gaule par Jules César</span><span class="event-context">Commentarii de Bello Gallico ; siège d'Alésia 52 av. J.-C. ; Vercingétorix capitule</span><span class="event-people">Jules César, Vercingétorix</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">10 janvier 49 av. J.-C.</span><span class="event-text"><span class="event-name">César franchit le Rubicon — guerre civile</span><span class="event-context">"Alea jacta est" — acte irréversible de trahison envers la République</span><span class="event-people">Jules César</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">15 mars 44 av. J.-C.</span><span class="event-text"><span class="event-name">Assassinat de Jules César — Ides de Mars</span><span class="event-context">23 coups de poignard au Sénat par Brutus, Cassius et 21 conjurés</span><span class="event-people">Jules César, Brutus, Cassius</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">27 av. J.-C.</span><span class="event-text"><span class="event-name">Octave devient Auguste — naissance de l'Empire romain</span><span class="event-context">Pax Romana inaugurée ; 44 millions de sujets ; apogée territorial sous Trajan (117)</span><span class="event-people">Auguste (Caius Octavius)</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 4 av. J.-C.</span><span class="event-text"><span class="event-name">Naissance de Jésus de Nazareth</span><span class="event-context">Fondateur du christianisme ; crucifié vers 30 ap. J.-C. ; plus grande religion mondiale</span><span class="event-people">Jésus de Nazareth</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">70</span><span class="event-text"><span class="event-name">Destruction du Temple de Jérusalem par Titus</span><span class="event-context">Fin de la Grande Révolte juive ; diaspora juive massive ; seul le mur occidental (Kotel) subsiste</span><span class="event-people">Titus Flavius</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">24 août 79</span><span class="event-text"><span class="event-name">Éruption du Vésuve — destruction de Pompéi et Herculanum</span><span class="event-context">Ensevelissement sous cendres et lapilli ; instantané unique de la vie romaine du Ier s.</span><span class="event-people">Pline le Jeune (témoin épistolaire)</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">98–117</span><span class="event-text"><span class="event-name">Règne de Trajan — Empire romain à son maximum territorial</span><span class="event-context">Dace, Arabie, Mésopotamie annexées ; 5 millions de km² ; forum et colonne trajane</span><span class="event-people">Trajan</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">212</span><span class="event-text"><span class="event-name">Édit de Caracalla — citoyenneté romaine à tous les hommes libres</span><span class="event-context">Constitutio Antoniniana ; unification juridique de l'Empire ; motivations fiscales</span><span class="event-people">Caracalla</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">313</span><span class="event-text"><span class="event-name">Édit de Milan — tolérance du christianisme</span><span class="event-context">Constantin légalise le christianisme ; début de la christianisation de l'Empire</span><span class="event-people">Constantin Ier</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">325</span><span class="event-text"><span class="event-name">Concile de Nicée — définition du dogme chrétien</span><span class="event-context">Credo de Nicée ; Jésus déclaré consubstantiel au Père ; arianisme condamné</span><span class="event-people">Constantin Ier</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">380</span><span class="event-text"><span class="event-name">Édit de Thessalonique — le christianisme religion d'État de Rome</span><span class="event-context">Théodose Ier impose le christianisme nicéen ; paganisme interdit</span><span class="event-people">Théodose Ier</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">395</span><span class="event-text"><span class="event-name">Division définitive de l'Empire romain — Occident et Orient</span><span class="event-context">À la mort de Théodose ; les deux empires ne seront plus jamais réunis</span><span class="event-people">Théodose Ier</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">410</span><span class="event-text"><span class="event-name">Sac de Rome par les Wisigoths d'Alaric</span><span class="event-context">Premier sac de Rome en 800 ans ; choc psychologique immense ; inspire La Cité de Dieu</span><span class="event-people">Alaric Ier</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="antiquite"><div class="event-dot"></div><div class="event-content"><span class="event-date">4 septembre 476</span><span class="event-text"><span class="event-name">Chute de l'Empire romain d'Occident</span><span class="event-context">Romulus Augustule déposé par Odoacre ; fin conventionnelle de l'Antiquité</span><span class="event-people">Romulus Augustule, Odoacre</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+</section>
+
+<!-- ══════════════════ MOYEN ÂGE ══════════════════ -->
+<section class="era-section" id="era-moyen-age">
+<div class="era-header era-moyen-age">
+  <div class="era-badge">⚔️</div>
+  <div class="era-title-block">
+    <h2>3 — Moyen Âge</h2>
+    <p>476 → 1492 | De la chute de Rome à la découverte des Amériques</p>
+  </div>
+</div>
+<div class="marker-group" data-era="moyen-age"></div>
+
+<div class="geo-label">⚜️ Haut Moyen Âge européen (476–1000)</div>
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">481–511</span><span class="event-text"><span class="event-name">Clovis — fondation du royaume franc et conversion au catholicisme</span><span class="event-context">Baptême de Reims ≈ 496 ; alliance Église-État qui structure l'Europe médiévale</span><span class="event-people">Clovis Ier</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">529</span><span class="event-text"><span class="event-name">Fondation de l'ordre bénédictin — Monte-Cassino</span><span class="event-context">Ora et Labora ; monastères centres de copie, d'agriculture et de savoir pendant 500 ans</span><span class="event-people">Saint Benoît de Nursie</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">527–565</span><span class="event-text"><span class="event-name">Règne de Justinien — apogée de Byzance</span><span class="event-context">Code Justinien ; construction de Sainte-Sophie ; reconquête de l'Afrique du Nord et de l'Italie</span><span class="event-people">Justinien Ier, Bélisaire, Théodora</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">622</span><span class="event-text"><span class="event-name">Hégire de Mahomet — fondation de l'islam</span><span class="event-context">Départ de La Mecque vers Médine ; an 1 de l'ère hégirien ; naissance de la communauté (Umma)</span><span class="event-people">Mahomet (Muhammad)</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">632–750</span><span class="event-text"><span class="event-name">Conquêtes arabes — de la Perse à l'Espagne</span><span class="event-context">En un siècle, l'islam couvre un territoire plus vaste que l'Empire romain à son apogée</span><span class="event-people">Abu Bakr, Omar Ier, Othman, Ali</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">10 octobre 732</span><span class="event-text"><span class="event-name">Bataille de Poitiers — arrêt de l'expansion arabe en Europe</span><span class="event-context">Charles Martel repousse l'armée d'Abd al-Rahman ; l'Europe demeure chrétienne</span><span class="event-people">Charles Martel</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">25 décembre 800</span><span class="event-text"><span class="event-name">Couronnement de Charlemagne — Saint-Empire carolingien</span><span class="event-context">Pape Léon III couronne Charlemagne à Rome ; renaissance carolingienne ; refondation de l'Europe</span><span class="event-people">Charlemagne, pape Léon III</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">830</span><span class="event-text"><span class="event-name">Maison de la Sagesse (Bayt al-Hikma) à Bagdad — âge d'or islamique</span><span class="event-context">Traductions grecques, avancées en algèbre, optique, médecine ; Al-Kindi, Al-Khwarizmi</span><span class="event-people">Calife al-Ma'mun, Al-Khwarizmi</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">843</span><span class="event-text"><span class="event-name">Traité de Verdun — partition de l'Empire carolingien</span><span class="event-context">3 royaumes pour les petits-fils de Charlemagne ; prémices de la France, l'Allemagne, l'Italie</span><span class="event-people">Charles le Chauve, Louis le Germanique, Lothaire</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 860</span><span class="event-text"><span class="event-name">Invention de l'imprimerie xylographique en Chine (bloc de bois)</span><span class="event-context">Livre Diamond Sutra (868) : plus vieux livre daté imprimé du monde</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 870–930</span><span class="event-text"><span class="event-name">Vikings en Islande et au Groenland (Eirik le Rouge)</span><span class="event-context">Peuplement de l'Islande ; Leif Erikson atteindrait le "Vinland" (Amérique du Nord) vers 1000</span><span class="event-people">Eirik le Rouge, Leif Erikson</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="geo-label">⚔️ Moyen Âge central (1000–1300)</div>
+<div class="event major" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1054</span><span class="event-text"><span class="event-name">Grand Schisme d'Orient — Catholiques vs Orthodoxes</span><span class="event-context">Excommunications mutuelles de Rome et Constantinople ; rupture encore non résolue</span><span class="event-people">Pape Léon IX, Patriarche Michel Cérulaire</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">14 octobre 1066</span><span class="event-text"><span class="event-name">Bataille d'Hastings — conquête normande de l'Angleterre</span><span class="event-context">Guillaume le Conquérant bat Harold II ; Domesday Book 1086 ; fusion franco-anglaise</span><span class="event-people">Guillaume le Conquérant, Harold II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1077</span><span class="event-text"><span class="event-name">Humiliation de Canossa — querelle des Investitures</span><span class="event-context">Henri IV s'agenouille devant le pape Grégoire VII ; la papauté domine le pouvoir temporel</span><span class="event-people">Henri IV, pape Grégoire VII</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1095–1099</span><span class="event-text"><span class="event-name">Première Croisade — prise de Jérusalem</span><span class="event-context">Appel d'Urbain II à Clermont ; 100 000 croisés ; Jérusalem prise le 15 juillet 1099</span><span class="event-people">Godefroy de Bouillon, pape Urbain II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1088</span><span class="event-text"><span class="event-name">Fondation de l'université de Bologne — première université d'Europe</span><span class="event-context">Enseignement du droit romain ; modèle pour Oxford (1096), Paris (1150), Cambridge (1209)</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1187</span><span class="event-text"><span class="event-name">Saladin reprend Jérusalem aux Croisés</span><span class="event-context">Victoire de Hattin ; générosité envers les vaincus ; respecté même par ses adversaires</span><span class="event-people">Saladin (Salah ad-Din)</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1215</span><span class="event-text"><span class="event-name">Magna Carta — premiers droits écrits limitant le roi d'Angleterre</span><span class="event-context">63 articles ; habeas corpus en germe ; matrice du constitutionnalisme britannique et américain</span><span class="event-people">Roi Jean sans Terre, barons anglais</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1209</span><span class="event-text"><span class="event-name">Croisade des Albigeois — extermination des Cathares</span><span class="event-context">"Tuez-les tous, Dieu reconnaîtra les siens" (Arnaud Amaury) ; massacres de Béziers</span><span class="event-people">Simon de Montfort</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1215</span><span class="event-text"><span class="event-name">Fondation de l'ordre dominicain</span><span class="event-context">Ordre des Frères prêcheurs fondé par Dominique de Guzman ; inquisition médiévale</span><span class="event-people">Saint Dominique</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="geo-label">🌏 Asie médiévale & Amériques</div>
+<div class="event major" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1206–1227</span><span class="event-text"><span class="event-name">Conquêtes de Gengis Khan — Empire mongol</span><span class="event-context">Plus grand empire terrestre continu de l'histoire ; de la Chine à la Hongrie</span><span class="event-people">Gengis Khan (Temüjin)</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1258</span><span class="event-text"><span class="event-name">Destruction de Bagdad par Hulagu Khan</span><span class="event-context">Fin du califat abbasside ; bibliothèques incendiées ; fin de l'âge d'or islamique</span><span class="event-people">Hulagu Khan (petit-fils de Gengis)</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1271–1295</span><span class="event-text"><span class="event-name">Voyage de Marco Polo en Chine</span><span class="event-context">Séjour à la cour de Kubilaï Khan ; Le Livre des Merveilles inspire l'imaginaire européen</span><span class="event-people">Marco Polo, Rustichello de Pise</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1325</span><span class="event-text"><span class="event-name">Fondation de Tenochtitlan — Empire aztèque (Mexique)</span><span class="event-context">Cité-île sur le lac Texcoco ; 200 000 habitants au XVe siècle ; future Mexico</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1438</span><span class="event-text"><span class="event-name">Apogée de l'Empire inca (Tawantinsuyu)</span><span class="event-context">Pachacuti agrandit l'empire ; réseau de 40 000 km de routes ; Machu Picchu construit</span><span class="event-people">Pachacuti Inca Yupanqui</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="geo-label">💀 Bas Moyen Âge (1300–1492)</div>
+<div class="event major" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1347–1353</span><span class="event-text"><span class="event-name">Pandémie de Peste noire</span><span class="event-context">Yersinia pestis via Caffa (Crimée) ; 25–50 millions de morts en Europe ; ⅓ à ½ de la population</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1337–1453</span><span class="event-text"><span class="event-name">Guerre de Cent Ans — France vs Angleterre</span><span class="event-context">Revendications sur le trône de France ; Azincourt 1415 ; Joan of Arc ; fin de la féodalité</span><span class="event-people">Édouard III, Henri V, Charles VII, Jeanne d'Arc</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">30 mai 1431</span><span class="event-text"><span class="event-name">Exécution de Jeanne d'Arc à Rouen</span><span class="event-context">Brûlée comme hérétique ; réhabilitée en 1456 ; canonisée en 1920</span><span class="event-people">Jeanne d'Arc</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1378–1417</span><span class="event-text"><span class="event-name">Grand Schisme d'Occident — 3 papes simultanés</span><span class="event-context">Crise de légitimité de l'Église ; concile de Constance (1414–1418) y met fin</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1440</span><span class="event-text"><span class="event-name">Florence — apogée de la Renaissance italienne</span><span class="event-context">Humanisme, retour à l'Antiquité ; Brunelleschi, Donatello, Ghiberti, début de Botticelli</span><span class="event-people">Côme de Médicis, Brunelleschi, Alberti</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1455</span><span class="event-text"><span class="event-name">Gutenberg — imprimerie à caractères mobiles métalliques</span><span class="event-context">Bible à 42 lignes ; révolution de la diffusion du savoir ; prélude de la Réforme</span><span class="event-people">Johannes Gutenberg</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event major" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">29 mai 1453</span><span class="event-text"><span class="event-name">Chute de Constantinople — fin de l'Empire byzantin</span><span class="event-context">Mehmed II prend la ville après 53 jours de siège ; Sainte-Sophie convertie en mosquée</span><span class="event-people">Mehmed II le Conquérant, Constantin XI Paléologue</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1469</span><span class="event-text"><span class="event-name">Mariage d'Isabelle de Castille et Ferdinand d'Aragon — unification espagnole</span><span class="event-context">Base de la future Espagne ; Reconquista achevée en 1492 ; Grenade prise</span><span class="event-people">Isabelle Ire, Ferdinand II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="moyen-age"><div class="event-dot"></div><div class="event-content"><span class="event-date">1492</span><span class="event-text"><span class="event-name">Expulsion des Juifs d'Espagne (édit de l'Alhambra)</span><span class="event-context">200 000 Juifs expulsés ; Inquisition espagnole ; diaspora séfarade vers l'Empire ottoman</span><span class="event-people">Isabelle Ire, Ferdinand II, Torquemada</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+</section>
+
+<!-- ══════════════════ TEMPS MODERNES ══════════════════ -->
+<section class="era-section" id="era-modernes">
+<div class="era-header era-modernes">
+  <div class="era-badge">🔭</div>
+  <div class="era-title-block">
+    <h2>4 — Temps Modernes</h2>
+    <p>1492 → 1789 | Des Grandes Découvertes à la Révolution française</p>
+  </div>
+</div>
+<div class="marker-group" data-era="modernes"></div>
+
+<div class="geo-label">🌊 Grandes Découvertes (1492–1600)</div>
+<div class="event major" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">12 octobre 1492</span><span class="event-text"><span class="event-name">Christophe Colomb atteint les Amériques (Bahamas)</span><span class="event-context">Premier contact permanent Europe-Amériques ; début de l'échange colombien</span><span class="event-people">Christophe Colomb</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1494</span><span class="event-text"><span class="event-name">Traité de Tordesillas — partage du monde entre Espagne et Portugal</span><span class="event-context">La bulle du pape divise les terres nouvelles à 370 lieues à l'ouest des Açores</span><span class="event-people">Pape Alexandre VI, Ferdinand II, Jean II du Portugal</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">8 juillet 1497</span><span class="event-text"><span class="event-name">Vasco de Gama contourne l'Afrique — route des Indes</span><span class="event-context">Cap de Bonne-Espérance ; Calicut en mai 1498 ; Portugal domine le commerce des épices</span><span class="event-people">Vasco de Gama</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1500</span><span class="event-text"><span class="event-name">Pedro Álvares Cabral découvre le Brésil</span><span class="event-context">Pendant le voyage vers les Indes ; le Brésil devient territoire portugais</span><span class="event-people">Pedro Álvares Cabral</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1507</span><span class="event-text"><span class="event-name">Le continent américain baptisé "America" par Waldseemüller</span><span class="event-context">En hommage à Amerigo Vespucci ; première carte à nommer le Nouveau Monde</span><span class="event-people">Martin Waldseemüller, Amerigo Vespucci</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1519–1521</span><span class="event-text"><span class="event-name">Cortès conquiert l'Empire aztèque</span><span class="event-context">600 conquistadores + alliés indiens + épidémies ; Tenochtitlan détruite ; Mexique fondé</span><span class="event-people">Hernán Cortès, Moctezuma II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">6 septembre 1522</span><span class="event-text"><span class="event-name">Magellan-Elcano — premier tour du monde</span><span class="event-context">18 survivants sur 265 partants ; preuve définitive de la sphéricité terrestre</span><span class="event-people">Fernand de Magellan (mort aux Philippines), Juan Sebastián Elcano</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1532–1535</span><span class="event-text"><span class="event-name">Pizarro conquiert l'Empire inca</span><span class="event-context">Atahualpa capturé et exécuté ; Cuzco prise ; disparition d'une civilisation de 10 millions d'âmes</span><span class="event-people">Francisco Pizarro, Atahualpa</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1534</span><span class="event-text"><span class="event-name">Jacques Cartier explore le Saint-Laurent — Canada français</span><span class="event-context">Premiers contacts avec les Iroquois ; fondations du Canada français (Nouvelle-France)</span><span class="event-people">Jacques Cartier</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="geo-label">✝️ Réforme protestante & guerres de religion (1517–1648)</div>
+<div class="event major" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">31 octobre 1517</span><span class="event-text"><span class="event-name">Luther affiche ses 95 thèses à Wittemberg</span><span class="event-context">Critique des indulgences ; rupture de l'unité chrétienne ; Réforme protestante lancée</span><span class="event-people">Martin Luther</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1534</span><span class="event-text"><span class="event-name">Henri VIII crée l'Église anglicane — Acte de Suprématie</span><span class="event-context">Séparation d'avec Rome pour pouvoir divorcer ; le roi chef de l'Église d'Angleterre</span><span class="event-people">Henri VIII</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1536</span><span class="event-text"><span class="event-name">Calvin à Genève — théologie réformée et prédestination</span><span class="event-context">L'Institution de la Religion Chrétienne ; Genève "Rome protestante" ; puritanisme futur</span><span class="event-people">Jean Calvin</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1545–1563</span><span class="event-text"><span class="event-name">Concile de Trente — Contre-Réforme catholique</span><span class="event-context">Clarification du dogme, réforme des abus, Jésuites, Inquisition ; baroque comme art</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">24 août 1572</span><span class="event-text"><span class="event-name">Massacre de la Saint-Barthélemy</span><span class="event-context">3 000–30 000 huguenots massacrés en France ; paroxysme des guerres de religion (1562–98)</span><span class="event-people">Catherine de Médicis, Charles IX</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">13 avril 1598</span><span class="event-text"><span class="event-name">Édit de Nantes — tolérance religieuse en France</span><span class="event-context">Henri IV garantit libertés aux protestants ; paix civile ; révoqué par Louis XIV en 1685</span><span class="event-people">Henri IV de France</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1618–1648</span><span class="event-text"><span class="event-name">Guerre de Trente Ans — Europe centrale dévastée</span><span class="event-context">8 millions de morts ; la Bohême perd 1/3 de sa population ; recomposition territoriale</span><span class="event-people">Gustave II Adolf, Richelieu, Wallenstein, Tilly</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">24 octobre 1648</span><span class="event-text"><span class="event-name">Traités de Westphalie — naissance du droit international moderne</span><span class="event-context">Souveraineté des États, non-ingérence, équilibre des puissances ; base du droit international</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="geo-label">🔬 Renaissance & Révolution scientifique (1450–1700)</div>
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1495–1498</span><span class="event-text"><span class="event-name">Léonard de Vinci — La Cène et machines visionnaires</span><span class="event-context">Homme universaliste : peintre, anatomiste, ingénieur militaire, architecte</span><span class="event-people">Léonard de Vinci</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1508–1512</span><span class="event-text"><span class="event-name">Michel-Ange peint la Chapelle Sixtine</span><span class="event-context">4 ans couché sur l'échafaud ; 300 figures ; sommet absolu de la Renaissance italienne</span><span class="event-people">Michel-Ange Buonarroti</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1516</span><span class="event-text"><span class="event-name">Thomas More publie Utopia</span><span class="event-context">Première réflexion politique moderne sur la société idéale ; naissance de l'utopisme</span><span class="event-people">Thomas More</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1543</span><span class="event-text"><span class="event-name">Copernic — De Revolutionibus : système héliocentrique</span><span class="event-context">La Terre tourne autour du Soleil ; rupture cosmologique après 1 400 ans de ptolémée</span><span class="event-people">Nicolas Copernic</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1600</span><span class="event-text"><span class="event-name">Giordano Bruno brûlé vif à Rome</span><span class="event-context">Défend l'infinité de l'univers et la pluralité des mondes ; martyr de la pensée libre</span><span class="event-people">Giordano Bruno</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1609</span><span class="event-text"><span class="event-name">Galilée observe les lunes de Jupiter au télescope</span><span class="event-context">Siderius Nuncius ; lunes galiléennes ; preuve que tout ne tourne pas autour de la Terre</span><span class="event-people">Galileo Galilei</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1628</span><span class="event-text"><span class="event-name">Harvey découvre la circulation sanguine</span><span class="event-context">Exercitatio Anatomica de Motu Cordis ; le cœur comme pompe ; fin du galénisme</span><span class="event-people">William Harvey</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1637</span><span class="event-text"><span class="event-name">Descartes — Discours de la Méthode</span><span class="event-context">"Je pense donc je suis" ; fondation du rationalisme moderne ; mathématisation du monde</span><span class="event-people">René Descartes</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1687</span><span class="event-text"><span class="event-name">Newton — Principia Mathematica</span><span class="event-context">Lois du mouvement + gravitation universelle ; mécanique classique valide pendant 3 siècles</span><span class="event-people">Isaac Newton</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1690</span><span class="event-text"><span class="event-name">Locke — Deux Traités du gouvernement civil</span><span class="event-context">Contrat social, droits naturels, droit de résistance ; fondements du libéralisme politique</span><span class="event-people">John Locke</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="geo-label">👑 Politique européenne & Lumières (1648–1789)</div>
+<div class="event major" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1661–1715</span><span class="event-text"><span class="event-name">Règne de Louis XIV — apogée de l'absolutisme français</span><span class="event-context">Versailles, mercantilisme (Colbert), guerres de succession ; "L'État c'est moi"</span><span class="event-people">Louis XIV, Colbert, Vauban</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1688</span><span class="event-text"><span class="event-name">Glorieuse Révolution anglaise — monarchie constitutionnelle</span><span class="event-context">Bill of Rights 1689 ; parlement souverain ; modèle de démocratie libérale pour l'Europe</span><span class="event-people">Guillaume III d'Orange, Jacques II Stuart</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1700–1721</span><span class="event-text"><span class="event-name">Pierre le Grand modernise la Russie</span><span class="event-context">Victoire de Poltava sur la Suède ; Saint-Pétersbourg fondée ; ouverture vers l'Occident</span><span class="event-people">Pierre le Grand</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1751–1772</span><span class="event-text"><span class="event-name">L'Encyclopédie de Diderot et d'Alembert</span><span class="event-context">35 volumes ; somme des Lumières ; rationalisme, tolérance, critique de la religion</span><span class="event-people">Denis Diderot, Jean le Rond d'Alembert, Voltaire, Rousseau</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1756–1763</span><span class="event-text"><span class="event-name">Guerre de Sept Ans — première guerre mondiale</span><span class="event-context">5 continents impliqués ; perte du Canada français ; montée en puissance de la Grande-Bretagne</span><span class="event-people">Frederick II de Prusse, Pitt l'Ancien, Montcalm</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1762</span><span class="event-text"><span class="event-name">Rousseau — Du Contrat Social</span><span class="event-context">"La volonté générale" ; souveraineté populaire ; influence directe sur la Révolution française</span><span class="event-people">Jean-Jacques Rousseau</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1763</span><span class="event-text"><span class="event-name">Traité de Paris — fin du premier empire colonial français</span><span class="event-context">France cède le Canada et la Louisiane orientale ; Grande-Bretagne domine les mers</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1769</span><span class="event-text"><span class="event-name">James Watt perfectionne la machine à vapeur</span><span class="event-context">Condenseur séparé ; rendement triple ; brevet déposé ; prémice de la révolution industrielle</span><span class="event-people">James Watt</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1770</span><span class="event-text"><span class="event-name">James Cook — cartographie de l'Australie et de la Nouvelle-Zélande</span><span class="event-context">3 voyages dans le Pacifique ; dernier continent inconnu cartographié</span><span class="event-people">James Cook</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1776</span><span class="event-text"><span class="event-name">Adam Smith — La Richesse des Nations</span><span class="event-context">Fondation de l'économie politique libérale ; division du travail, main invisible du marché</span><span class="event-people">Adam Smith</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event major" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">4 juillet 1776</span><span class="event-text"><span class="event-name">Déclaration d'Indépendance des États-Unis</span><span class="event-context">13 colonies ; "Tous les hommes sont créés égaux" ; première démocratie républicaine moderne</span><span class="event-people">Thomas Jefferson, Benjamin Franklin, John Adams</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1781</span><span class="event-text"><span class="event-name">Kant — Critique de la Raison Pure</span><span class="event-context">Révolution copernicienne en philosophie ; conditions de possibilité de la connaissance</span><span class="event-people">Emmanuel Kant</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1783</span><span class="event-text"><span class="event-name">Traité de Paris — indépendance américaine reconnue par la Grande-Bretagne</span><span class="event-context">Naissance officielle des États-Unis d'Amérique</span><span class="event-people">Benjamin Franklin, John Adams</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="modernes"><div class="event-dot"></div><div class="event-content"><span class="event-date">1785</span><span class="event-text"><span class="event-name">Lavoisier — loi de conservation de la masse, naissance de la chimie moderne</span><span class="event-context">Nomenclature chimique ; oxygène nommé ; fin de la phlogistique ; guillotiné en 1794</span><span class="event-people">Antoine Lavoisier</span></span><span class="event-cat cat-science">Science</span></div></div>
+</section>
+
+<!-- ══════════════════ ÉPOQUE CONTEMPORAINE ══════════════════ -->
+<section class="era-section" id="era-contemporain">
+<div class="era-header era-contemporain">
+  <div class="era-badge">⚡</div>
+  <div class="era-title-block">
+    <h2>5 — Époque Contemporaine</h2>
+    <p>1789 → nos jours | De la Révolution française à l'ère de l'intelligence artificielle</p>
+  </div>
+</div>
+<div class="marker-group" data-era="contemporain"></div>
+
+<div class="geo-label">🥐 Révolution française & Empire (1789–1815)</div>
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">5 mai 1789</span><span class="event-text"><span class="event-name">Ouverture des États Généraux</span><span class="event-context">Louis XVI convoque les 3 ordres pour résoudre la crise financière ; bascule vers la révolution</span><span class="event-people">Louis XVI, Necker</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">14 juillet 1789</span><span class="event-text"><span class="event-name">Prise de la Bastille</span><span class="event-context">Symbole de la liberté contre l'arbitraire ; début de la Révolution française</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">4 août 1789</span><span class="event-text"><span class="event-name">Nuit du 4 Août — abolition des privilèges féodaux</span><span class="event-context">L'Assemblée détruit en une nuit le système féodal millénaire</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">26 août 1789</span><span class="event-text"><span class="event-name">Déclaration des Droits de l'Homme et du Citoyen</span><span class="event-context">17 articles ; liberté, égalité, propriété, sûreté, résistance à l'oppression</span><span class="event-people">Assemblée nationale constituante, La Fayette</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">20 septembre 1792</span><span class="event-text"><span class="event-name">Bataille de Valmy — victoire de la République sur la Prusse</span><span class="event-context">"Ici et maintenant commence une nouvelle ère de l'histoire du monde" (Goethe)</span><span class="event-people">Dumouriez, Kellermann</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">21 janvier 1793</span><span class="event-text"><span class="event-name">Exécution de Louis XVI à la guillotine</span><span class="event-context">Régicide ; choc dans toute l'Europe monarchique ; coalitions contre la France</span><span class="event-people">Louis XVI</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1793–1794</span><span class="event-text"><span class="event-name">La Terreur — 17 000 exécutions en France</span><span class="event-context">Comité de Salut public dirigé par Robespierre ; guillotine quotidienne ; chute du 9 Thermidor</span><span class="event-people">Robespierre, Saint-Just, Danton (guillotiné)</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1794</span><span class="event-text"><span class="event-name">Abolition de l'esclavage dans les colonies françaises</span><span class="event-context">Décret de la Convention ; annulé par Napoléon en 1802 ; définitivement aboli en 1848</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1798</span><span class="event-text"><span class="event-name">Campagne d'Égypte de Bonaparte</span><span class="event-context">Découverte de la pierre de Rosette ; Description de l'Égypte ; naissance de l'égyptologie</span><span class="event-people">Napoléon Bonaparte, Champollion (plus tard)</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">2 décembre 1804</span><span class="event-text"><span class="event-name">Sacre de Napoléon Bonaparte à Notre-Dame de Paris</span><span class="event-context">Il se couronne lui-même ; Code civil, Légion d'honneur, lycées, Banque de France</span><span class="event-people">Napoléon Bonaparte, pape Pie VII</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">2 décembre 1805</span><span class="event-text"><span class="event-name">Bataille d'Austerlitz — "la plus belle bataille de Napoléon"</span><span class="event-context">60 000 Français battent 90 000 Russo-Autrichiens ; fin du Saint-Empire germanique</span><span class="event-people">Napoléon Bonaparte, Alexandre Ier, François II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1808–1814</span><span class="event-text"><span class="event-name">Guerre d'Espagne — le "bourbier espagnol" de Napoléon</span><span class="event-context">Guérilla ; Goya peint les horreurs ; Wellington aide l'Espagne ; début du déclin napoléonien</span><span class="event-people">Wellington, Joseph Bonaparte, Guerrilleros</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1812</span><span class="event-text"><span class="event-name">Campagne de Russie — catastrophe napoléonienne</span><span class="event-context">600 000 soldats partent ; 100 000 reviennent ; hiver russe, Borodino, Moscou brûlée</span><span class="event-people">Napoléon, Alexandre Ier, Koutouzov</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">18 juin 1815</span><span class="event-text"><span class="event-name">Bataille de Waterloo — défaite définitive de Napoléon</span><span class="event-context">Wellington + Blücher battent Napoléon ; exil à Sainte-Hélène ; fin de l'épopée impériale</span><span class="event-people">Napoléon Bonaparte, Wellington, Blücher</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1815</span><span class="event-text"><span class="event-name">Congrès de Vienne — recomposition de l'Europe</span><span class="event-context">Metternich redessine la carte ; Saint-Alliance ; principe de légitimité monarchique</span><span class="event-people">Metternich, Talleyrand, Tsar Alexandre Ier</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="geo-label">🏭 Révolution industrielle & XIXe siècle (1815–1914)</div>
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1814–1860</span><span class="event-text"><span class="event-name">Révolution industrielle — Angleterre puis Europe</span><span class="event-context">Charbon, acier, chemin de fer, textile ; urbanisation massive ; capitalisme industriel</span><span class="event-people">George Stephenson, Brunel, Arkwright</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1825</span><span class="event-text"><span class="event-name">Première ligne de chemin de fer publique (Stockton-Darlington, Angleterre)</span><span class="event-context">Locomotive à vapeur de Stephenson ; révolution des transports terrestres</span><span class="event-people">George Stephenson</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1848</span><span class="event-text"><span class="event-name">Printemps des peuples & Manifeste communiste</span><span class="event-context">Révolutions en France, Autriche, Allemagne, Italie ; Marx et Engels publient le Manifeste</span><span class="event-people">Karl Marx, Friedrich Engels, Louis-Napoléon</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1854–1856</span><span class="event-text"><span class="event-name">Guerre de Crimée — première guerre médiatisée</span><span class="event-context">France, Royaume-Uni, Turquie vs Russie ; Florence Nightingale ; premières photos de guerre</span><span class="event-people">Florence Nightingale</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1859</span><span class="event-text"><span class="event-name">Darwin — L'Origine des espèces</span><span class="event-context">Sélection naturelle ; évolution des espèces ; révolution dans la biologie et la pensée humaine</span><span class="event-people">Charles Darwin</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1861–1865</span><span class="event-text"><span class="event-name">Guerre de Sécession américaine</span><span class="event-context">620 000 morts ; États du Sud vs Nord ; esclavage au cœur du conflit</span><span class="event-people">Abraham Lincoln, Ulysses Grant, Robert E. Lee</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1er janvier 1863</span><span class="event-text"><span class="event-name">Proclamation d'émancipation (Lincoln) — esclaves libres dans les États rebelles</span><span class="event-context">Acte symbolique et politique ; XIIIe Amendement ratifié en décembre 1865</span><span class="event-people">Abraham Lincoln</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1866</span><span class="event-text"><span class="event-name">Mendel — lois de l'hérédité</span><span class="event-context">Expériences sur les pois ; gènes dominants/récessifs ; base de la génétique moderne</span><span class="event-people">Gregor Mendel</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">18 janvier 1871</span><span class="event-text"><span class="event-name">Proclamation de l'Empire allemand à Versailles</span><span class="event-context">Après la défaite de Sedan (1870) ; Bismarck unifie l'Allemagne ; nouveau rapport de force européen</span><span class="event-people">Guillaume Ier, Bismarck</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1871</span><span class="event-text"><span class="event-name">Commune de Paris — première révolution ouvrière</span><span class="event-context">72 jours de gouvernement révolutionnaire ; Semaine sanglante ; 10 000–30 000 morts</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1876</span><span class="event-text"><span class="event-name">Graham Bell invente le téléphone</span><span class="event-context">Premier appel "Mr. Watson, come here" ; révolution des communications</span><span class="event-people">Alexander Graham Bell</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1879</span><span class="event-text"><span class="event-name">Edison invente l'ampoule électrique à incandescence</span><span class="event-context">Après 1 200 essais ; électrification des villes ; naissance de l'ère électrique</span><span class="event-people">Thomas Edison</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1885</span><span class="event-text"><span class="event-name">Pasteur invente le vaccin contre la rage</span><span class="event-context">Joseph Meister, 9 ans, premier humain vacciné ; naissance de la vaccinologie moderne</span><span class="event-people">Louis Pasteur</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1895</span><span class="event-text"><span class="event-name">Lumière — première projection cinématographique publique</span><span class="event-context">Grand Café, Paris, 28 décembre 1895 ; naissance du 7e art</span><span class="event-people">Auguste et Louis Lumière</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1895</span><span class="event-text"><span class="event-name">Röntgen découvre les rayons X</span><span class="event-context">Première radiographie (main de sa femme) ; Nobel 1901 ; révolution médicale</span><span class="event-people">Wilhelm Röntgen</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1898</span><span class="event-text"><span class="event-name">Marie Curie découvre le polonium et le radium</span><span class="event-context">Deux Nobel (physique 1903, chimie 1911) ; radioactivité ; première femme à la Sorbonne</span><span class="event-people">Marie et Pierre Curie</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1905</span><span class="event-text"><span class="event-name">Einstein — annus mirabilis : relativité restreinte + E=mc²</span><span class="event-context">4 articles révolutionnaires en une seule année ; physique quantique et nucléaire en germe</span><span class="event-people">Albert Einstein</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">17 décembre 1903</span><span class="event-text"><span class="event-name">Les frères Wright — premier vol motorisé (Kitty Hawk)</span><span class="event-context">12 secondes, 37 mètres ; premier vol d'aéronef plus lourd que l'air</span><span class="event-people">Orville et Wilbur Wright</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="geo-label">💀 Guerres mondiales (1914–1945)</div>
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">28 juin 1914</span><span class="event-text"><span class="event-name">Assassinat de François-Ferdinand à Sarajevo</span><span class="event-context">Gavrilo Princip membre de la Main Noire ; déclencheur de la Première Guerre mondiale</span><span class="event-people">François-Ferdinand, Gavrilo Princip</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">28 juillet 1914</span><span class="event-text"><span class="event-name">Déclaration de guerre — début de la Première Guerre mondiale</span><span class="event-context">Autriche-Hongrie vs Serbie ; effet domino des alliances ; 18 millions de morts</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">Février–Décembre 1916</span><span class="event-text"><span class="event-name">Bataille de Verdun</span><span class="event-context">300 000 morts, 400 000 blessés ; symbole de l'horreur de la Grande Guerre</span><span class="event-people">Pétain (France), Falkenhayn (Allemagne)</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">7 novembre 1917</span><span class="event-text"><span class="event-name">Révolution bolchévique — prise du Palais d'Hiver</span><span class="event-context">Lénine au pouvoir ; Décrets sur la paix et la terre ; naissance de l'URSS en 1922</span><span class="event-people">Lénine, Trotski, Staline</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1918–1919</span><span class="event-text"><span class="event-name">Grippe espagnole — 50–100 millions de morts</span><span class="event-context">Pandémie H1N1 ; plus meurtrière que la guerre ; 500 millions d'infectés</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">11 novembre 1918</span><span class="event-text"><span class="event-name">Armistice de la Première Guerre mondiale</span><span class="event-context">Rethondes, forêt de Compiègne ; 11h, 11e jour, 11e mois</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">28 juin 1919</span><span class="event-text"><span class="event-name">Traité de Versailles — paix punitive contre l'Allemagne</span><span class="event-context">231 articles ; clause de culpabilité ; reparations ; SDN fondée ; germe du nazisme</span><span class="event-people">Wilson, Clemenceau, Lloyd George</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1921</span><span class="event-text"><span class="event-name">Einstein reçoit le prix Nobel de physique</span><span class="event-context">Pour l'effet photoélectrique (1905), pas pour la relativité ; confirmation du génie</span><span class="event-people">Albert Einstein</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">24 octobre 1929</span><span class="event-text"><span class="event-name">Jeudi noir de Wall Street — Grande Dépression</span><span class="event-context">Krach boursier ; 25% de chômage aux USA ; crise mondiale ; montée des extrémismes</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">30 janvier 1933</span><span class="event-text"><span class="event-name">Hitler nommé chancelier d'Allemagne</span><span class="event-context">Nomination "légale" par Hindenburg ; Reichstag incendié (27 fév.) ; dictature en 6 mois</span><span class="event-people">Adolf Hitler, Paul von Hindenburg</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1935–1937</span><span class="event-text"><span class="event-name">Lois de Nuremberg & début des persécutions antisémites</span><span class="event-context">Citoyenneté retirée aux Juifs ; mariage mixte interdit ; mise en place de l'exclusion</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1 septembre 1939</span><span class="event-text"><span class="event-name">Invasion de la Pologne — début de la Seconde Guerre mondiale</span><span class="event-context">Blitzkrieg ; 70–85 millions de morts ; dont 6 millions de Juifs exterminés (Shoah)</span><span class="event-people">Hitler, Staline (pacte Ribbentrop-Molotov)</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">10 mai – 25 juin 1940</span><span class="event-text"><span class="event-name">Défaite et armistice de la France</span><span class="event-context">6 semaines suffisent ; Pétain demande l'armistice ; de Gaulle lance l'Appel du 18 juin</span><span class="event-people">De Gaulle, Pétain, Weygand</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1941–1945</span><span class="event-text"><span class="event-name">Shoah — génocide de 6 millions de Juifs</span><span class="event-context">Conférence de Wannsee (1942) ; camps d'extermination : Auschwitz, Treblinka, Sobibor…</span><span class="event-people">Himmler, Heydrich, Eichmann</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">7 décembre 1941</span><span class="event-text"><span class="event-name">Attaque de Pearl Harbor — les USA entrent en guerre</span><span class="event-context">350 avions japonais ; 2 403 morts américains ; tournant décisif : les USA rejoignent les Alliés</span><span class="event-people">Yamamoto, Roosevelt</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">6 juin 1944</span><span class="event-text"><span class="event-name">Débarquement en Normandie — Jour J (D-Day)</span><span class="event-context">156 000 soldats alliés ; 5 plages normandes ; tournant de la guerre à l'Ouest</span><span class="event-people">Eisenhower, Montgomery, De Gaulle</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">6 août 1945</span><span class="event-text"><span class="event-name">Bombe atomique sur Hiroshima, puis Nagasaki (9 août)</span><span class="event-context">140 000 + 70 000 morts ; reddition japonaise le 2 sept. ; ère nucléaire inaugurée</span><span class="event-people">Truman, Oppenheimer (Manhattan Project)</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="geo-label">🌐 Guerre froide & décolonisation (1945–1991)</div>
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">10 décembre 1948</span><span class="event-text"><span class="event-name">Déclaration universelle des Droits de l'Homme (ONU)</span><span class="event-context">30 articles ; fondement du droit international humanitaire moderne</span><span class="event-people">Eleanor Roosevelt, René Cassin (rédacteur)</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">14 mai 1948</span><span class="event-text"><span class="event-name">Proclamation de l'État d'Israël</span><span class="event-context">Ben Gourion lit la déclaration ; lendemain : début de la première guerre arabo-israélienne</span><span class="event-people">David Ben Gourion</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1 octobre 1949</span><span class="event-text"><span class="event-name">Mao proclame la République populaire de Chine</span><span class="event-context">Victoire sur Tchang Kaï-chek ; 1/4 de l'humanité passe dans le camp communiste</span><span class="event-people">Mao Zedong</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1950–1953</span><span class="event-text"><span class="event-name">Guerre de Corée</span><span class="event-context">USA + ONU vs Chine + URSS ; armistice sans traité de paix ; statu quo au 38e parallèle</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1953</span><span class="event-text"><span class="event-name">Watson, Crick & Franklin — structure de l'ADN (double hélice)</span><span class="event-context">Publiée dans Nature le 25 avril ; révolution de la biologie moléculaire</span><span class="event-people">James Watson, Francis Crick, Rosalind Franklin</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1954–1962</span><span class="event-text"><span class="event-name">Guerre d'indépendance algérienne</span><span class="event-context">FLN vs France ; Évian 1962 ; 1 million de pieds-noirs rapatriés ; trauma national français</span><span class="event-people">De Gaulle, Ben Bella, Massu</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">4 octobre 1957</span><span class="event-text"><span class="event-name">Spoutnik — premier satellite artificiel (URSS)</span><span class="event-context">Bip bip depuis l'espace ; début de la course à l'espace ; choc aux USA</span><span class="event-people">Sergueï Korolev</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1 janvier 1959</span><span class="event-text"><span class="event-name">Révolution cubaine — Castro prend le pouvoir</span><span class="event-context">Batista renversé ; nationalisation des entreprises américaines ; embargo US depuis 1962</span><span class="event-people">Fidel Castro, Che Guevara, Camilo Cienfuegos</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">12 avril 1961</span><span class="event-text"><span class="event-name">Gagarine — premier homme dans l'espace</span><span class="event-context">Vostok 1 ; 108 minutes en orbite ; "La Terre est bleue"</span><span class="event-people">Youri Gagarine</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">16–28 octobre 1962</span><span class="event-text"><span class="event-name">Crise des missiles de Cuba</span><span class="event-context">13 jours au bord du nucléaire ; Kennedy-Khrouchtchev ; hotline Moscou-Washington créée</span><span class="event-people">JFK, Khrouchtchev, Fidel Castro</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">28 août 1963</span><span class="event-text"><span class="event-name">Martin Luther King — "I Have a Dream" à Washington</span><span class="event-context">250 000 personnes ; discours fondateur des droits civiques américains</span><span class="event-people">Martin Luther King Jr.</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">22 novembre 1963</span><span class="event-text"><span class="event-name">Assassinat de JFK à Dallas</span><span class="event-context">Lee Harvey Oswald arrêté puis tué par Jack Ruby ; complot ou acte isolé, encore débattu</span><span class="event-people">John F. Kennedy</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">Mai 1968</span><span class="event-text"><span class="event-name">Mai 68 — révolte étudiante et sociale en France</span><span class="event-context">10 millions de grévistes ; soulèvement mondial ; remise en cause des valeurs traditionnelles</span><span class="event-people">Cohn-Bendit, De Gaulle</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">21 juillet 1969</span><span class="event-text"><span class="event-name">Apollo 11 — premier homme sur la Lune</span><span class="event-context">"Un petit pas pour l'homme…" ; 600 millions de téléspectateurs ; 384 400 km parcourus</span><span class="event-people">Neil Armstrong, Buzz Aldrin, Michael Collins</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1972</span><span class="event-text"><span class="event-name">Nixon en Chine — réconciliation sino-américaine</span><span class="event-context">Fin de 25 ans d'hostilité ; diplomatie du ping-pong ; Kissinger en coulisses</span><span class="event-people">Nixon, Kissinger, Mao Zedong, Zhou Enlai</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1973</span><span class="event-text"><span class="event-name">Premier choc pétrolier — OPEP triple les prix</span><span class="event-context">Représailles pour le soutien occidental à Israël (Yom Kippour) ; fin des Trente Glorieuses</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1975</span><span class="event-text"><span class="event-name">Fin de la guerre du Vietnam — chute de Saïgon</span><span class="event-context">30 avril 1975 ; réunification communiste du Vietnam ; 3 millions de morts</span><span class="event-people">Hô Chi Minh (mort en 1969), Kissinger</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1979</span><span class="event-text"><span class="event-name">Révolution iranienne — République islamique</span><span class="event-context">Khomeini renverse le Shah ; islamisme politique au pouvoir ; reconfiguration du Moyen-Orient</span><span class="event-people">Khomeini, Shah Mohammad Reza Pahlavi</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1980</span><span class="event-text"><span class="event-name">Naissance de Solidarność en Pologne</span><span class="event-context">Premier syndicat libre en URSS ; Lech Walesa ; début du déclin du bloc communiste</span><span class="event-people">Lech Wałęsa</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1986</span><span class="event-text"><span class="event-name">Catastrophe nucléaire de Tchernobyl</span><span class="event-context">Réacteur 4 explose le 26 avril ; 350 000 évacués ; accélère la chute de l'URSS</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">3–4 juin 1989</span><span class="event-text"><span class="event-name">Massacre de Tiananmen (Chine)</span><span class="event-context">Char contre l'homme seul ; des milliers de morts ; répression de la démocratie</span><span class="event-people">Deng Xiaoping</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">9 novembre 1989</span><span class="event-text"><span class="event-name">Chute du mur de Berlin</span><span class="event-context">Annonce par erreur à la télé ; foule submerge les checkpoints ; fin symbolique de la Guerre froide</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1990</span><span class="event-text"><span class="event-name">Libération de Nelson Mandela — fin de l'apartheid en vue</span><span class="event-context">27 ans de prison ; Mandela président en 1994 ; modèle de réconciliation nationale</span><span class="event-people">Nelson Mandela</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">25 décembre 1991</span><span class="event-text"><span class="event-name">Dissolution de l'URSS</span><span class="event-context">Gorbatchev démissionne ; 15 États indépendants ; fin de 74 ans de communisme soviétique</span><span class="event-people">Mikhaïl Gorbatchev, Boris Eltsine</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="geo-label">💻 Ère numérique & XXIe siècle (1991–aujourd'hui)</div>
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">6 août 1991</span><span class="event-text"><span class="event-name">Tim Berners-Lee — création du World Wide Web (premier site en ligne)</span><span class="event-context">CERN, Genève ; protocole HTTP + HTML ; révolution absolue de la communication mondiale</span><span class="event-people">Tim Berners-Lee</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1993</span><span class="event-text"><span class="event-name">Accords d'Oslo — paix israélo-palestinienne (tentative)</span><span class="event-context">Rabin et Arafat se serrent la main ; Nobel de la Paix 1994 ; processus suspendu</span><span class="event-people">Yitzhak Rabin, Yasser Arafat, Bill Clinton</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1994</span><span class="event-text"><span class="event-name">Génocide du Rwanda — 800 000 Tutsis massacrés en 100 jours</span><span class="event-context">Radio des Mille Collines ; ONU paralysée ; honte de la communauté internationale</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">1997</span><span class="event-text"><span class="event-name">Dolly — premier mammifère cloné (brebis)</span><span class="event-context">Ian Wilmut (Écosse) ; révolution du clonage ; débat éthique mondial</span><span class="event-people">Ian Wilmut</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">11 septembre 2001</span><span class="event-text"><span class="event-name">Attentats du 11-Septembre</span><span class="event-context">3 000 morts ; Tours Jumelles, Pentagone ; redéfinition de la géopolitique mondiale</span><span class="event-people">Oussama Ben Laden, Al-Qaïda</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">2003</span><span class="event-text"><span class="event-name">Séquençage complet du génome humain</span><span class="event-context">3 milliards de paires de bases cartographiées ; révolution médicale en cours</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">2007</span><span class="event-text"><span class="event-name">Lancement du premier iPhone (Apple)</span><span class="event-context">Steve Jobs présente l'iPhone le 9 janvier ; smartphone transforme les usages numériques</span><span class="event-people">Steve Jobs</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">2008</span><span class="event-text"><span class="event-name">Crise financière mondiale — effondrement de Lehman Brothers</span><span class="event-context">15 sept. 2008 ; plus grave crise depuis 1929 ; 700 milliards $ de renflouement</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">2010–2012</span><span class="event-text"><span class="event-name">Printemps arabes — vague de révolutions au Maghreb et Moyen-Orient</span><span class="event-context">Tunisie, Égypte, Libye, Syrie ; espoir démocratique souvent déçu</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">2015</span><span class="event-text"><span class="event-name">Accord de Paris sur le climat (COP21)</span><span class="event-context">195 pays s'engagent à limiter le réchauffement à 1,5–2°C ; première accord universel sur le climat</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">2016</span><span class="event-text"><span class="event-name">Brexit — le Royaume-Uni vote pour quitter l'UE</span><span class="event-context">52% pour le Leave ; 4 ans de négociations ; départ effectif le 31 janv. 2020</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">Décembre 2019</span><span class="event-text"><span class="event-name">Pandémie de COVID-19</span><span class="event-context">Wuhan, Chine ; 7 millions de morts officiels ; confinements planétaires ; vaccins ARNm en 1 an</span></span><span class="event-cat cat-science">Science</span></div></div>
+
+<div class="event" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">24 février 2022</span><span class="event-text"><span class="event-name">Invasion russe de l'Ukraine</span><span class="event-context">Violation du droit international ; plus grande guerre en Europe depuis 1945 ; OTAN renforcée</span><span class="event-people">Vladimir Poutine, Volodymyr Zelensky</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+
+<div class="event major" data-era="contemporain"><div class="event-dot"></div><div class="event-content"><span class="event-date">30 novembre 2022</span><span class="event-text"><span class="event-name">Lancement de ChatGPT — révolution de l'IA générative</span><span class="event-context">100 millions d'utilisateurs en 2 mois ; transformation du travail, de l'éducation, de la création</span><span class="event-people">OpenAI, Sam Altman</span></span><span class="event-cat cat-science">Science</span></div></div>
+</section>
+
+<!-- ══════════════════ TOP 50 ══════════════════ -->
+<section class="era-section" id="era-top50">
+<div class="top50-section">
+  <h2>⭐ Top 150 des dates indispensables</h2>
+  <p>Cent cinquante repères chronologiques fondamentaux — générés depuis la frise complète</p>
+  <div class="top50-grid" id="top50Grid"></div>
+</div>
+</section>
+
+</main>
+
+<footer>
+  <p>Frise chronologique à usage pédagogique — Niveau lycée avancé / début universitaire</p>
+  <p style="margin-top:0.3rem">Données basées sur l'historiographie internationale contemporaine · Certaines dates estimées restent sujettes au débat scientifique</p>
+</footer>
+
+<script>
+const featuredDatesLimit = 150;
+const allEvents = Array.from(document.querySelectorAll('.event')).map((event, index) => ({
+  date: event.querySelector('.event-date')?.textContent.trim() || '',
+  name: event.querySelector('.event-name')?.textContent.trim() || '',
+  isMajor: event.classList.contains('major'),
+  index,
+}));
+
+const seenFeaturedDates = new Set();
+const featuredDates = allEvents
+  .sort((a, b) => {
+    if (a.isMajor !== b.isMajor) return a.isMajor ? -1 : 1;
+    return a.index - b.index;
+  })
+  .filter(item => {
+    const key = `${item.date}__${item.name}`;
+    if (!item.date || !item.name || seenFeaturedDates.has(key)) return false;
+    seenFeaturedDates.add(key);
+    return true;
+  })
+  .slice(0, featuredDatesLimit)
+  .map((item, index) => ({ ...item, num: index + 1 }));
+
+const grid = document.getElementById('top50Grid');
+featuredDates.forEach(item => {
+  grid.innerHTML += `<div class="top50-item"><div class="top50-num">${item.num}</div><div class="top50-content"><div class="top50-date">${item.date}</div><div class="top50-name">${item.name}</div></div></div>`;
+});
+
+function showAll(btn) {
+  document.querySelectorAll('.era-section').forEach(s => s.style.display = 'block');
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.event').forEach(e => e.classList.remove('hidden'));
+}
+
+function filterEra(era, btn) {
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.event').forEach(e => e.classList.remove('hidden'));
+  document.querySelectorAll('.era-section').forEach(s => {
+    if (era === 'top50') { s.style.display = s.id === 'era-top50' ? 'block' : 'none'; }
+    else { s.style.display = s.id === 'era-' + era ? 'block' : 'none'; }
+  });
+}
+
+function filterSearch() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  if (!q) {
+    document.querySelectorAll('.event').forEach(e => e.classList.remove('hidden'));
+    document.querySelectorAll('.era-section').forEach(s => s.style.display = 'block');
+    return;
+  }
+  document.querySelectorAll('.era-section').forEach(s => s.style.display = 'block');
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  let anyVisible = {};
+  document.querySelectorAll('.event').forEach(e => {
+    const text = e.textContent.toLowerCase();
+    const matches = text.includes(q);
+    e.classList.toggle('hidden', !matches);
+    const era = e.closest('.era-section');
+    if (era && matches) anyVisible[era.id] = true;
+  });
+  document.querySelectorAll('.era-section').forEach(s => {
+    if (s.id !== 'era-top50') s.style.display = anyVisible[s.id] ? 'block' : 'none';
+  });
+}
+</script>
+</body>
+</html>

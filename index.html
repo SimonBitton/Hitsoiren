@@ -148,72 +148,25 @@ main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
 .event:hover { background: rgba(201,146,42,0.06); }
 .event.hidden { display: none; }
 .event.interactive,
-.date-marker.interactive,
 .top50-item.interactive {
   cursor: pointer;
 }
 .event,
-.date-marker,
 .top50-item {
   scroll-margin-top: 180px;
 }
 .event:target,
-.date-marker:target,
 .top50-item:target {
   background: rgba(201,146,42,0.14);
 }
 .event.interactive:focus-visible,
-.date-marker.interactive:focus-visible,
 .top50-item.interactive:focus-visible,
 .detail-close:focus-visible,
 .detail-link:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
 }
-.marker-group { margin-bottom: 1.6rem; }
-.marker-label {
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  opacity: 0.46;
-  margin-bottom: 0.45rem;
-  padding-left: 1.5rem;
-}
-.date-marker {
-  display: flex;
-  gap: 0;
-  margin-bottom: 0.08rem;
-  opacity: 0.82;
-}
-.date-marker.hidden { display: none; }
-.date-marker .event-dot {
-  width: 6px;
-  height: 6px;
-  margin-top: 0.58rem;
-  opacity: 0.32;
-  background: currentColor;
-}
-.date-marker .event-content {
-  border-left: 2px dashed rgba(201,146,42,0.18);
-}
-.date-marker .event-date {
-  color: rgba(26,18,8,0.72);
-}
-.date-marker .event-text {
-  opacity: 0.78;
-}
-.marker-tag {
-  font-size: 0.58rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  padding: 0.12rem 0.36rem;
-  border-radius: 999px;
-  background: rgba(201,146,42,0.12);
-  color: var(--rust);
-  align-self: flex-start;
-  margin-top: 0.14rem;
-}
-.marker-group.hidden,
+.marker-group,
 .geo-label.hidden {
   display: none;
 }
@@ -259,8 +212,13 @@ body.detail-mode .top-menu,
 body.detail-mode header,
 body.detail-mode nav,
 body.detail-mode .search-bar,
-body.detail-mode main,
 body.detail-mode footer {
+  display: none;
+}
+body.detail-mode main {
+  display: block;
+}
+body.detail-mode main > :not(.detail-page) {
   display: none;
 }
 body.detail-mode .detail-page {
@@ -294,7 +252,7 @@ body.detail-mode .detail-page {
   color: var(--gold);
   font-weight: 700;
 }
-.detail-panel h3 {
+.detail-page h3 {
   font-family: 'Playfair Display', serif;
   font-size: clamp(1.5rem, 3vw, 2.3rem);
   line-height: 1.08;
@@ -424,7 +382,6 @@ footer { background: var(--ink); color: rgba(245,240,232,0.4); text-align: cente
         <button class="active" data-type="all" onclick="setTypeFilter('all', this)">Tout voir</button>
         <button data-type="events" onclick="setTypeFilter('events', this)">Événements</button>
         <button data-type="people" onclick="setTypeFilter('people', this)">Personnes importantes</button>
-        <button data-type="markers" onclick="setTypeFilter('markers', this)">Repères chronologiques</button>
       </div>
     </div>
   </div>
@@ -466,7 +423,7 @@ footer { background: var(--ink); color: rgba(245,240,232,0.4); text-align: cente
   <div class="stat"><strong id="statPeople">300+</strong><span>Personnes</span></div>
   <div class="stat"><strong>5</strong><span>Grandes périodes</span></div>
   <div class="stat"><strong>3,3M</strong><span>Années couvertes</span></div>
-  <div class="stat"><strong id="statMarkers">0</strong><span>Repères auto</span></div>
+  <div class="stat"><strong id="statMarkers">0</strong><span>Repères supprimés</span></div>
 </div>
 
 <div class="legend">
@@ -1125,11 +1082,11 @@ const urlParams = new URLSearchParams(window.location.search);
 const state = { era: 'all', type: 'all', search: '' };
 
 const eraConfigs = {
-  prehist: { label: 'Préhistoire', kind: 'ère', start: -7000000, end: -3200, majorStep: 50000, midStep: 5000, closeStep: 500 },
-  antiquite: { label: 'Antiquité', kind: 'ère', start: -3200, end: 476, majorStep: 50, midStep: 25, closeStep: 10 },
-  'moyen-age': { label: 'Moyen Âge', kind: 'ère', start: 476, end: 1492, majorStep: 10, midStep: 5, closeStep: 2 },
-  modernes: { label: 'Temps modernes', kind: 'ère', start: 1492, end: 1789, majorStep: 5, midStep: 2, closeStep: 1 },
-  contemporain: { label: 'Époque contemporaine', kind: 'ère', start: 1789, end: 2025, majorStep: 2, midStep: 1, closeStep: 1 },
+  prehist: { label: 'Préhistoire', kind: 'ère' },
+  antiquite: { label: 'Antiquité', kind: 'ère' },
+  'moyen-age': { label: 'Moyen Âge', kind: 'ère' },
+  modernes: { label: 'Temps modernes', kind: 'ère' },
+  contemporain: { label: 'Époque contemporaine', kind: 'ère' },
   top50: { label: 'Top 150', kind: 'sélection' }
 };
 
@@ -1253,23 +1210,6 @@ function formatYear(year) {
   return year < 0 ? `${formatted} av. J.-C.` : `${formatted}`;
 }
 
-function getStepForYear(era, year) {
-  const config = eraConfigs[era];
-  if (!config) return 10;
-  if (era === 'prehist') {
-    if (year <= -100000) return config.majorStep;
-    if (year <= -10000) return config.midStep;
-    return config.closeStep;
-  }
-  if (era === 'contemporain') {
-    return year >= 1900 ? config.midStep : config.majorStep;
-  }
-  if (era === 'modernes' || era === 'moyen-age') {
-    return year >= config.start + 80 ? config.midStep : config.majorStep;
-  }
-  return year >= -500 ? config.midStep : config.majorStep;
-}
-
 function escapeHtml(value) {
   return (value || '')
     .replace(/&/g, '&amp;')
@@ -1320,36 +1260,6 @@ function injectSupplementalEvents() {
 
 injectSupplementalEvents();
 
-function buildMarkerDetail(era, year, index) {
-  const eraLabel = eraConfigs[era]?.label || 'Période';
-  const approx = year < 0 ? 'repère d’approximation' : 'repère chronologique';
-  return {
-    id: `marker-${era}-${index}`,
-    type: 'marker',
-    era,
-    date: formatYear(year),
-    year,
-    name: `${eraLabel} autour de ${formatYear(year)}`,
-    context: `${approx} placé automatiquement pour densifier la lecture de la frise.`,
-    people: '',
-    category: 'Repère',
-    isMajor: false,
-    summary: `Ce repère aide à mieux situer les événements dans ${eraLabel.toLowerCase()}. Il ne correspond pas forcément à un fait unique, mais sert de jalon temporel pour rendre la chronologie beaucoup plus fine.`,
-    bullets: [
-      `Situe visuellement la progression historique autour de ${formatYear(year)}.`,
-      `Permet de lire les écarts entre les événements majeurs de ${eraLabel.toLowerCase()}.`,
-      'Peut servir de point de comparaison pour dater plus précisément une séquence historique.'
-    ],
-    articleTitle: `${eraLabel} : un jalon pour ne pas perdre le fil du temps`,
-    articleParagraphs: [
-      `${formatYear(year)} est affiché ici comme repère de navigation. L’objectif est de rendre la frise beaucoup plus dense et plus lisible, même entre deux événements majeurs éloignés.`,
-      `Dans cette zone chronologique, ce jalon permet de mieux percevoir les rythmes longs, les accélérations et les ruptures propres à ${eraLabel.toLowerCase()}.`,
-      'Clique ensuite sur un événement voisin pour ouvrir une fiche plus narrative, avec résumé, acteurs et contexte.'
-    ],
-    sourceLabel: 'Repère automatique'
-  };
-}
-
 const eventEntries = Array.from(document.querySelectorAll('.event')).map((event, index) => {
   const date = event.querySelector('.event-date')?.textContent.trim() || '';
   const name = event.querySelector('.event-name')?.textContent.trim() || '';
@@ -1395,36 +1305,7 @@ const eventEntries = Array.from(document.querySelectorAll('.event')).map((event,
 });
 
 const eventMap = new Map(eventEntries.map(entry => [entry.id, entry]));
-
-const markers = [];
-Object.entries(eraConfigs).forEach(([era, config]) => {
-  if (!config.start && config.start !== 0) return;
-  const group = document.querySelector(`.marker-group[data-era="${era}"]`);
-  if (!group) return;
-  let year = config.start;
-  let markerIndex = 0;
-  const html = ['<div class="marker-label">Repères chronologiques enrichis</div>'];
-  while (year <= config.end) {
-    const detail = buildMarkerDetail(era, year, markerIndex);
-    markers.push(detail);
-    html.push(`
-      <div class="date-marker interactive" id="${detail.id}" data-era="${era}" data-entry-id="${detail.id}" tabindex="0" role="button">
-        <div class="event-dot"></div>
-        <div class="event-content">
-          <span class="event-date">${detail.date}</span>
-          <span class="event-text">${detail.name}</span>
-          <span class="marker-tag">Repère</span>
-        </div>
-      </div>
-    `);
-    markerIndex += 1;
-    year += getStepForYear(era, year);
-  }
-  group.innerHTML = html.join('');
-});
-
-const markerMap = new Map(markers.map(marker => [marker.id, marker]));
-const allEntries = [...eventEntries, ...markers];
+const allEntries = [...eventEntries];
 
 const seenFeaturedDates = new Set();
 const featuredDates = [...eventEntries]
@@ -1458,11 +1339,11 @@ function updateStats() {
   document.getElementById('statEvents').textContent = `${eventEntries.length}+`;
   const peopleCount = new Set(eventEntries.flatMap(entry => entry.people ? entry.people.split(',').map(item => item.trim()) : []).filter(Boolean)).size;
   document.getElementById('statPeople').textContent = `${peopleCount}+`;
-  document.getElementById('statMarkers').textContent = `${markers.length}`;
+  document.getElementById('statMarkers').textContent = '0';
 }
 
 function getEntryById(id) {
-  return eventMap.get(id) || markerMap.get(id) || null;
+  return eventMap.get(id) || null;
 }
 
 function buildDetailUrl(entryId, backId) {
@@ -1489,7 +1370,7 @@ function renderDetail(entry) {
     eraConfigs[entry.era]?.label || '',
     entry.category || '',
     entry.isMajor ? 'Majeur' : '',
-    entry.type === 'marker' ? 'Repère automatique' : 'Fiche cliquable'
+    'Fiche cliquable'
   ].filter(Boolean);
 
   chips.forEach(label => {
@@ -1498,11 +1379,7 @@ function renderDetail(entry) {
     detailMeta.appendChild(span);
   });
 
-  if (entry.type === 'event') {
-    detailSearchLink.href = `https://www.google.com/search?q=${encodeURIComponent(entry.name + ' ' + entry.date + ' article presse')}`;
-  } else {
-    detailSearchLink.href = `https://www.google.com/search?q=${encodeURIComponent(entry.name + ' ' + entry.date)}`;
-  }
+  detailSearchLink.href = `https://www.google.com/search?q=${encodeURIComponent(entry.name + ' ' + entry.date + ' article presse')}`;
 }
 
 function activateEntryFromElement(element) {
@@ -1518,10 +1395,8 @@ function syncActiveButtons(selector, matcher) {
 
 function applyFilters() {
   state.search = normalizeText(searchInput.value.trim());
-  const showMarkers = state.type === 'all' || state.type === 'markers';
   const showEvents = state.type === 'all' || state.type === 'events' || state.type === 'people';
   const peopleOnly = state.type === 'people';
-  const eraVisibleMap = {};
 
   document.querySelectorAll('.event').forEach(event => {
     const entry = getEntryById(event.dataset.entryId);
@@ -1531,28 +1406,12 @@ function applyFilters() {
     const matchesEra = state.era === 'all' || state.era === entry.era;
     const visible = matchesSearch && matchesType && matchesEra;
     event.classList.toggle('hidden', !visible);
-    if (visible) eraVisibleMap[`era-${entry.era}`] = true;
-  });
-
-  document.querySelectorAll('.date-marker').forEach(marker => {
-    const entry = getEntryById(marker.dataset.entryId);
-    const haystack = normalizeText([entry.date, entry.name, entry.summary].join(' '));
-    const matchesSearch = !state.search || haystack.includes(state.search);
-    const matchesEra = state.era === 'all' || state.era === entry.era;
-    const visible = showMarkers && matchesSearch && matchesEra;
-    marker.classList.toggle('hidden', !visible);
-    if (visible) eraVisibleMap[`era-${entry.era}`] = true;
-  });
-
-  document.querySelectorAll('.marker-group').forEach(group => {
-    const hasVisibleMarker = group.querySelector('.date-marker:not(.hidden)');
-    group.classList.toggle('hidden', !hasVisibleMarker);
   });
 
   document.querySelectorAll('.geo-label').forEach(label => {
     const nextItems = [];
     let node = label.nextElementSibling;
-    while (node && !node.classList.contains('geo-label') && !node.classList.contains('era-header') && !node.classList.contains('marker-group')) {
+    while (node && !node.classList.contains('geo-label') && !node.classList.contains('era-header')) {
       nextItems.push(node);
       node = node.nextElementSibling;
     }
@@ -1569,7 +1428,7 @@ function applyFilters() {
       return;
     }
     const matchesEra = state.era === 'all' || section.id === `era-${state.era}`;
-    const hasVisibleContent = !!section.querySelector('.event:not(.hidden), .date-marker:not(.hidden)');
+    const hasVisibleContent = !!section.querySelector('.event:not(.hidden)');
     section.style.display = matchesEra && hasVisibleContent ? 'block' : 'none';
   });
 
@@ -1607,7 +1466,7 @@ function setEraFilter(era) {
 }
 
 function setTypeFilter(type) {
-  state.type = type;
+  state.type = type === 'markers' ? 'events' : type;
   applyFilters();
 }
 
@@ -1619,7 +1478,7 @@ function filterSearch() {
 }
 
 document.addEventListener('click', event => {
-  const target = event.target.closest('.event, .date-marker, .top50-item');
+  const target = event.target.closest('.event, .top50-item');
   if (target) {
     activateEntryFromElement(target);
   }
@@ -1627,7 +1486,7 @@ document.addEventListener('click', event => {
 
 document.addEventListener('keydown', event => {
   if (event.key !== 'Enter' && event.key !== ' ') return;
-  const target = event.target.closest('.event, .date-marker, .top50-item');
+  const target = event.target.closest('.event, .top50-item');
   if (!target) return;
   event.preventDefault();
   activateEntryFromElement(target);

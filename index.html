@@ -122,6 +122,7 @@ nav button:hover, nav button.active { color: var(--gold); border-bottom-color: v
 .search-bar {
   background: var(--cream); border-bottom: 1px solid var(--border);
   padding: 0.8rem 2rem; display: flex; align-items: center; gap: 1rem; justify-content: center;
+  flex-wrap: wrap;
 }
 .search-bar input {
   width: 100%; max-width: 500px; padding: 0.5rem 1rem;
@@ -130,6 +131,82 @@ nav button:hover, nav button.active { color: var(--gold); border-bottom-color: v
 }
 .search-bar input:focus { border-color: var(--gold); }
 .search-bar label { font-size: 0.8rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; }
+.country-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.72rem 0.86rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(16px);
+}
+.country-filter select {
+  min-width: 220px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--ink);
+  border-radius: 14px;
+  padding: 0.7rem 0.85rem;
+  font: inherit;
+  font-size: 0.94rem;
+  outline: none;
+}
+.country-filter select:focus {
+  border-color: rgba(0, 113, 227, 0.26);
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+}
+.country-filter-note {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  letter-spacing: -0.01em;
+}
+.quick-nav {
+  position: fixed;
+  right: 1.2rem;
+  top: 150px;
+  z-index: 140;
+  width: 190px;
+  padding: 0.95rem 0.9rem;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+.quick-nav-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 0.7rem;
+}
+.quick-nav-links {
+  display: grid;
+  gap: 0.42rem;
+  max-height: calc(100vh - 220px);
+  overflow: auto;
+  padding-right: 0.1rem;
+}
+.quick-nav-links a {
+  display: block;
+  padding: 0.5rem 0.7rem;
+  border-radius: 14px;
+  color: var(--slate);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: all 0.18s ease;
+}
+.quick-nav-links a:hover,
+.quick-nav-links a.active {
+  background: linear-gradient(180deg, #2997ff 0%, #0071e3 100%);
+  color: white;
+}
 main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
 .era-section { margin-bottom: 4rem; animation: fadeIn 0.5s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -144,6 +221,16 @@ main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
 .era-contemporain { color: var(--contemporain); } .era-contemporain .era-badge { background: var(--contemporain); color: white; }
 .geo-section { margin-bottom: 1.5rem; }
 .geo-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.5; margin-bottom: 0.5rem; padding-left: 1.5rem; margin-top: 1.2rem; }
+.country-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: 0.55rem;
+  font-size: 0.76rem;
+  color: var(--ink-soft);
+  letter-spacing: normal;
+  text-transform: none;
+}
 .event { display: flex; gap: 0; margin-bottom: 0.1rem; border-radius: 2px; transition: background 0.15s; }
 .event:hover { background: rgba(201,146,42,0.06); }
 .event.hidden { display: none; }
@@ -352,12 +439,15 @@ footer { background: var(--ink); color: rgba(245,240,232,0.4); text-align: cente
   .menu-title { min-width: 100%; }
   nav { top: 116px; }
   .detail-grid { grid-template-columns: 1fr; }
+  .quick-nav { display: none; }
 }
 @media (max-width: 640px) {
   nav { top: 146px; }
   .search-bar { padding: 0.8rem 1rem; flex-direction: column; align-items: stretch; }
+  .country-filter { width: 100%; justify-content: space-between; }
+  .country-filter select { min-width: 0; width: 100%; }
   .detail-top { flex-direction: column; }
-}
+  }
 </style>
 </head>
 <body>
@@ -413,7 +503,19 @@ footer { background: var(--ink); color: rgba(245,240,232,0.4); text-align: cente
 <div class="search-bar">
   <label>Rechercher :</label>
   <input type="text" id="searchInput" placeholder="Mot-clé, date, personnage, événement…" oninput="filterSearch()">
+  <div class="country-filter">
+    <label for="countryFilter">Pays :</label>
+    <select id="countryFilter" onchange="setCountryFilter(this.value)">
+      <option value="all">Tous les pays</option>
+    </select>
+    <span class="country-filter-note">10 dates essentielles par pays</span>
+  </div>
 </div>
+
+<aside class="quick-nav" id="quickNav">
+  <div class="quick-nav-title">Accès rapide</div>
+  <div class="quick-nav-links" id="quickNavLinks"></div>
+</aside>
 
 <main>
 
@@ -423,7 +525,7 @@ footer { background: var(--ink); color: rgba(245,240,232,0.4); text-align: cente
   <div class="stat"><strong id="statPeople">300+</strong><span>Personnes</span></div>
   <div class="stat"><strong>5</strong><span>Grandes périodes</span></div>
   <div class="stat"><strong>3,3M</strong><span>Années couvertes</span></div>
-  <div class="stat"><strong id="statMarkers">0</strong><span>Repères supprimés</span></div>
+  <div class="stat"><strong id="statMarkers">0</strong><span>Pays disponibles</span></div>
 </div>
 
 <div class="legend">
@@ -1054,6 +1156,30 @@ footer { background: var(--ink); color: rgba(245,240,232,0.4); text-align: cente
 </div>
 </section>
 
+<section class="era-section" id="era-europe-west-block-1">
+<div class="era-header era-contemporain">
+  <div class="era-badge">🇪🇺</div>
+  <div class="era-title-block">
+    <h2>6 — Europe de l'Ouest · Bloc 1</h2>
+    <p>France, Allemagne, Royaume-Uni · sélection resserrée à 10 dates clés par pays</p>
+  </div>
+</div>
+<div class="geo-label">📚 Chronologies nationales</div>
+<div id="westernEuropeBlock1"></div>
+</section>
+
+<section class="era-section" id="era-europe-west-block-2">
+<div class="era-header era-contemporain">
+  <div class="era-badge">🇪🇺</div>
+  <div class="era-title-block">
+    <h2>7 — Europe de l'Ouest · Bloc 2</h2>
+    <p>Belgique et Pays-Bas · sélection resserrée à 10 dates clés par pays</p>
+  </div>
+</div>
+<div class="geo-label">📚 Chronologies nationales</div>
+<div id="westernEuropeBlock2"></div>
+</section>
+
 </main>
 
 <footer>
@@ -1067,6 +1193,7 @@ footer { background: var(--ink); color: rgba(245,240,232,0.4); text-align: cente
 <script>
 const featuredDatesLimit = 150;
 const searchInput = document.getElementById('searchInput');
+const countryFilter = document.getElementById('countryFilter');
 const detailPage = document.getElementById('detailPage');
 const detailKicker = document.getElementById('detailKicker');
 const detailDate = document.getElementById('detailDate');
@@ -1078,8 +1205,9 @@ const detailArticleBody = document.getElementById('detailArticleBody');
 const detailMeta = document.getElementById('detailMeta');
 const detailBackLink = document.getElementById('detailBackLink');
 const detailSearchLink = document.getElementById('detailSearchLink');
+const quickNavLinks = document.getElementById('quickNavLinks');
 const urlParams = new URLSearchParams(window.location.search);
-const state = { era: 'all', type: 'all', search: '' };
+const state = { era: 'all', type: 'all', search: '', country: 'all' };
 
 const eraConfigs = {
   prehist: { label: 'Préhistoire', kind: 'ère' },
@@ -1266,10 +1394,11 @@ function getCategoryClass(category) {
   return 'cat-politique';
 }
 
-function createEventMarkup(item, era, index) {
+function createEventMarkup(item, era, index, options = {}) {
   const peopleMarkup = item.people ? `<span class="event-people">${escapeHtml(item.people)}</span>` : '';
+  const countryMarkup = options.country ? ` data-country="${escapeHtml(options.country)}"` : '';
   return `
-    <div class="event${item.isMajor ? ' major' : ''}" data-era="${era}" data-supplemental="true" data-supplemental-index="${index}">
+    <div class="event${item.isMajor ? ' major' : ''}" data-era="${era}"${countryMarkup} data-supplemental="true" data-supplemental-index="${index}">
       <div class="event-dot"></div>
       <div class="event-content">
         <span class="event-date">${escapeHtml(item.date)}</span>
@@ -1299,6 +1428,399 @@ function injectSupplementalEvents() {
 
 injectSupplementalEvents();
 
+const westernEuropeBlock1 = {
+  France: [
+    { date: '≈ 600 av. J.-C.', name: 'Fondation de Massalia', context: 'Les Grecs fondent Marseille, grand port méditerranéen antique.', category: 'Exploration' },
+    { date: '52 av. J.-C.', name: 'Siège d’Alésia', context: 'Vercingétorix se rend à César ; la Gaule est intégrée à Rome.', people: 'Vercingétorix, Jules César', category: 'Politique' },
+    { date: '212', name: 'Citoyenneté romaine étendue à la Gaule', context: 'L’édit de Caracalla renforce l’intégration des provinces gauloises.', people: 'Caracalla', category: 'Politique' },
+    { date: '451', name: 'Bataille des Champs Catalauniques', context: 'Attila est stoppé en Gaule par une coalition romano-germanique.', people: 'Attila, Aetius, Théodoric Ier', category: 'Politique' },
+    { date: '486', name: 'Victoire de Clovis à Soissons', context: 'Le chef franc s’impose dans le nord de la Gaule.', people: 'Clovis', category: 'Politique' },
+    { date: '496', name: 'Baptême de Clovis', context: 'L’alliance entre royauté franque et christianisme se renforce durablement.', people: 'Clovis, Rémi de Reims', category: 'Culture' },
+    { date: '732', name: 'Bataille de Poitiers', context: 'Charles Martel repousse une armée musulmane venue d’al-Andalus.', people: 'Charles Martel', category: 'Politique' },
+    { date: '751', name: 'Pépin le Bref devient roi', context: 'La dynastie carolingienne remplace les Mérovingiens.', people: 'Pépin le Bref', category: 'Politique' },
+    { date: '800', name: 'Charlemagne couronné empereur', context: 'L’Empire carolingien se veut l’héritier de Rome en Occident.', people: 'Charlemagne', category: 'Politique' },
+    { date: '843', name: 'Traité de Verdun', context: 'La Francie est partagée entre les héritiers de Louis le Pieux.', category: 'Politique' },
+    { date: '987', name: 'Hugues Capet est élu roi', context: 'La dynastie capétienne s’installe pour des siècles.', people: 'Hugues Capet', category: 'Politique' },
+    { date: '1066', name: 'Guillaume de Normandie conquiert l’Angleterre', context: 'La puissance française rayonne à travers la Normandie.', people: 'Guillaume le Conquérant', category: 'Exploration' },
+    { date: '1095', name: 'Appel de Clermont', context: 'Le pape Urbain II lance la première croisade depuis la France.', people: 'Urbain II', category: 'Culture' },
+    { date: '1214', name: 'Bataille de Bouvines', context: 'Philippe Auguste renforce nettement la monarchie capétienne.', people: 'Philippe Auguste', category: 'Politique' },
+    { date: '1302', name: 'Premiers États généraux', context: 'Le roi cherche l’appui des trois ordres du royaume.', people: 'Philippe le Bel', category: 'Politique' },
+    { date: '1337', name: 'Début de la guerre de Cent Ans', context: 'La rivalité dynastique avec l’Angleterre ouvre un très long conflit.', category: 'Politique' },
+    { date: '1348', name: 'La peste noire frappe le royaume', context: 'La pandémie provoque une crise démographique et sociale majeure.', category: 'Science' },
+    { date: '1358', name: 'Grande Jacquerie', context: 'Les campagnes se soulèvent dans un contexte de guerre et d’impôts.', category: 'Politique' },
+    { date: '1429', name: 'Levée du siège d’Orléans', context: 'Jeanne d’Arc redonne un élan décisif au camp français.', people: 'Jeanne d’Arc', category: 'Politique' },
+    { date: '1453', name: 'Fin de la guerre de Cent Ans', context: 'La monarchie française sort renforcée, sauf à Calais.', category: 'Politique' },
+    { date: '1515', name: 'Victoire de Marignan', context: 'François Ier ouvre son règne par un succès militaire fameux.', people: 'François Ier', category: 'Politique' },
+    { date: '1539', name: 'Ordonnance de Villers-Cotterêts', context: 'Le français s’impose dans les actes administratifs et judiciaires.', people: 'François Ier', category: 'Culture' },
+    { date: '1572', name: 'Massacre de la Saint-Barthélemy', context: 'La violence religieuse atteint un sommet dans le royaume.', category: 'Politique' },
+    { date: '1598', name: 'Édit de Nantes', context: 'Henri IV tente de stabiliser la coexistence confessionnelle.', people: 'Henri IV', category: 'Politique' },
+    { date: '1610', name: 'Assassinat d’Henri IV', context: 'La régence de Marie de Médicis s’ouvre dans un contexte fragile.', people: 'Henri IV', category: 'Politique' },
+    { date: '1643', name: 'Début du règne personnel de Louis XIV', context: 'L’absolutisme français atteint ensuite son apogée.', people: 'Louis XIV', category: 'Politique' },
+    { date: '1682', name: 'Versailles devient centre du pouvoir', context: 'La cour s’installe durablement dans le nouveau palais royal.', people: 'Louis XIV', category: 'Culture' },
+    { date: '1685', name: 'Révocation de l’édit de Nantes', context: 'Le protestantisme français entre dans une phase de forte persécution.', people: 'Louis XIV', category: 'Politique' },
+    { date: '1715', name: 'Mort de Louis XIV', context: 'Le plus long règne de l’histoire française prend fin.', people: 'Louis XIV', category: 'Politique' },
+    { date: '1751', name: 'Début de publication de l’Encyclopédie', context: 'Les Lumières françaises gagnent un outil majeur de diffusion.', people: 'Diderot, d’Alembert', category: 'Culture' },
+    { date: '1789', name: 'Révolution française', context: 'La prise de la Bastille et l’abolition des privilèges bouleversent le pays.', category: 'Politique' },
+    { date: '1792', name: 'Proclamation de la Première République', context: 'La monarchie est suspendue puis abolie.', category: 'Politique' },
+    { date: '1793', name: 'Exécution de Louis XVI', context: 'Le régicide radicalise le conflit européen et intérieur.', people: 'Louis XVI', category: 'Politique' },
+    { date: '1799', name: 'Coup d’État du 18 Brumaire', context: 'Bonaparte prend le pouvoir et met fin au Directoire.', people: 'Napoléon Bonaparte', category: 'Politique' },
+    { date: '1804', name: 'Napoléon devient empereur', context: 'Le Consulat laisse place au Premier Empire.', people: 'Napoléon Bonaparte', category: 'Politique' },
+    { date: '1815', name: 'Waterloo et fin de l’Empire', context: 'La défaite ouvre la restauration monarchique.', people: 'Napoléon Bonaparte', category: 'Politique' },
+    { date: '1830', name: 'Révolution de Juillet', context: 'Charles X est renversé au profit de Louis-Philippe.', category: 'Politique' },
+    { date: '1848', name: 'Naissance de la Deuxième République', context: 'Le suffrage universel masculin est instauré.', category: 'Politique' },
+    { date: '1852', name: 'Second Empire', context: 'Louis-Napoléon Bonaparte devient Napoléon III.', people: 'Napoléon III', category: 'Politique' },
+    { date: '1870', name: 'Défaite de Sedan et chute de Napoléon III', context: 'Le Second Empire s’effondre face à la Prusse.', category: 'Politique' },
+    { date: '1871', name: 'Commune de Paris', context: 'Une expérience révolutionnaire brève et violente marque durablement la mémoire politique.', category: 'Politique' },
+    { date: '1885', name: 'Vaccin contre la rage', context: 'Pasteur signe un jalon majeur de l’histoire médicale.', people: 'Louis Pasteur', category: 'Science' },
+    { date: '1905', name: 'Séparation des Églises et de l’État', context: 'La laïcité devient un principe institutionnel majeur.', category: 'Politique' },
+    { date: '1916', name: 'Bataille de Verdun', context: 'L’une des batailles les plus meurtrières de la Première Guerre mondiale.', category: 'Politique' },
+    { date: '1918', name: 'Armistice du 11 novembre', context: 'La Grande Guerre s’achève sur le front occidental.', category: 'Politique' },
+    { date: '1940', name: 'Appel du 18 juin', context: 'De Gaulle lance la France libre après la défaite.', people: 'Charles de Gaulle', category: 'Politique' },
+    { date: '1944', name: 'Libération de Paris', context: 'La capitale est libérée pendant l’avancée alliée.', category: 'Politique' },
+    { date: '1958', name: 'Naissance de la Cinquième République', context: 'Le nouveau régime renforce l’exécutif.', people: 'Charles de Gaulle', category: 'Politique' },
+    { date: '1962', name: 'Accords d’Évian', context: 'La guerre d’Algérie s’achève et l’indépendance est reconnue.', category: 'Politique' },
+    { date: '1968', name: 'Mai 68', context: 'Grèves et contestation étudiante ébranlent profondément la société française.', category: 'Politique' },
+    { date: '1981', name: 'Élection de François Mitterrand', context: 'La gauche accède à l’Élysée sous la Ve République.', people: 'François Mitterrand', category: 'Politique' },
+    { date: '1992', name: 'Référendum sur Maastricht', context: 'La construction européenne divise mais progresse.', category: 'Politique' },
+    { date: '2002', name: 'Mise en circulation de l’euro', context: 'La monnaie unique remplace le franc.', category: 'Politique' }
+  ],
+  Allemagne: [
+    { date: '9', name: 'Défaite romaine de Teutobourg', context: 'Les légions de Varus sont détruites en Germanie.', people: 'Arminius, Varus', category: 'Politique' },
+    { date: '843', name: 'Francie orientale issue de Verdun', context: 'L’espace germanique médiéval prend forme après le partage carolingien.', category: 'Politique' },
+    { date: '919', name: 'Henri l’Oiseleur devient roi de Germanie', context: 'Une nouvelle stabilisation du royaume s’opère.', people: 'Henri Ier', category: 'Politique' },
+    { date: '955', name: 'Victoire du Lechfeld', context: 'Otton Ier bat les Magyars et renforce durablement son autorité.', people: 'Otton Ier', category: 'Politique' },
+    { date: '962', name: 'Otton Ier couronné empereur', context: 'Le Saint-Empire romain germanique s’affirme.', people: 'Otton Ier', category: 'Politique' },
+    { date: '1077', name: 'Canossa', context: 'Henri IV s’humilie devant le pape pendant la querelle des Investitures.', people: 'Henri IV, Grégoire VII', category: 'Politique' },
+    { date: '1122', name: 'Concordat de Worms', context: 'Un compromis met fin à la crise des Investitures.', category: 'Politique' },
+    { date: '1356', name: 'Bulle d’or', context: 'Le mode d’élection impériale est codifié dans le Saint-Empire.', category: 'Politique' },
+    { date: '1450', name: 'Essor de l’imprimerie de Gutenberg', context: 'Mayence devient l’un des foyers de la révolution du livre.', people: 'Johannes Gutenberg', category: 'Science' },
+    { date: '1517', name: '95 thèses de Luther', context: 'La Réforme protestante bouleverse l’Europe chrétienne.', people: 'Martin Luther', category: 'Culture' },
+    { date: '1525', name: 'Guerre des Paysans allemands', context: 'Une vaste révolte sociale secoue les territoires germaniques.', category: 'Politique' },
+    { date: '1530', name: 'Confession d’Augsbourg', context: 'Le luthéranisme s’organise doctrinalement.', category: 'Culture' },
+    { date: '1555', name: 'Paix d’Augsbourg', context: 'Le principe confessionnel territorial est reconnu dans l’Empire.', category: 'Politique' },
+    { date: '1618', name: 'Défenestration de Prague et début de la guerre de Trente Ans', context: 'Les territoires germaniques deviennent le principal théâtre du conflit.', category: 'Politique' },
+    { date: '1648', name: 'Paix de Westphalie', context: 'Les traités réorganisent l’équilibre politique du Saint-Empire.', category: 'Politique' },
+    { date: '1701', name: 'Naissance du royaume de Prusse', context: 'La monarchie prussienne devient un acteur central de l’espace allemand.', category: 'Politique' },
+    { date: '1740', name: 'Début du règne de Frédéric II', context: 'La Prusse entre dans une phase d’expansion et de prestige.', people: 'Frédéric II', category: 'Politique' },
+    { date: '1806', name: 'Fin du Saint-Empire romain germanique', context: 'Napoléon accélère la dissolution de la vieille structure impériale.', category: 'Politique' },
+    { date: '1813', name: 'Bataille de Leipzig', context: 'La “bataille des Nations” accélère la chute de Napoléon en Allemagne.', category: 'Politique' },
+    { date: '1815', name: 'Confédération germanique', context: 'Le congrès de Vienne réorganise l’espace allemand.', category: 'Politique' },
+    { date: '1834', name: 'Création du Zollverein', context: 'L’union douanière prépare l’unification économique allemande.', category: 'Politique' },
+    { date: '1848', name: 'Parlement de Francfort', context: 'Une tentative d’unification libérale voit le jour pendant les révolutions.', category: 'Politique' },
+    { date: '1864', name: 'Guerre des Duchés', context: 'La Prusse et l’Autriche affrontent le Danemark pour le Schleswig-Holstein.', category: 'Politique' },
+    { date: '1866', name: 'Victoire prussienne sur l’Autriche', context: 'La Prusse prend l’ascendant décisif dans l’espace allemand.', category: 'Politique' },
+    { date: '1871', name: 'Proclamation de l’Empire allemand', context: 'L’unification est consacrée dans la galerie des Glaces à Versailles.', people: 'Bismarck, Guillaume Ier', category: 'Politique' },
+    { date: '1878', name: 'Congrès de Berlin', context: 'L’Allemagne bismarckienne arbitre un grand règlement diplomatique européen.', people: 'Bismarck', category: 'Politique' },
+    { date: '1884', name: 'Conférence de Berlin sur l’Afrique', context: 'Les puissances coloniales codifient le partage impérial.', category: 'Politique' },
+    { date: '1890', name: 'Renvoi de Bismarck', context: 'Guillaume II écarte l’architecte de l’unification allemande.', people: 'Bismarck, Guillaume II', category: 'Politique' },
+    { date: '1914', name: 'Entrée dans la Première Guerre mondiale', context: 'L’Empire allemand s’engage dans un conflit mondial destructeur.', category: 'Politique' },
+    { date: '1918', name: 'Abdication de Guillaume II', context: 'L’Empire s’effondre et la république est proclamée.', category: 'Politique' },
+    { date: '1919', name: 'Naissance de la République de Weimar', context: 'Un nouveau régime démocratique tente de stabiliser l’Allemagne.', category: 'Politique' },
+    { date: '1923', name: 'Hyperinflation et putsch de Munich', context: 'La crise monétaire et politique fragilise profondément Weimar.', people: 'Adolf Hitler', category: 'Politique' },
+    { date: '1925', name: 'Élection de Hindenburg', context: 'L’ancien maréchal devient président du Reich.', people: 'Paul von Hindenburg', category: 'Politique' },
+    { date: '1929', name: 'Crise mondiale et montée des extrêmes', context: 'Le choc économique frappe durement la société allemande.', category: 'Politique' },
+    { date: '1933', name: 'Hitler devient chancelier', context: 'Le régime nazi s’installe rapidement en dictature.', people: 'Adolf Hitler', category: 'Politique' },
+    { date: '1935', name: 'Lois de Nuremberg', context: 'Le régime institutionnalise l’antisémitisme d’État.', category: 'Politique' },
+    { date: '1938', name: 'Nuit de Cristal', context: 'Les violences antijuives prennent une nouvelle ampleur.', category: 'Politique' },
+    { date: '1939', name: 'Invasion de la Pologne', context: 'L’Allemagne déclenche la Seconde Guerre mondiale en Europe.', category: 'Politique' },
+    { date: '1945', name: 'Capitulation allemande', context: 'Le Reich s’effondre et l’occupation alliée commence.', category: 'Politique' },
+    { date: '1949', name: 'Naissance de la RFA et de la RDA', context: 'L’Allemagne se divise en deux États antagonistes.', category: 'Politique' },
+    { date: '1953', name: 'Soulèvement ouvrier de Berlin-Est', context: 'La répression soviétique révèle la fragilité du régime est-allemand.', category: 'Politique' },
+    { date: '1955', name: 'La RFA entre dans l’OTAN', context: 'L’Allemagne de l’Ouest s’insère pleinement dans le bloc occidental.', category: 'Politique' },
+    { date: '1961', name: 'Construction du mur de Berlin', context: 'La division allemande devient une frontière matérialisée.', category: 'Politique' },
+    { date: '1969', name: 'Début de l’Ostpolitik', context: 'Willy Brandt cherche une détente avec l’Est.', people: 'Willy Brandt', category: 'Politique' },
+    { date: '1972', name: 'Traité fondamental RFA-RDA', context: 'Les deux Allemagnes normalisent partiellement leurs relations.', category: 'Politique' },
+    { date: '1989', name: 'Chute du mur de Berlin', context: 'Le symbole majeur de la guerre froide s’effondre.', category: 'Politique' },
+    { date: '1990', name: 'Réunification allemande', context: 'La RDA rejoint la République fédérale.', category: 'Politique' },
+    { date: '1999', name: 'Berlin redevient pleinement capitale', context: 'Le Bundestag s’installe au Reichstag rénové.', category: 'Politique' },
+    { date: '2002', name: 'Entrée dans l’euro fiduciaire', context: 'Le deutsche mark disparaît au profit de la monnaie unique.', category: 'Politique' },
+    { date: '2005', name: 'Angela Merkel devient chancelière', context: 'Elle inaugure une longue période de stabilité gouvernementale.', people: 'Angela Merkel', category: 'Politique' },
+    { date: '2011', name: 'Sortie progressive du nucléaire décidée', context: 'Berlin accélère sa transition énergétique après Fukushima.', category: 'Science' },
+    { date: '2015', name: 'Crise migratoire et accueil massif', context: 'L’Allemagne devient un acteur central du débat européen sur l’asile.', category: 'Politique' },
+    { date: '2022', name: 'Annonce de la Zeitenwende', context: 'Berlin revoit sa doctrine stratégique après l’invasion de l’Ukraine.', category: 'Politique' }
+  ],
+  'Royaume-Uni': [
+    { date: '43', name: 'Début de la conquête romaine de la Bretagne', context: 'L’île entre durablement dans l’orbite de Rome.', category: 'Politique' },
+    { date: '597', name: 'Mission de saint Augustin à Cantorbéry', context: 'Le christianisme latin s’implante solidement dans le sud de l’Angleterre.', category: 'Culture' },
+    { date: '793', name: 'Raid de Lindisfarne', context: 'L’attaque viking marque symboliquement le début d’une nouvelle époque.', category: 'Politique' },
+    { date: '878', name: 'Victoire d’Alfred à Edington', context: 'Le roi du Wessex stoppe l’expansion viking la plus menaçante.', people: 'Alfred le Grand', category: 'Politique' },
+    { date: '1066', name: 'Bataille d’Hastings', context: 'Guillaume de Normandie conquiert l’Angleterre.', people: 'Guillaume le Conquérant', category: 'Politique' },
+    { date: '1086', name: 'Domesday Book', context: 'Le grand inventaire royal mesure la richesse foncière du royaume.', category: 'Politique' },
+    { date: '1170', name: 'Assassinat de Thomas Becket', context: 'Le conflit entre couronne et Église choque toute l’Europe.', people: 'Thomas Becket', category: 'Politique' },
+    { date: '1215', name: 'Magna Carta', context: 'Le pouvoir royal est formellement limité par écrit.', category: 'Politique' },
+    { date: '1295', name: 'Model Parliament', context: 'Le Parlement anglais s’élargit comme institution représentative.', category: 'Politique' },
+    { date: '1348', name: 'Peste noire en Angleterre', context: 'La pandémie bouleverse la démographie et le travail.', category: 'Science' },
+    { date: '1381', name: 'Révolte des paysans', context: 'Une grande révolte fiscale et sociale secoue le royaume.', category: 'Politique' },
+    { date: '1485', name: 'Bosworth et avènement des Tudor', context: 'Henri VII met fin à la guerre des Deux-Roses.', category: 'Politique' },
+    { date: '1534', name: 'Acte de suprématie', context: 'Le roi devient chef de l’Église d’Angleterre.', people: 'Henri VIII', category: 'Culture' },
+    { date: '1558', name: 'Début du règne d’Élisabeth Ire', context: 'L’Angleterre entre dans une phase d’affirmation politique et culturelle.', people: 'Élisabeth Ire', category: 'Politique' },
+    { date: '1588', name: 'Défaite de l’Invincible Armada', context: 'L’Espagne échoue à envahir l’Angleterre.', category: 'Politique' },
+    { date: '1603', name: 'Union dynastique des couronnes', context: 'Jacques VI d’Écosse devient Jacques Ier d’Angleterre.', people: 'Jacques Ier', category: 'Politique' },
+    { date: '1605', name: 'Complot des poudres', context: 'La tentative contre le Parlement marque durablement la mémoire politique anglaise.', category: 'Politique' },
+    { date: '1642', name: 'Début de la guerre civile', context: 'Le conflit oppose royalistes et parlementaires.', category: 'Politique' },
+    { date: '1649', name: 'Exécution de Charles Ier', context: 'Un roi anglais est jugé puis décapité publiquement.', people: 'Charles Ier', category: 'Politique' },
+    { date: '1653', name: 'Cromwell Lord Protector', context: 'Le Commonwealth prend une forme autoritaire.', people: 'Oliver Cromwell', category: 'Politique' },
+    { date: '1660', name: 'Restauration monarchique', context: 'Charles II rétablit la monarchie après l’expérience républicaine.', category: 'Politique' },
+    { date: '1666', name: 'Grand incendie de Londres', context: 'La capitale est profondément reconstruite après la catastrophe.', category: 'Culture' },
+    { date: '1688', name: 'Glorieuse Révolution', context: 'Le pouvoir royal est recadré sans longue guerre civile.', category: 'Politique' },
+    { date: '1689', name: 'Bill of Rights', context: 'Le parlementarisme anglais se consolide durablement.', category: 'Politique' },
+    { date: '1707', name: 'Acte d’Union avec l’Écosse', context: 'Le royaume de Grande-Bretagne est créé.', category: 'Politique' },
+    { date: '1759', name: 'Victoire britannique à Québec', context: 'L’expansion impériale britannique change d’échelle.', category: 'Exploration' },
+    { date: '1776', name: 'Indépendance américaine', context: 'La perte des Treize Colonies reconfigure l’Empire britannique.', category: 'Politique' },
+    { date: '1801', name: 'Union avec l’Irlande', context: 'Le Royaume-Uni de Grande-Bretagne et d’Irlande est formé.', category: 'Politique' },
+    { date: '1805', name: 'Victoire de Trafalgar', context: 'La Royal Navy confirme sa domination maritime.', people: 'Horatio Nelson', category: 'Politique' },
+    { date: '1815', name: 'Victoire de Waterloo', context: 'L’armée britannique joue un rôle décisif dans la chute finale de Napoléon.', category: 'Politique' },
+    { date: '1832', name: 'Great Reform Act', context: 'La représentation électorale est partiellement modernisée.', category: 'Politique' },
+    { date: '1837', name: 'Début du règne de Victoria', context: 'L’époque victorienne devient synonyme de puissance impériale et industrielle.', people: 'Victoria', category: 'Politique' },
+    { date: '1851', name: 'Grande Exposition de Londres', context: 'Le Crystal Palace célèbre la révolution industrielle britannique.', category: 'Culture' },
+    { date: '1867', name: 'Second Reform Act', context: 'Le corps électoral urbain est élargi.', category: 'Politique' },
+    { date: '1914', name: 'Entrée dans la Première Guerre mondiale', context: 'Le Royaume-Uni s’engage contre l’Allemagne après l’invasion de la Belgique.', category: 'Politique' },
+    { date: '1918', name: 'Representation of the People Act', context: 'Le suffrage est largement étendu, notamment à une partie des femmes.', category: 'Politique' },
+    { date: '1921', name: 'Traité anglo-irlandais', context: 'L’Irlande libre est créée, hors d’Ulster.', category: 'Politique' },
+    { date: '1926', name: 'Grève générale', context: 'Le conflit social révèle les tensions de l’industrialisation britannique.', category: 'Politique' },
+    { date: '1939', name: 'Déclaration de guerre à l’Allemagne', context: 'Le Royaume-Uni entre dans la Seconde Guerre mondiale.', category: 'Politique' },
+    { date: '1940', name: 'Bataille d’Angleterre', context: 'Le pays résiste à l’offensive aérienne allemande.', category: 'Politique' },
+    { date: '1945', name: 'Victoire travailliste de Clement Attlee', context: 'Le pays lance un vaste programme de réformes sociales.', people: 'Clement Attlee', category: 'Politique' },
+    { date: '1947', name: 'Indépendance de l’Inde', context: 'L’Empire britannique entre dans une phase accélérée de décolonisation.', category: 'Politique' },
+    { date: '1948', name: 'Création du NHS', context: 'Le système national de santé devient une institution centrale du pays.', category: 'Science' },
+    { date: '1952', name: 'Élisabeth II monte sur le trône', context: 'Un long règne commence dans un monde en mutation rapide.', people: 'Élisabeth II', category: 'Politique' },
+    { date: '1956', name: 'Crise de Suez', context: 'L’épisode révèle le recul de la puissance impériale britannique.', category: 'Politique' },
+    { date: '1973', name: 'Entrée dans la CEE', context: 'Le Royaume-Uni rejoint la construction européenne.', category: 'Politique' },
+    { date: '1979', name: 'Margaret Thatcher devient Première ministre', context: 'Le thatchérisme transforme profondément l’économie et la société.', people: 'Margaret Thatcher', category: 'Politique' },
+    { date: '1982', name: 'Guerre des Malouines', context: 'Le gouvernement britannique reprend les îles aux forces argentines.', category: 'Politique' },
+    { date: '1997', name: 'Rétrocession de Hong Kong', context: 'L’un des derniers grands symboles impériaux change de souveraineté.', category: 'Politique' },
+    { date: '1998', name: 'Accord du Vendredi saint', context: 'Un cadre de paix est trouvé pour l’Irlande du Nord.', category: 'Politique' },
+    { date: '2005', name: 'Attentats de Londres du 7 juillet', context: 'Le terrorisme djihadiste frappe la capitale britannique.', category: 'Politique' },
+    { date: '2012', name: 'Jeux olympiques de Londres', context: 'Le pays met en scène son rayonnement culturel et urbain.', category: 'Culture' },
+    { date: '2016', name: 'Référendum sur le Brexit', context: 'Le vote de sortie de l’Union européenne ouvre une longue crise politique.', category: 'Politique' },
+    { date: '2020', name: 'Sortie effective de l’Union européenne', context: 'Le Royaume-Uni quitte officiellement les institutions européennes.', category: 'Politique' },
+    { date: '2022', name: 'Charles III devient roi', context: 'La succession d’Élisabeth II ouvre un nouveau règne.', people: 'Charles III', category: 'Politique' }
+  ]
+};
+
+const westernEuropeBlock2 = {
+  Belgique: [
+    { date: '57 av. J.-C.', name: 'Jules César soumet les Belges', context: 'La Gaule belgique est intégrée à l’espace romain.', people: 'Jules César', category: 'Politique' },
+    { date: '406', name: 'Passage du Rhin par des peuples germaniques', context: 'Les équilibres politiques de la région sont profondément bouleversés.', category: 'Politique' },
+    { date: '843', name: 'Partage de Verdun', context: 'Les territoires belges sont dispersés entre ensembles carolingiens rivaux.', category: 'Politique' },
+    { date: '870', name: 'Traité de Meerssen', context: 'La Lotharingie est à nouveau repartagée entre puissances voisines.', category: 'Politique' },
+    { date: '959', name: 'Basse-Lotharingie constituée', context: 'Le territoire entre dans le jeu politique du Saint-Empire.', category: 'Politique' },
+    { date: '1183', name: 'Brabant devient duché', context: 'Le duché de Brabant émerge comme puissance régionale majeure.', category: 'Politique' },
+    { date: '1302', name: 'Bataille des Éperons d’or', context: 'Les milices flamandes battent la chevalerie française à Courtrai.', category: 'Politique' },
+    { date: '1384', name: 'La Flandre passe aux ducs de Bourgogne', context: 'Les Pays-Bas bourguignons commencent à se former.', category: 'Politique' },
+    { date: '1430', name: 'Ordre de la Toison d’or fondé à Bruges', context: 'La cour de Bourgogne fait rayonner les anciens Pays-Bas.', category: 'Culture' },
+    { date: '1477', name: 'Marie de Bourgogne hérite des Pays-Bas', context: 'La région passe ensuite dans la sphère des Habsbourg.', people: 'Marie de Bourgogne', category: 'Politique' },
+    { date: '1543', name: 'Consolidation des Dix-Sept Provinces', context: 'Charles Quint parachève la réunion politique des Pays-Bas habsbourgeois.', people: 'Charles Quint', category: 'Politique' },
+    { date: '1566', name: 'Crise iconoclaste dans les Pays-Bas', context: 'Les tensions religieuses et politiques explosent dans la région.', category: 'Culture' },
+    { date: '1568', name: 'Début de la révolte des Pays-Bas', context: 'Le conflit avec la monarchie espagnole s’installe durablement.', category: 'Politique' },
+    { date: '1576', name: 'Pacification de Gand', context: 'Les provinces tentent une union contre les troupes espagnoles.', category: 'Politique' },
+    { date: '1579', name: 'Union d’Arras', context: 'Une partie des provinces méridionales se rapproche de l’Espagne.', category: 'Politique' },
+    { date: '1585', name: 'Prise d’Anvers par Farnèse', context: 'Le grand centre commercial du sud décline au profit d’Amsterdam.', category: 'Politique' },
+    { date: '1713', name: 'Traité d’Utrecht', context: 'Les Pays-Bas méridionaux deviennent autrichiens.', category: 'Politique' },
+    { date: '1746', name: 'Occupation française pendant la guerre de Succession d’Autriche', context: 'Les villes des Pays-Bas autrichiens sont de nouveau disputées.', category: 'Politique' },
+    { date: '1789', name: 'Révolution brabançonne', context: 'Les provinces se soulèvent contre Joseph II.', category: 'Politique' },
+    { date: '1790', name: 'États belgiques unis', context: 'Une confédération éphémère est proclamée avant le retour autrichien.', category: 'Politique' },
+    { date: '1795', name: 'Annexion à la France révolutionnaire', context: 'Le territoire est intégré à la République française.', category: 'Politique' },
+    { date: '1815', name: 'Intégration au Royaume uni des Pays-Bas', context: 'Le congrès de Vienne réunit nord et sud sous un même souverain.', category: 'Politique' },
+    { date: '1830', name: 'Révolution belge', context: 'Bruxelles devient le cœur d’un mouvement indépendantiste victorieux.', category: 'Politique' },
+    { date: '1831', name: 'Léopold Ier devient roi des Belges', context: 'La nouvelle monarchie constitutionnelle prend forme.', people: 'Léopold Ier', category: 'Politique' },
+    { date: '1839', name: 'Traité de Londres', context: 'L’indépendance belge et sa neutralité sont internationalement garanties.', category: 'Politique' },
+    { date: '1846', name: 'Adolphe Sax brevète le saxophone', context: 'Une invention belge majeure marque durablement l’histoire musicale.', people: 'Adolphe Sax', category: 'Culture' },
+    { date: '1865', name: 'Léopold II monte sur le trône', context: 'Le règne s’accompagne d’ambitions coloniales considérables.', people: 'Léopold II', category: 'Politique' },
+    { date: '1885', name: 'État indépendant du Congo créé', context: 'Le souverain belge obtient un immense domaine personnel en Afrique.', people: 'Léopold II', category: 'Politique' },
+    { date: '1893', name: 'Réforme électorale élargissant le suffrage masculin', context: 'Le système pluralitaire transforme la vie politique belge.', category: 'Politique' },
+    { date: '1908', name: 'Le Congo devient colonie belge', context: 'L’État belge reprend officiellement le territoire à Léopold II.', category: 'Politique' },
+    { date: '1914', name: 'Invasion allemande de la Belgique', context: 'La violation de la neutralité belge déclenche l’entrée britannique en guerre.', category: 'Politique' },
+    { date: '1915', name: 'Première attaque au gaz à Ypres', context: 'Le front belge devient un laboratoire tragique de guerre chimique.', category: 'Politique' },
+    { date: '1918', name: 'Libération du territoire belge', context: 'La fin de la guerre voit la restauration complète de la souveraineté belge.', category: 'Politique' },
+    { date: '1921', name: 'Union économique belgo-luxembourgeoise', context: 'La Belgique renforce son intégration régionale avec le Luxembourg.', category: 'Politique' },
+    { date: '1930', name: 'Centenaire de l’indépendance belge', context: 'Le pays met en scène sa modernité industrielle et urbaine.', category: 'Culture' },
+    { date: '1940', name: 'Nouvelle invasion allemande', context: 'Le royaume est occupé après une campagne très rapide.', category: 'Politique' },
+    { date: '1944', name: 'Libération de Bruxelles', context: 'Les forces alliées mettent fin à l’occupation allemande dans la capitale.', category: 'Politique' },
+    { date: '1944', name: 'Accord douanier du Benelux', context: 'Belgique, Pays-Bas et Luxembourg préparent une intégration régionale nouvelle.', category: 'Politique' },
+    { date: '1948', name: 'Le suffrage féminin complet entre en vigueur', context: 'Les femmes participent désormais pleinement à la vie électorale nationale.', category: 'Politique' },
+    { date: '1949', name: 'La Belgique entre dans l’OTAN', context: 'Le pays s’insère au cœur du bloc occidental.', category: 'Politique' },
+    { date: '1951', name: 'La Belgique signe le traité de Paris de la CECA', context: 'Le pays est au premier rang de l’intégration européenne.', category: 'Politique' },
+    { date: '1958', name: 'Expo 58 à Bruxelles', context: 'L’Atomium devient le symbole architectural de la modernité belge.', category: 'Culture' },
+    { date: '1960', name: 'Indépendance du Congo', context: 'La décolonisation belge s’ouvre dans une grande instabilité.', category: 'Politique' },
+    { date: '1962', name: 'Fixation de la frontière linguistique', context: 'Le paysage institutionnel belge s’organise davantage autour des langues.', category: 'Politique' },
+    { date: '1968', name: 'Crise de Louvain', context: 'La question linguistique provoque une grave crise politique nationale.', category: 'Politique' },
+    { date: '1970', name: 'Première réforme de l’État', context: 'Le processus de fédéralisation belge commence.', category: 'Politique' },
+    { date: '1980', name: 'Nouvelles réformes institutionnelles', context: 'Les régions et communautés gagnent en autonomie.', category: 'Politique' },
+    { date: '1989', name: 'Création de la Région de Bruxelles-Capitale', context: 'Le fédéralisme belge poursuit sa structuration.', category: 'Politique' },
+    { date: '1993', name: 'La Belgique devient officiellement un État fédéral', context: 'La Constitution entérine une transformation institutionnelle majeure.', category: 'Politique' },
+    { date: '2002', name: 'Mise en circulation de l’euro', context: 'La monnaie unique remplace définitivement le franc belge.', category: 'Politique' },
+    { date: '2010–2011', name: 'Crise politique record sans gouvernement de plein exercice', context: 'Les tensions communautaires paralysent longtemps la vie politique.', category: 'Politique' },
+    { date: '2013', name: 'Abdication d’Albert II', context: 'Philippe devient roi des Belges dans un contexte institutionnel toujours délicat.', people: 'Albert II, Philippe', category: 'Politique' },
+    { date: '2016', name: 'Attentats de Bruxelles', context: 'La capitale européenne est frappée par le terrorisme djihadiste.', category: 'Politique' }
+  ],
+  'Pays-Bas': [
+    { date: '47', name: 'Limes romain fixé sur le Rhin', context: 'Le sud des Pays-Bas s’intègre durablement à la frontière impériale romaine.', category: 'Politique' },
+    { date: '406', name: 'Crise des frontières romaines en basse vallée du Rhin', context: 'Les structures impériales se fragilisent dans l’espace néerlandais.', category: 'Politique' },
+    { date: '690', name: 'Mission de Willibrord à Utrecht', context: 'Le christianisme latin progresse fortement dans les Pays-Bas.', people: 'Willibrord', category: 'Culture' },
+    { date: '843', name: 'Verdun et partage carolingien', context: 'L’espace néerlandais est réparti dans de nouveaux cadres politiques.', category: 'Politique' },
+    { date: '925', name: 'La Lotharingie rejoint l’espace germanique', context: 'Les territoires néerlandais s’ancrent davantage dans l’orbite impériale.', category: 'Politique' },
+    { date: '1296', name: 'Meurtre du comte Florent V', context: 'La Hollande médiévale traverse une crise politique majeure.', people: 'Florent V', category: 'Politique' },
+    { date: '1433', name: 'La Hollande passe aux ducs de Bourgogne', context: 'Les Pays-Bas bourguignons prennent une forme plus cohérente.', category: 'Politique' },
+    { date: '1477', name: 'Mort de Charles le Téméraire', context: 'La succession bourguignonne rebat la carte politique régionale.', category: 'Politique' },
+    { date: '1548', name: 'Pragmatique Sanction et Cercle de Bourgogne', context: 'Les Pays-Bas sont davantage individualisés dans l’ensemble habsbourgeois.', category: 'Politique' },
+    { date: '1566', name: 'Fureur iconoclaste', context: 'La contestation religieuse et politique embrase les provinces.', category: 'Culture' },
+    { date: '1568', name: 'Début de la guerre de Quatre-Vingts Ans', context: 'La révolte contre l’Espagne entre dans une longue phase militaire.', category: 'Politique' },
+    { date: '1572', name: 'Prise de Brielle', context: 'Le succès des gueux de mer relance puissamment la rébellion.', category: 'Politique' },
+    { date: '1579', name: 'Union d’Utrecht', context: 'Les provinces rebelles se rassemblent dans un cadre politique commun.', category: 'Politique' },
+    { date: '1581', name: 'Acte de La Haye (Acte de répudiation)', context: 'Les Provinces-Unies rejettent officiellement Philippe II.', category: 'Politique' },
+    { date: '1588', name: 'Naissance de la République des Provinces-Unies', context: 'Une nouvelle puissance commerciale et maritime se constitue.', category: 'Politique' },
+    { date: '1602', name: 'Fondation de la VOC', context: 'La Compagnie néerlandaise des Indes orientales devient un acteur mondial majeur.', category: 'Exploration' },
+    { date: '1609', name: 'Trêve de Douze Ans', context: 'La république consolide sa position face à l’Espagne.', category: 'Politique' },
+    { date: '1618', name: 'Synode de Dordrecht', context: 'Le calvinisme néerlandais clarifie sa doctrine et son organisation.', category: 'Culture' },
+    { date: '1621', name: 'Fondation de la WIC', context: 'La Compagnie des Indes occidentales ouvre un nouvel horizon atlantique.', category: 'Exploration' },
+    { date: '1648', name: 'Paix de Münster', context: 'L’indépendance des Provinces-Unies est reconnue internationalement.', category: 'Politique' },
+    { date: '1652', name: 'Première guerre anglo-néerlandaise', context: 'La rivalité maritime avec l’Angleterre devient frontale.', category: 'Politique' },
+    { date: '1665', name: 'Deuxième guerre anglo-néerlandaise', context: 'Le commerce mondial attise la compétition navale.', category: 'Politique' },
+    { date: '1672', name: 'Rampjaar, “année du désastre”', context: 'La république est attaquée de plusieurs côtés à la fois.', category: 'Politique' },
+    { date: '1688', name: 'Guillaume III débarque en Angleterre', context: 'Le stathouder néerlandais joue un rôle central dans la Glorieuse Révolution.', people: 'Guillaume III', category: 'Politique' },
+    { date: '1713', name: 'Traité d’Utrecht', context: 'La diplomatie néerlandaise participe au nouvel équilibre européen.', category: 'Politique' },
+    { date: '1747', name: 'Restauration du stathoudérat héréditaire', context: 'La maison d’Orange renforce son rôle dans la république.', category: 'Politique' },
+    { date: '1780', name: 'Quatrième guerre anglo-néerlandaise', context: 'La puissance maritime néerlandaise subit un net affaiblissement.', category: 'Politique' },
+    { date: '1795', name: 'République batave', context: 'L’influence révolutionnaire française transforme l’État néerlandais.', category: 'Politique' },
+    { date: '1806', name: 'Royaume de Hollande', context: 'Napoléon crée une monarchie pour son frère Louis.', people: 'Louis Bonaparte', category: 'Politique' },
+    { date: '1810', name: 'Annexion à l’Empire français', context: 'Le territoire est intégré directement à l’ensemble napoléonien.', category: 'Politique' },
+    { date: '1813', name: 'Retour de la maison d’Orange', context: 'La libération du territoire ouvre une nouvelle phase monarchique.', category: 'Politique' },
+    { date: '1815', name: 'Royaume des Pays-Bas', context: 'Le nord et le sud sont réunis sous Guillaume Ier.', category: 'Politique' },
+    { date: '1830', name: 'Révolution belge', context: 'Le sud se sépare du royaume néerlandais.', category: 'Politique' },
+    { date: '1839', name: 'Le traité de Londres entérine la séparation belge', context: 'Le nouvel État néerlandais est durablement redéfini.', category: 'Politique' },
+    { date: '1848', name: 'Constitution libérale de Thorbecke', context: 'Le régime parlementaire moderne prend véritablement forme.', people: 'Johan Rudolf Thorbecke', category: 'Politique' },
+    { date: '1863', name: 'Abolition de l’esclavage dans les colonies néerlandaises', context: 'L’Empire néerlandais change de cadre juridique et moral.', category: 'Politique' },
+    { date: '1890', name: 'Wilhelmine devient reine', context: 'Une nouvelle longue période dynastique commence.', people: 'Wilhelmine', category: 'Politique' },
+    { date: '1917', name: 'Pacification constitutionnelle', context: 'Le suffrage masculin et le compromis scolaire transforment la vie politique.', category: 'Politique' },
+    { date: '1919', name: 'Suffrage féminin plein', context: 'Les femmes accèdent au vote national.', category: 'Politique' },
+    { date: '1932', name: 'Achèvement de l’Afsluitdijk', context: 'Le pays confirme sa maîtrise spectaculaire de l’eau.', category: 'Science' },
+    { date: '1940', name: 'Invasion allemande', context: 'Les Pays-Bas sont occupés après un assaut très rapide.', category: 'Politique' },
+    { date: '1944', name: 'Opération Market Garden', context: 'Le territoire devient un enjeu majeur de l’avancée alliée.', category: 'Politique' },
+    { date: '1945', name: 'Libération des Pays-Bas', context: 'L’occupation prend fin au terme d’un hiver particulièrement dur.', category: 'Politique' },
+    { date: '1948', name: 'Accord du Benelux et règne de Juliana', context: 'Le pays entre dans une phase nouvelle de reconstruction régionale.', people: 'Juliana', category: 'Politique' },
+    { date: '1949', name: 'Reconnaissance de l’indépendance de l’Indonésie', context: 'L’empire colonial néerlandais change brutalement d’échelle.', category: 'Politique' },
+    { date: '1953', name: 'Grande inondation de la mer du Nord', context: 'La catastrophe accélère le lancement des travaux du Delta.', category: 'Science' },
+    { date: '1957', name: 'Traité de Rome', context: 'Les Pays-Bas sont au cœur de la construction européenne naissante.', category: 'Politique' },
+    { date: '1959', name: 'Découverte du gisement de Groningue', context: 'Le gaz naturel transforme durablement l’économie néerlandaise.', category: 'Science' },
+    { date: '1975', name: 'Indépendance du Suriname', context: 'L’espace postcolonial néerlandais continue de se redéfinir.', category: 'Politique' },
+    { date: '1980', name: 'Béatrix devient reine', context: 'Une nouvelle génération dynastique accède au trône.', people: 'Béatrix', category: 'Politique' },
+    { date: '1992', name: 'Traité de Maastricht', context: 'L’Union européenne franchit un cap décisif depuis le sol néerlandais.', category: 'Politique' },
+    { date: '2001', name: 'Mariage homosexuel légalisé', context: 'Les Pays-Bas deviennent pionniers dans l’égalité matrimoniale.', category: 'Politique' },
+    { date: '2002', name: 'Mise en circulation de l’euro', context: 'Le florin disparaît au profit de la monnaie unique.', category: 'Politique' },
+    { date: '2010', name: 'Dissolution des Antilles néerlandaises', context: 'Le Royaume des Pays-Bas est institutionnellement redéfini dans la Caraïbe.', category: 'Politique' },
+    { date: '2013', name: 'Guillaume-Alexandre devient roi', context: 'La succession de Béatrix ouvre une nouvelle phase monarchique.', people: 'Guillaume-Alexandre', category: 'Politique' },
+    { date: '2014', name: 'Crash du vol MH17', context: 'Le drame marque profondément la société néerlandaise et sa diplomatie.', category: 'Politique' }
+  ]
+};
+
+function inferEraFromDate(date) {
+  const year = estimateYearFromText(date);
+  if (year === null) return 'contemporain';
+  if (year <= -3200) return 'prehist';
+  if (year <= 476) return 'antiquite';
+  if (year <= 1492) return 'moyen-age';
+  if (year <= 1789) return 'modernes';
+  return 'contemporain';
+}
+
+function selectMilestoneEvents(items, limit = 10) {
+  if (!Array.isArray(items) || items.length <= limit) return items || [];
+  const pickedIndexes = new Set();
+  for (let step = 0; step < limit; step += 1) {
+    const ratio = limit === 1 ? 0 : step / (limit - 1);
+    const index = Math.round(ratio * (items.length - 1));
+    pickedIndexes.add(index);
+  }
+  let cursor = 0;
+  while (pickedIndexes.size < limit && cursor < items.length) {
+    pickedIndexes.add(cursor);
+    cursor += 1;
+  }
+  return Array.from(pickedIndexes)
+    .sort((a, b) => a - b)
+    .map(index => items[index]);
+}
+
+const countryTimelineData = {
+  ...westernEuropeBlock1,
+  ...westernEuropeBlock2
+};
+
+function renderCountryTimelineBlock(containerId, countries) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const html = countries.map(country => {
+    const selectedItems = selectMilestoneEvents(countryTimelineData[country] || [], 10);
+    return `
+      <div class="geo-label" data-country-label="${escapeHtml(country)}">🏳️ ${country}<span class="country-meta">${selectedItems.length} dates</span></div>
+      ${selectedItems.map((item, index) => createEventMarkup(
+        item,
+        inferEraFromDate(item.date),
+        `${normalizeText(country).replace(/\s+/g, '-')}-${index}`,
+        { country }
+      )).join('')}
+    `;
+  }).join('');
+  container.innerHTML = html;
+}
+
+function injectWesternEuropeBlock1() {
+  renderCountryTimelineBlock('westernEuropeBlock1', Object.keys(westernEuropeBlock1));
+}
+
+injectWesternEuropeBlock1();
+
+function injectWesternEuropeBlock2() {
+  renderCountryTimelineBlock('westernEuropeBlock2', Object.keys(westernEuropeBlock2));
+}
+
+injectWesternEuropeBlock2();
+
+const quickNavLabels = {
+  'era-prehist': 'Préhistoire',
+  'era-antiquite': 'Antiquité',
+  'era-moyen-age': 'Moyen Âge',
+  'era-modernes': 'Temps modernes',
+  'era-contemporain': 'Contemporain',
+  'era-top50': 'Top 150',
+  'era-europe-west-block-1': 'Europe Ouest 1',
+  'era-europe-west-block-2': 'Europe Ouest 2'
+};
+
+function buildQuickNav() {
+  if (!quickNavLinks) return;
+  const sections = Array.from(document.querySelectorAll('.era-section'));
+  quickNavLinks.innerHTML = sections.map(section => {
+    const label = quickNavLabels[section.id] || section.querySelector('h2')?.textContent.trim() || section.id;
+    return `<a href="#${section.id}" data-target="${section.id}">${label}</a>`;
+  }).join('');
+}
+
+function syncQuickNavVisibility() {
+  if (!quickNavLinks) return;
+  quickNavLinks.querySelectorAll('a').forEach(link => {
+    const target = document.getElementById(link.dataset.target);
+    const hidden = !target || getComputedStyle(target).display === 'none';
+    link.style.display = hidden ? 'none' : 'block';
+  });
+}
+
+function syncQuickNavActive() {
+  if (!quickNavLinks) return;
+  const sections = Array.from(document.querySelectorAll('.era-section')).filter(section => getComputedStyle(section).display !== 'none');
+  let currentId = sections[0]?.id || '';
+  sections.forEach(section => {
+    const rect = section.getBoundingClientRect();
+    if (rect.top <= 180) currentId = section.id;
+  });
+  quickNavLinks.querySelectorAll('a').forEach(link => {
+    link.classList.toggle('active', link.dataset.target === currentId);
+  });
+}
+
+buildQuickNav();
+
 const eventEntries = Array.from(document.querySelectorAll('.event')).map((event, index) => {
   const date = event.querySelector('.event-date')?.textContent.trim() || '';
   const name = event.querySelector('.event-name')?.textContent.trim() || '';
@@ -1306,6 +1828,7 @@ const eventEntries = Array.from(document.querySelectorAll('.event')).map((event,
   const people = event.querySelector('.event-people')?.textContent.trim() || '';
   const category = event.querySelector('.event-cat')?.textContent.trim() || '';
   const era = event.dataset.era || '';
+  const country = event.dataset.country || '';
   const year = estimateYearFromText(date);
   const summary = context || `${name} marque un jalon important dans ${eraConfigs[era]?.label?.toLowerCase() || "l'histoire mondiale"}.`;
   const bullets = [
@@ -1322,6 +1845,7 @@ const eventEntries = Array.from(document.querySelectorAll('.event')).map((event,
     id: `event-${index}`,
     type: 'event',
     era,
+    country,
     date,
     year,
     name,
@@ -1378,7 +1902,18 @@ function updateStats() {
   document.getElementById('statEvents').textContent = `${eventEntries.length}+`;
   const peopleCount = new Set(eventEntries.flatMap(entry => entry.people ? entry.people.split(',').map(item => item.trim()) : []).filter(Boolean)).size;
   document.getElementById('statPeople').textContent = `${peopleCount}+`;
-  document.getElementById('statMarkers').textContent = '0';
+  const countriesCount = new Set(eventEntries.map(entry => entry.country).filter(Boolean)).size;
+  document.getElementById('statMarkers').textContent = `${countriesCount}`;
+}
+
+function populateCountryFilter() {
+  if (!countryFilter) return;
+  const countries = [...new Set(eventEntries.map(entry => entry.country).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, 'fr'));
+  countryFilter.innerHTML = [
+    '<option value="all">Tous les pays</option>',
+    ...countries.map(country => `<option value="${escapeHtml(country)}">${escapeHtml(country)}</option>`)
+  ].join('');
 }
 
 function getEntryById(id) {
@@ -1407,6 +1942,7 @@ function renderDetail(entry) {
 
   const chips = [
     eraConfigs[entry.era]?.label || '',
+    entry.country || '',
     entry.category || '',
     entry.isMajor ? 'Majeur' : '',
     'Fiche cliquable'
@@ -1439,11 +1975,12 @@ function applyFilters() {
 
   document.querySelectorAll('.event').forEach(event => {
     const entry = getEntryById(event.dataset.entryId);
-    const haystack = normalizeText([entry.date, entry.name, entry.context, entry.people, entry.category].join(' '));
+    const haystack = normalizeText([entry.date, entry.name, entry.context, entry.people, entry.category, entry.country].join(' '));
     const matchesSearch = !state.search || haystack.includes(state.search);
     const matchesType = showEvents && (!peopleOnly || !!entry.people);
     const matchesEra = state.era === 'all' || state.era === entry.era;
-    const visible = matchesSearch && matchesType && matchesEra;
+    const matchesCountry = state.country === 'all' || entry.country === state.country;
+    const visible = matchesSearch && matchesType && matchesEra && matchesCountry;
     event.classList.toggle('hidden', !visible);
   });
 
@@ -1466,15 +2003,16 @@ function applyFilters() {
       section.style.display = 'none';
       return;
     }
-    const matchesEra = state.era === 'all' || section.id === `era-${state.era}`;
     const hasVisibleContent = !!section.querySelector('.event:not(.hidden)');
-    section.style.display = matchesEra && hasVisibleContent ? 'block' : 'none';
+    section.style.display = hasVisibleContent ? 'block' : 'none';
   });
 
   document.querySelectorAll('.top50-item').forEach(item => {
     const entry = getEntryById(item.dataset.entryId);
-    const haystack = normalizeText([entry.date, entry.name, entry.context, entry.people].join(' '));
-    const visible = (!state.search || haystack.includes(state.search)) && (state.era === 'all' || state.era === 'top50');
+    const haystack = normalizeText([entry.date, entry.name, entry.context, entry.people, entry.country].join(' '));
+    const visible = (!state.search || haystack.includes(state.search))
+      && (state.era === 'all' || state.era === 'top50')
+      && (state.country === 'all' || entry.country === state.country);
     item.style.display = visible ? 'flex' : 'none';
   });
 
@@ -1486,6 +2024,9 @@ function applyFilters() {
   });
   syncActiveButtons('#periodMenu button', button => button.dataset.era === state.era);
   syncActiveButtons('#typeMenu button', button => button.dataset.type === state.type);
+  if (countryFilter) countryFilter.value = state.country;
+  syncQuickNavVisibility();
+  syncQuickNavActive();
 }
 
 function showAll(btn) {
@@ -1506,6 +2047,11 @@ function setEraFilter(era) {
 
 function setTypeFilter(type) {
   state.type = type === 'markers' ? 'events' : type;
+  applyFilters();
+}
+
+function setCountryFilter(country) {
+  state.country = country || 'all';
   applyFilters();
 }
 
@@ -1532,7 +2078,9 @@ document.addEventListener('keydown', event => {
 });
 
 updateStats();
+populateCountryFilter();
 applyFilters();
+window.addEventListener('scroll', syncQuickNavActive, { passive: true });
 
 const detailMode = urlParams.get('view') === 'detail';
 if (detailMode) {

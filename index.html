@@ -705,6 +705,134 @@ footer a {
   .event-content { flex-direction: column; gap: 0.45rem; }
   .event-date { min-width: 0; padding-top: 0; }
 }
+/* ═════════════════════════════════════════════════════════ SIDEBAR */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 78px;
+  width: 280px;
+  height: calc(100vh - 78px);
+  background: rgba(255, 255, 255, 0.95);
+  border-right: 1px solid rgba(15, 23, 42, 0.08);
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 90;
+  backdrop-filter: blur(12px);
+  display: none;
+  flex-direction: column;
+}
+.sidebar.active {
+  display: flex;
+}
+.sidebar-header {
+  padding: 1.2rem 1rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.8rem 0;
+}
+.sidebar-section {
+  margin-bottom: 1.5rem;
+}
+.sidebar-section-title {
+  padding: 0.6rem 1rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--gold);
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.sidebar-section-title:hover {
+  color: var(--ink);
+}
+.sidebar-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.sidebar-item {
+  padding: 0.65rem 1rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-left: 3px solid transparent;
+  padding-left: 0.7rem;
+}
+.sidebar-item:hover {
+  background: rgba(0, 113, 227, 0.05);
+  color: var(--gold);
+  padding-left: 1rem;
+  border-left-color: var(--gold);
+}
+.sidebar-item.active {
+  background: rgba(0, 113, 227, 0.1);
+  color: var(--gold);
+  font-weight: 600;
+  border-left-color: var(--gold);
+  padding-left: 1rem;
+}
+.sidebar-toggle {
+  position: fixed;
+  left: 1rem;
+  top: 95px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-soft);
+}
+.sidebar-toggle:hover {
+  background: rgba(0, 113, 227, 0.1);
+  border-color: var(--gold);
+}
+.sidebar-toggle.active {
+  background: linear-gradient(180deg, #2997ff 0%, #0071e3 100%);
+  border-color: transparent;
+  color: white;
+}
+.sidebar-toggle svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  transition: transform 0.3s ease;
+}
+.sidebar-toggle.active svg {
+  transform: rotate(180deg);
+}
+main {
+  transition: margin-left 0.3s ease;
+}
+main.sidebar-open {
+  margin-left: 280px;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 240px;
+  }
+  main.sidebar-open {
+    margin-left: 240px;
+  }
+}
 @media (max-width: 640px) {
   nav { top: 150px; }
   .search-bar { padding: 0.9rem 1rem 0; flex-direction: column; align-items: stretch; }
@@ -715,10 +843,37 @@ footer a {
   .detail-shell { border-radius: 24px; }
   header { padding-top: 4.6rem; }
   header h1 { font-size: clamp(2.4rem, 12vw, 3.9rem); }
+  .sidebar {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    max-width: none;
+    border-right: none;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    height: auto;
+    max-height: 60vh;
+  }
+  main.sidebar-open {
+    margin-left: 0;
+  }
 }
 </style>
 </head>
 <body>
+
+<!-- ═══════════════════════════════════════════ SIDEBAR NAVIGATION ═══════════════════════════════════════════ -->
+<button class="sidebar-toggle" id="sidebarToggle" title="Ouvrir la navigation rapide">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor"/>
+  </svg>
+</button>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">🧭 Navigation rapide</div>
+  <div class="sidebar-content" id="sidebarContent">
+    <!-- Contenu généré par JavaScript -->
+  </div>
+</div>
 
 <div class="top-menu">
   <div class="top-menu-inner">
@@ -1412,7 +1567,538 @@ footer a {
 </div>
 </section>
 
-</main>
+<!-- ══════════════════ ÉVÉNEMENTS MAJEURS PAR PAYS ══════════════════ -->
+<section style="margin-top: 3rem; border-top: 2px solid rgba(15, 23, 42, 0.08); padding-top: 2rem;">
+  <h2 style="text-align: center; font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--ink);">🌍 Événements majeurs par pays</h2>
+  <p style="text-align: center; color: var(--ink-soft); margin-bottom: 2rem;">Dix repères fondamentaux pour comprendre l'histoire de chaque nation</p>
+
+  <!-- 🇫🇷 FRANCE -->
+  <div class="era-section" id="country-france">
+    <div class="era-header" style="background-color: rgba(0, 113, 227, 0.05); border-color: rgba(0, 113, 227, 0.1);">
+      <div style="font-size: 2rem;">🇫🇷</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">France</h3>
+        <p>Dix événements majeurs de l'histoire française</p>
+      </div>
+    </div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">481–511</span><span class="event-text"><span class="event-name">Clovis Ier fonde le royaume franc et la dynastie mérovingienne</span><span class="event-context">Baptême de Reims vers 496 ; alliance entre l'Église et le pouvoir franc</span><span class="event-people">Clovis Ier, Remigius</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">25 décembre 800</span><span class="event-text"><span class="event-name">Charlemagne couronné empereur d'Occident par le pape Léon III</span><span class="event-context">La paix carolingienne structure durablement l'Europe chrétienne</span><span class="event-people">Charlemagne, Léon III</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">843</span><span class="event-text"><span class="event-name">Traité de Verdun : partition de l'empire carolingien</span><span class="event-context">La France actuelle émerge de la Lotharingie ; les Capétiens unifieront graduellement le royaume</span><span class="event-people">Charles le Chauve, Louis le Germanique, Lothaire</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1337–1453</span><span class="event-text"><span class="event-name">Guerre de Cent Ans : la France affirme son indépendance</span><span class="event-context">Conflit intermittent contre l'Angleterre ; victoire finale ; construction de l'État-nation français</span><span class="event-people">Jeanne d'Arc, Charles VII, Henri V</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1598</span><span class="event-text"><span class="event-name">Édit de Nantes : tolérance religieuse et paix civile</span><span class="event-context">Henri IV réconcilie catholiques et protestants ; fin des guerres de religion</span><span class="event-people">Henri IV de France</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1661–1715</span><span class="event-text"><span class="event-name">Règne de Louis XIV : apogée de l'absolutisme français</span><span class="event-context">Versailles, mécénat culturel, hégémonie européenne ; France devient la puissance culturelle majeure</span><span class="event-people">Louis XIV, Colbert, Vauban</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">5 mai 1789</span><span class="event-text"><span class="event-name">Ouverture des États Généraux : début de la Révolution française</span><span class="event-context">14 juillet prise de la Bastille ; transformation de l'ordre politique mondial ; Déclaration des Droits de l'Homme</span><span class="event-people">Louis XVI, Necker, Mirabeau</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">2 décembre 1804</span><span class="event-text"><span class="event-name">Sacre de Napoléon Bonaparte : Empire français</span><span class="event-context">Code civil, administration centralisée, expansion puis chute ; l'Europe redessinnée</span><span class="event-people">Napoléon Bonaparte</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1870–1871</span><span class="event-text"><span class="event-name">Défaite franco-allemande et proclamation de l'Empire allemand</span><span class="event-context">Perte d'Alsace-Lorraine ; humiliation ; germe de la revanche française du XXe siècle</span><span class="event-people">Bismarck, MacMahon, Napoléon III</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1918</span><span class="event-text"><span class="event-name">Victoire de la France à la Première Guerre mondiale</span><span class="event-context">Armistice novembre 1918 ; Traité de Versailles 1919 ; retrouver Alsace-Lorraine ; Grande Puissance confirmée</span><span class="event-people">Clemenceau, Foch, Pétain</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇬🇧 ROYAUME-UNI -->
+  <div class="era-section" id="country-uk">
+    <div class="era-header" style="background-color: rgba(139, 0, 139, 0.05); border-color: rgba(139, 0, 139, 0.1);">
+      <div style="font-size: 2rem;">🇬🇧</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Royaume-Uni</h3>
+        <p>Dix événements de l'histoire britannique</p>
+      </div>
+    </div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">14 octobre 1066</span><span class="event-text"><span class="event-name">Bataille d'Hastings : conquête normande de l'Angleterre</span><span class="event-context">Guillaume le Conquérant ; fusion franco-normande de l'Angleterre ; nouvelle aristocratie</span><span class="event-people">Guillaume le Conquérant, Harold II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">15 juin 1215</span><span class="event-text"><span class="event-name">Magna Carta : premiers droits limites au pouvoir royal</span><span class="event-context">63 articles fondateurs du constitutionnalisme et de l'habeas corpus</span><span class="event-people">Roi Jean sans Terre, barons anglais</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1265</span><span class="event-text"><span class="event-name">Premier Parlement représentatif en Europe</span><span class="event-context">Simon de Montfort y adjoins les communes ; proto-démocratie parlementaire</span><span class="event-people">Simon de Montfort</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">31 octobre 1517</span><span class="event-text"><span class="event-name">Martin Luther affiche ses 95 thèses (influence britannique ultérieure)</span><span class="event-context">La Réforme protestante gagne l'Angleterre ; rupture avec Rome en 1534 sous Henri VIII</span><span class="event-people">Martin Luther, Henri VIII</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1588</span><span class="event-text"><span class="event-name">Défaite de l'Invincible Armada espagnole</span><span class="event-context">Victoire navale ; Élisabeth Ire ; Grande-Bretagne devient puissance maritime</span><span class="event-people">Élisabeth Ire, Philippe II, Drake</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1688</span><span class="event-text"><span class="event-name">Glorieuse Révolution anglaise : monarchie constitutionnelle</span><span class="event-context">Guillaume III, Bill of Rights 1689 ; Parlement souverain, modèle de démocratie libérale</span><span class="event-people">Guillaume III d'Orange, Jacques II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1760–1840</span><span class="event-text"><span class="event-name">Révolution industrielle britannique : charbon, acier, chemin de fer</span><span class="event-context">La Grande-Bretagne devient l'atelier du monde ; puissance économique hégémonique</span><span class="event-people">George Stephenson, Arkwright, Brunel</span></span><span class="event-cat cat-science">Science</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1857–1858</span><span class="event-text"><span class="event-name">Apogée de l'Empire britannique : Victoria proclaimed Empress of India</span><span class="event-context">L'empire sur lequel le soleil ne se couche jamais ; contrôle de 1/4 du monde</span><span class="event-people">Victoria, Disraeli</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1945</span><span class="event-text"><span class="event-name">Victoire britannique à la Seconde Guerre mondiale</span><span class="event-context">Winston Churchill ; Blitz subsisté ; empire commence à décliner ; Commonwealth émerge</span><span class="event-people">Winston Churchill, George VI</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">2016</span><span class="event-text"><span class="event-name">Brexit : vote pour quitter l'Union européenne</span><span class="event-context">Référendum ; 52% pour le Leave ; pivot géopolitique ; 4 ans de négociations</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇩🇪 ALLEMAGNE -->
+  <div class="era-section" id="country-germany">
+    <div class="era-header" style="background-color: rgba(205, 92, 92, 0.05); border-color: rgba(205, 92, 92, 0.1);">
+      <div style="font-size: 2rem;">🇩🇪</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Allemagne</h3>
+        <p>Dix événements de l'histoire allemande</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">962</span><span class="event-text"><span class="event-name">Otton Ier fonde le Saint-Empire romain germanique</span><span class="event-context">Renaissance impériale en Occident ; structure politique de l'Europe centrale pendant 800 ans</span><span class="event-people">Otton Ier, pape Jean XII</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1517</span><span class="event-text"><span class="event-name">Martin Luther affiche ses 95 thèses à Wittemberg</span><span class="event-context">Réforme protestante lancée en Allemagne ; scission de la chrétienté occidentale</span><span class="event-people">Martin Luther</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1618–1648</span><span class="event-text"><span class="event-name">Guerre de Trente Ans : Allemagne dévastée</span><span class="event-context">8 millions de morts ; fin du Saint-Empire comme puissance unifiée ; fragmentation germanique</span><span class="event-people">Wallenstein, Tilly, Gustave II Adolf</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1701–1713</span><span class="event-text"><span class="event-name">Guerre de Succession d'Autriche : Prusse émerge</span><span class="event-context">Frédéric Ier ; la Prusse devient une grande puissance européenne</span><span class="event-people">Frédéric Ier, Frédéric II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">18 janvier 1871</span><span class="event-text"><span class="event-name">Proclamation de l'Empire allemand à Versailles</span><span class="event-context">Bismarck unifie l'Allemagne après la victoire sur la France ; nouvel équilibre européen</span><span class="event-people">Guillaume Ier, Bismarck</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1900–1914</span><span class="event-text"><span class="event-name">Industrialisation rapide et montée en puissance impériale allemande</span><span class="event-context">Puissance industrielle majeure ; rivalité avec la Grande-Bretagne ; courses aux armements</span><span class="event-people">Guillaume II, Tirpitz</span></span><span class="event-cat cat-science">Science</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">28 juillet 1914</span><span class="event-text"><span class="event-name">Allemagne déclare la guerre à la Russie : début de la Première Guerre mondiale</span><span class="event-context">30 janvier 1933 : Hitler nommé chancelier ; 70–85 millions de morts à suivre</span><span class="event-people">Guillaume II, Hindenburg, Hitler</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1 septembre 1939</span><span class="event-text"><span class="event-name">Invasion de la Pologne : début de la Seconde Guerre mondiale</span><span class="event-context">Blitzkrieg ; expansion nazie ; 70–85 millions de morts ; Shoah de 6 millions de Juifs</span><span class="event-people">Adolf Hitler</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1949</span><span class="event-text"><span class="event-name">Partition de l'Allemagne : RDA et RFA</span><span class="event-context">Deux États allemands jusqu'en 1990 ; Mur de Berlin symbole de la Guerre froide</span><span class="event-people">Konrad Adenauer, Theodor Heuss</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">9 novembre 1989</span><span class="event-text"><span class="event-name">Chute du Mur de Berlin : réunification allemande</span><span class="event-context">Novembre 1989 : mur s'effondre ; 3 octobre 1990 : réunification allemande formelle</span><span class="event-people">Gorbatchev, Kohl, Honecker</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇨🇳 CHINE -->
+  <div class="era-section" id="country-china">
+    <div class="era-header" style="background-color: rgba(255, 69, 0, 0.05); border-color: rgba(255, 69, 0, 0.1);">
+      <div style="font-size: 2rem;">🇨🇳</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Chine</h3>
+        <p>Dix événements de l'histoire chinoise</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 2100 av. J.-C.</span><span class="event-text"><span class="event-name">Dynastie Xia : premiers États chinois organisés</span><span class="event-context">Légende et archéologie ; naissance de la civilisation chinoise classique</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1046 av. J.-C.</span><span class="event-text"><span class="event-name">Fondation de la Dynastie Zhou : mandat du ciel</span><span class="event-context">Plus longue dynastie ; concept du mandat du ciel façonne la pensée politique chinoise millénaire</span><span class="event-people">Duc de Zhou</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">551 av. J.-C.</span><span class="event-text"><span class="event-name">Naissance de Confucius : morale et gouvernement</span><span class="event-context">Confucianisme devient l'éthique politique chinoise pendant 2 500 ans</span><span class="event-people">Confucius (Kongzi)</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">221 av. J.-C.</span><span class="event-text"><span class="event-name">Qin Shi Huang unifie la Chine : premier empire</span><span class="event-context">Standardisation écriture, monnaie, mesures ; Grande Muraille ; armée de terre cuite</span><span class="event-people">Qin Shi Huang</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">206 av. J.-C.–220 ap. J.-C.</span><span class="event-text"><span class="event-name">Dynastie Han : apogée de l'empire classique chinois</span><span class="event-context">Route de la Soie ; papier, boussole, imprimerie ; 60 millions d'habitants</span><span class="event-people">Liu Bang (Gaozu), Kangxi</span></span><span class="event-cat cat-science">Science</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">618–907</span><span class="event-text"><span class="event-name">Dynastie Tang : apogée culturel et artistique</span><span class="event-context">Poésie, peinture, bouddhisme ; expansion vers l'Asie centrale ; âge d'or culturel</span><span class="event-people">Tang Taizong, Wu Zetian</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1368–1644</span><span class="event-text"><span class="event-name">Dynastie Ming : Grande Muraille, Cité interdite</span><span class="event-context">Restauration Han ; construction de la Cité interdite et agrandissement de la Grande Muraille</span><span class="event-people">Zhu Yuanzhang, Yonglo</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1644–1912</span><span class="event-text"><span class="event-name">Dynastie Qing : dernière dynastie impériale, apogée puis déclin</span><span class="event-context">Kangxi et Qianlong apogée ; XIXe : guerres de l'opium ; déclin face à l'Occident</span><span class="event-people">Kangxi, Qianlong</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1 octobre 1949</span><span class="event-text"><span class="event-name">Mao proclame la République populaire de Chine</span><span class="event-context">Révolution communiste ; 1/4 de l'humanité dans le bloc communiste</span><span class="event-people">Mao Zedong</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1978–2001</span><span class="event-text"><span class="event-name">Réformes de Deng Xiaoping : économie de marché socialiste</span><span class="event-context">Spéciales économiques ; entrée à l'OMC 2001 ; montée en puissance économique</span><span class="event-people">Deng Xiaoping</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇯🇵 JAPON -->
+  <div class="era-section" id="country-japan">
+    <div class="era-header" style="background-color: rgba(255, 0, 0, 0.05); border-color: rgba(255, 0, 0, 0.1);">
+      <div style="font-size: 2rem;">🇯🇵</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Japon</h3>
+        <p>Dix événements de l'histoire japonaise</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">300–300 ap. J.-C.</span><span class="event-text"><span class="event-name">Période Kofun : royaumes tumuli et influence chinoise</span><span class="event-context">Contact avec la Chine ; introduction de l'écriture, bouddhisme, technologies</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">587</span><span class="event-text"><span class="event-name">Introduction du bouddhisme au Japon</span><span class="event-context">Roi de Baekje envoie une statue du Bouddha ; transformation religieuse et culturelle</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1192</span><span class="event-text"><span class="event-name">Yoritomo fonde le shogunat de Kamakura</span><span class="event-context">Naissance du système féodal ; shoguns gouvernent, empereurs règnent mais ne gouvernent pas</span><span class="event-people">Minamoto Yoritomo</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1467–1615</span><span class="event-text"><span class="event-name">Sengoku jidai : l'ère des États combattants</span><span class="event-context">Féodalité, guerriers samouraïs, daimyos ; unification progressive sous Oda Nobunaga</span><span class="event-people">Oda Nobunaga, Toyotomi Hideyoshi, Tokugawa Ieyasu</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1603–1868</span><span class="event-text"><span class="event-name">Shogunat Edo Tokugawa : paix et isolement</span><span class="event-context">Sakoku (fermeture) ; 265 ans sans guerres ; culture raffinée ; stabilité politique</span><span class="event-people">Tokugawa Ieyasu</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1853–1868</span><span class="event-text"><span class="event-name">Révolte contre l'Occident et Restauration Meiji</span><span class="event-context">Arrival of Commodore Perry forces opening ; Tokugawa shogunate collapses ; modernisation rapide</span><span class="event-people">Matthieu Perry, Mutsuhito (Meiji)</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1900–1945</span><span class="event-text"><span class="event-name">Japon devient puissance militaire mondiale</span><span class="event-context">Victoire russo-japonaise 1905 ; annexion de la Corée ; expansion impérialiste ; Seconde Guerre mondiale</span><span class="event-people">Meiji, Taisho, Showa Hirohito</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">6 août 1945</span><span class="event-text"><span class="event-name">Bombe atomique sur Hiroshima : défaite et occupation</span><span class="event-context">140 000 morts ; reddition 2 sept. ; occupation américaine ; remilitarisation interdite</span><span class="event-people">Truman, Hirohito</span></span><span class="event-cat cat-science">Science</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1960–1980</span><span class="event-text"><span class="event-name">Miracle économique japonais : 2e puissance mondiale</span><span class="event-context">Motorola, Sony, Toyota ; technologies ; qualité ; Japon devient potentiel #2 économique</span><span class="event-people">Akio Morita, Shoji Shima</span></span><span class="event-cat cat-science">Science</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">2011</span><span class="event-text"><span class="event-name">Tremblement de terre, tsunami et catastrophe nucléaire de Fukushima</span><span class="event-context">Magnitud 9 ; 18 000+ morts ; Fukushima Daiichi meltdown ; débat sur l'énergie nucléaire</span></span><span class="event-cat cat-science">Science</span></div></div>
+  </div>
+
+  <!-- 🇺🇸 ÉTATS-UNIS -->
+  <div class="era-section" id="country-usa">
+    <div class="era-header" style="background-color: rgba(65, 105, 225, 0.05); border-color: rgba(65, 105, 225, 0.1);">
+      <div style="font-size: 2rem;">🇺🇸</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">États-Unis</h3>
+        <p>Dix événements de l'histoire américaine</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1607</span><span class="event-text"><span class="event-name">Fondation de Jamestown : première implantation permanente anglaise</span><span class="event-context">Colonie de Virginie ; tabac économie ; fondement des colonies du Sud</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1620</span><span class="event-text"><span class="event-name">Mayflower : arrivée des Pèlerins au Massachusetts</span><span class="event-context">Réfugiés religieux ; colonies du Nord puritaines ; autonomie locale</span><span class="event-people">William Bradford</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">4 juillet 1776</span><span class="event-text"><span class="event-name">Déclaration d'indépendance américaine</span><span class="event-context">"Tous les hommes sont créés égaux" ; première démocratie républicaine moderne</span><span class="event-people">Thomas Jefferson, Benjamin Franklin, John Adams</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1787</span><span class="event-text"><span class="event-name">Constitution américaine : fédéralisme et séparation des pouvoirs</span><span class="event-context">Modèle fondateur de l'État démocratique moderne ; Bill of Rights 1791</span><span class="event-people">James Madison, George Washington</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1861–1865</span><span class="event-text"><span class="event-name">Guerre de Sécession : fin de l'esclavage américain</span><span class="event-context">620 000 morts ; Abraham Lincoln ; XIIIe Amendement abolit l'esclavage</span><span class="event-people">Abraham Lincoln, Robert E. Lee, Ulysses Grant</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1898</span><span class="event-text"><span class="event-name">Guerre hispano-américaine : émergence comme puissance impériale</span><span class="event-context">Cuba indépendante ; Puerto Rico, Guam, Philippines sous contrôle américain</span><span class="event-people">Theodore Roosevelt, William McKinley</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1917</span><span class="event-text"><span class="event-name">Entrée des États-Unis dans la Première Guerre mondiale</span><span class="event-context">Implication décisive ; Truman devient président ; États-Unis grande puissance</span><span class="event-people">Woodrow Wilson</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">7 décembre 1941</span><span class="event-text"><span class="event-name">Attaque de Pearl Harbor : États-Unis entrent dans la Seconde Guerre mondiale</span><span class="event-context">2 403 morts ; tournant décisif ; États-Unis deviennent superpuissance</span><span class="event-people">Franklin D. Roosevelt, Eisenhower</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1954–1968</span><span class="event-text"><span class="event-name">Mouvement des droits civiques : fin de la ségrégation</span><span class="event-context">Décision Brown v. Board 1954 ; Martin Luther King "I Have a Dream" 1963</span><span class="event-people">Martin Luther King Jr., Malcolm X</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1990</span><span class="event-text"><span class="event-name">Guerre du Golfe : États-Unis puissance militaire mondiale incontestée</span><span class="event-context">Après la chute du Mur ; seule superpuissance restante ; nouvelle géopolitique</span><span class="event-people">George H. W. Bush, Norman Schwarzkopf</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇪🇬 ÉGYPTE -->
+  <div class="era-section" id="country-egypt">
+    <div class="era-header" style="background-color: rgba(184, 134, 11, 0.05); border-color: rgba(184, 134, 11, 0.1);">
+      <div style="font-size: 2rem;">🇪🇬</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Égypte</h3>
+        <p>Dix événements de l'histoire égyptienne</p>
+      </div>
+    </div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 3100 av. J.-C.</span><span class="event-text"><span class="event-name">Unification de l'Égypte par Narmer : naissance du pharaonisme</span><span class="event-context">Fusion Haute et Basse Égypte ; début des dynasties ; 3 000 ans de continuité</span><span class="event-people">Pharaon Narmer</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 2650 av. J.-C.</span><span class="event-text"><span class="event-name">Pyramide de Djoser à Saqqara : première pyramide à degrés</span><span class="event-context">Première grande construction en pierre taillée ; révolution architecturale</span><span class="event-people">Pharaon Djoser, Imhotep</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 2560 av. J.-C.</span><span class="event-text"><span class="event-name">Grande Pyramide de Gizeh : merveille architecturale</span><span class="event-context">146 m de haut ; 2,3 millions de blocs ; seule merveille antique encore debout</span><span class="event-people">Pharaon Khéops (Khouf)</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1550 av. J.-C.</span><span class="event-text"><span class="event-name">Nouvel Empire égyptien : apogée de la puissance pharaonique</span><span class="event-context">Expulsion des Hyksos ; expansion vers Nubie et Levant ; Karnak et Louxor</span><span class="event-people">Ahmosis, Thoutmosis III, Ramsès II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1350 av. J.-C.</span><span class="event-text"><span class="event-name">Akhénaton tente une révolution religieuse monothéiste</span><span class="event-context">Culte d'Aton ; fermeture des temples ; Akhetaton nouvelle capitale ; tentative anéantie</span><span class="event-people">Akhénaton, Néfertiti, Toutankhamon</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1274 av. J.-C.</span><span class="event-text"><span class="event-name">Bataille de Qadesh : premier traité de paix international écrit</span><span class="event-context">Égypte vs Hittites ; traité sigillé en argent ; diplomatie moderne en germe</span><span class="event-people">Ramsès II, Hattousil III</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">30 av. J.-C.</span><span class="event-text"><span class="event-name">Mort de Cléopâtre VII : fin de l'Égypte pharaonique</span><span class="event-context">Suicide après défaite face à Octave ; l'Égypte devient province romaine</span><span class="event-people">Cléopâtre VII, Marc Antoine</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1798</span><span class="event-text"><span class="event-name">Campagne d'Égypte de Napoléon : redécouverte</span><span class="event-context">Découverte de la pierre de Rosette ; naissance de l'égyptologie ; européanisation</span><span class="event-people">Napoléon Bonaparte, Champollion</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1882–1952</span><span class="event-text"><span class="event-name">Occupation britannique et protectorat de l'Égypte</span><span class="event-context">Suez ; modernisation mais perte de contrôle ; resentment ; nationalisme émergent</span><span class="event-people">Lord Cromer, Saad Zaghloul</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1952–1970</span><span class="event-text"><span class="event-name">Révolution de Naguib et Nasser : indépendance et nationalisme arabe</span><span class="event-context">Décolonisation ; Guerre de Suez 1956 ; République arabe ; figure majeure du panarabisme</span><span class="event-people">Gamal Abdel Nasser</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇮🇹 ITALIE -->
+  <div class="era-section" id="country-italy">
+    <div class="era-header" style="background-color: rgba(0, 128, 0, 0.05); border-color: rgba(0, 128, 0, 0.1);">
+      <div style="font-size: 2rem;">🇮🇹</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Italie</h3>
+        <p>Dix événements de l'histoire italienne</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">753 av. J.-C.</span><span class="event-text"><span class="event-name">Fondation légendaire de Rome par Romulus</span><span class="event-context">La tradition place la naissance de Rome au 21 avril 753 av. J.-C.</span><span class="event-people">Romulus, Rémus</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">509 av. J.-C.</span><span class="event-text"><span class="event-name">Fondation de la République romaine</span><span class="event-context">Expulsion de Tarquin le Superbe ; deux consuls élus ; assemblées ; ère républicaine</span><span class="event-people">Brutus l'Ancien, Publius Valerius Publicola</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">27 av. J.-C.</span><span class="event-text"><span class="event-name">Auguste devient premier empereur : pax romana inaugurée</span><span class="event-context">44 millions de sujets ; apogée territorial sous Trajan (117 ap. J.-C.)</span><span class="event-people">Auguste (Caius Octavius), Marc Antoine, Cléopâtre</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1 janvier 1 ap. J.-C.</span><span class="event-text"><span class="event-name">l'Italie, Empire romain couvre 5 millions de km²</span><span class="event-context">Expansion territoriale progressive ; Pax romana 200 ans ; richesse et culture</span><span class="event-people">Auguste, Tiberius, Julius Caesar</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1300–1600</span><span class="event-text"><span class="event-name">Renaissance italienne : humanisme et retour à l'Antiquité</span><span class="event-context">Florence, Venise, Rome ; Dante, Pétrarque, Boccace ; art et littérature révolutionnaires</span><span class="event-people">Côme de Médicis, Laurent le Magnifique, Brunelleschi</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1508–1512</span><span class="event-text"><span class="event-name">Michel-Ange peint la Chapelle Sixtine</span><span class="event-context">Masterpiece of Renaissance ; 4 ans couché sur l'échafaud ; 300 figures ; sommet absolu</span><span class="event-people">Michel-Ange Buonarroti</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1503–1519</span><span class="event-text"><span class="event-name">Léonard de Vinci peint La Joconde et La Cène</span><span class="event-context">Homme universel : peintre, ingénieur, anatomiste, architecte ; quintessence de la Renaissance</span><span class="event-people">Léonard de Vinci</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">17 mars 1861</span><span class="event-text"><span class="event-name">Unification de l'Italie : Victor-Emmanuel II roi d'Italie</span><span class="event-context">Risorgimento ; État italien moderne ; fin de la fragmentation médiévale</span><span class="event-people">Victor-Emmanuel II, Cavour, Garibaldi</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1922–1945</span><span class="event-text"><span class="event-name">Fascisme italien : Mussolini au pouvoir</span><span class="event-context">Marche sur Rome 1922 ; totalitarisme ; alliance avec Hitler ; défaite 1943–45</span><span class="event-people">Benito Mussolini</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1946</span><span class="event-text"><span class="event-name">République italienne : fin de la monarchie</span><span class="event-context">Référendum ; république proclamée ; constitutio 1948 ; démocratie parlementaire</span><span class="event-people">Alcide De Gasperi, Palmiro Togliatti</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇪🇸 ESPAGNE -->
+  <div class="era-section" id="country-spain">
+    <div class="era-header" style="background-color: rgba(255, 215, 0, 0.05); border-color: rgba(255, 215, 0, 0.1);">
+      <div style="font-size: 2rem;">🇪🇸</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Espagne</h3>
+        <p>Dix événements de l'histoire espagnole</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">711</span><span class="event-text"><span class="event-name">Conquête musulmane de la péninsule Ibérique</span><span class="event-context">Chute du royaume wisigoth ; Al-Andalus 8 siècles ; génie scientifique et artistique</span><span class="event-people">Tariq ibn Ziyad</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1212</span><span class="event-text"><span class="event-name">Bataille de Las Navas de Tolosa : tournant de la Reconquista</span><span class="event-context">Victoire chrétienne ; déclin de l'Almohade ; recul musulman s'accélère</span><span class="event-people">Alphonse VIII de Castille</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1469</span><span class="event-text"><span class="event-name">Mariage d'Isabelle de Castille et Ferdinand d'Aragon</span><span class="event-context">Union des royaumes ; base de l'Espagne moderne ; Reconquista achevée 1492</span><span class="event-people">Isabelle Ire, Ferdinand II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">12 octobre 1492</span><span class="event-text"><span class="event-name">Christophe Colomb financé par Espagne atteint les Amériques</span><span class="event-context">Début de l'empire colonial espagnol ; premier contact Europe-Amériques ; Reconquista et expansion</span><span class="event-people">Christophe Colomb, Isabelle Ire</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1519–1521</span><span class="event-text"><span class="event-name">Cortès conquiert l'Empire aztèque pour l'Espagne</span><span class="event-context">600 conquistadores + alliés indiens ; Tenochtitlan détruite ; richesses d'argent et d'or</span><span class="event-people">Hernán Cortès, Moctezuma II</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1532–1535</span><span class="event-text"><span class="event-name">Pizarro conquiert l'Empire inca pour l'Espagne</span><span class="event-context">Atahualpa capturé et exécuté ; Cuzco prise ; richesses massives ; empire de 10 millions</span><span class="event-people">Francisco Pizarro, Atahualpa</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1588</span><span class="event-text"><span class="event-name">Défaite de l'Invincible Armada espagnole contre l'Angleterre</span><span class="event-context">130 navires ; 30 000 hommes ; tempête et tactique ; fin de la puissance navale absolue</span><span class="event-people">Philippe II, Lord Howard, Francis Drake</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1701–1714</span><span class="event-text"><span class="event-name">Guerre de Succession d'Espagne : déclin de la puissance hispanienne</span><span class="event-context">Mort de Charles II ; rivalité dynastique ; Espagne perd hégémonie européenne</span><span class="event-people">Louis XIV, Philippe V</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1936–1939</span><span class="event-text"><span class="event-name">Guerre civile espagnole : montée du fascisme</span><span class="event-context">Franco vs République ; 500 000 morts ; soutien allemand et italien ; régime autoritaire</span><span class="event-people">Francisco Franco, Manuel Azaña</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1975</span><span class="event-text"><span class="event-name">Mort de Franco et transition vers la démocratie</span><span class="event-context">Juan Carlos Ier roi ; transition pacifique ; démocratie 1978 ; réconciliation</span><span class="event-people">Francisco Franco, Juan Carlos Ier</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇷🇺 RUSSIE -->
+  <div class="era-section" id="country-russia">
+    <div class="era-header" style="background-color: rgba(211, 211, 211, 0.05); border-color: rgba(211, 211, 211, 0.1);">
+      <div style="font-size: 2rem;">🇷🇺</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Russie</h3>
+        <p>Dix événements de l'histoire russe</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">862</span><span class="event-text"><span class="event-name">Fondation de la Russie de Kievan par Rurik de Novgorod</span><span class="event-context">Vikings et Slaves ; embryon de l'État russe ; christianisation à venir</span><span class="event-people">Rurik</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">988</span><span class="event-text"><span class="event-name">Christianisation de la Russie de Kievan</span><span class="event-context">Prince Vladimir le Grand ; baptême collectif ; église orthodoxe devient pilier culturel</span><span class="event-people">Vladimir le Grand</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1223–1480</span><span class="event-text"><span class="event-name">Joug mongol : 250 ans de domination tatare</span><span class="event-context">Invasions successives ; isolation de l'Europe occidentale ; spécificité culturelle russe</span><span class="event-people">Gengis Khan, Batu Khan</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1547</span><span class="event-text"><span class="event-name">Ivan IV le Terrible couronné tsar</span><span class="event-context">Premier tsar ; centralisation ; expansion territoriale ; terrorisme politique</span><span class="event-people">Ivan IV le Terrible</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1613</span><span class="event-text"><span class="event-name">Fondation de la dynastie Romanov</span><span class="event-context">Michael Romanov élu tsar ; stabilité ; 300 ans de dynastie jusqu'à 1917</span><span class="event-people">Michael Romanov</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1700–1721</span><span class="event-text"><span class="event-name">Pierre le Grand modernise la Russie</span><span class="event-context">Victoire de Poltava sur la Suède ; Saint-Pétersbourg fondée ; occidentalisation forcée</span><span class="event-people">Pierre le Grand</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1762–1796</span><span class="event-text"><span class="event-name">Catherine la Grande : apogée de l'Empire russe</span><span class="event-context">Expansion territorial ; victoires contre la Turquie ; despotisme éclairé ; puissance maximale</span><span class="event-people">Catherine II la Grande</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1812</span><span class="event-text"><span class="event-name">Victoire sur Napoléon : Russie grande puissance européenne</span><span class="event-context">Invasion napoléonienne repoussée ; incendie de Moscou ; Napoléon fuit ; prestige russe</span><span class="event-people">Napoléon Bonaparte, Koutouzov, Tsar Alexandre Ier</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">7 novembre 1917</span><span class="event-text"><span class="event-name">Révolution bolchévique : prise du Palais d'Hiver</span><span class="event-context">Lénine au pouvoir ; communisme ; naissance de l'URSS en 1922 ; nouvelle géopolitique</span><span class="event-people">Lénine, Trotski, Staline</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1945–1991</span><span class="event-text"><span class="event-name">Victoire en Seconde Guerre mondiale et Guerre froide</span><span class="event-context">40 millions de morts soviétiques ; URSS superpuissance ; confrontation avec les USA</span><span class="event-people">Staline, Khrouchtchev, Gorbatchev</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇮🇳 INDE -->
+  <div class="era-section" id="country-india">
+    <div class="era-header" style="background-color: rgba(255, 140, 0, 0.05); border-color: rgba(255, 140, 0, 0.1);">
+      <div style="font-size: 2rem;">🇮🇳</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Inde</h3>
+        <p>Dix événements de l'histoire indienne</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 2600 av. J.-C.</span><span class="event-text"><span class="event-name">Civilisation de l'Indus : Mohenjo-daro et Harappa</span><span class="event-context">Cités planifiées ; 50 000 habitants ; égouts sophistiqués ; écriture non déchiffrée</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1500 av. J.-C.</span><span class="event-text"><span class="event-name">Rédaction des Védas : fondements de l'hindouisme</span><span class="event-context">Textes sacrés sanskrits ; base millénaire de la civilisation indienne</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 563 av. J.-C.</span><span class="event-text"><span class="event-name">Naissance du Bouddha (Siddhārtha Gautama) à Lumbini</span><span class="event-context">Prince renonçant ; Éveil à Bodh Gaya ; fondation du bouddhisme, religion mondiale</span><span class="event-people">Siddhārtha Gautama</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">269–232 av. J.-C.</span><span class="event-text"><span class="event-name">Règne d'Ashoka : Empire Maurya et diffusion du bouddhisme</span><span class="event-context">Après Kalinga, se convertit ; envoie missionnaires jusqu'en Grèce ; piété et non-violence</span><span class="event-people">Ashoka le Grand</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">320–550 ap. J.-C.</span><span class="event-text"><span class="event-name">Empire Gupta : âge d'or indien (science, arts, littérature)</span><span class="event-context">Kalidasa poète ; mathématiques et astronomie ; apogée culturel hindou</span><span class="event-people">Chandragupta II</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1526–1857</span><span class="event-text"><span class="event-name">Empire Mughal : fusion indo-islamique</span><span class="event-context">Taj Mahal 1653 ; syncrétisme religieux ; puissance économique majeure</span><span class="event-people">Akbar, Shah Jahan, Aurangzeb</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1757–1947</span><span class="event-text"><span class="event-name">Domination britannique et Raj britannique en Inde</span><span class="event-context">Bataille de Plassey 1757 ; British East India Company ; colonisation systématique</span><span class="event-people">Robert Clive, Warren Hastings</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1869–1948</span><span class="event-text"><span class="event-name">Mahatma Gandhi : indépendance par la non-violence</span><span class="event-context">Marches de sel 1930 ; désobéissance civile ; assassiné 1948 ; modèle planétaire</span><span class="event-people">Mohandas Karamchand Gandhi</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">15 août 1947</span><span class="event-text"><span class="event-name">Indépendance indienne : fin du Raj britannique</span><span class="event-context">Partition sanglante ; 1 million de morts ; Pakistan et Inde indépendants</span><span class="event-people">Jawaharlal Nehru, Mountbatten</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1990–2023</span><span class="event-text"><span class="event-name">Libéralisation économique : Inde devient puissance majeure</span><span class="event-context">Réformes de 1991 ; technologies ; 1,4 milliards d'habitants ; montée en puissance</span><span class="event-people">Narasimha Rao, Manmohan Singh</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇧🇷 BRÉSIL -->
+  <div class="era-section" id="country-brazil">
+    <div class="era-header" style="background-color: rgba(0, 100, 0, 0.05); border-color: rgba(0, 100, 0, 0.1);">
+      <div style="font-size: 2rem;">🇧🇷</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Brésil</h3>
+        <p>Dix événements de l'histoire brésilienne</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1500</span><span class="event-text"><span class="event-name">Pedro Álvares Cabral découvre le Brésil</span><span class="event-context">Pendant voyage vers les Indes ; découverte accidentelle ; devient colonie portugaise</span><span class="event-people">Pedro Álvares Cabral</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1530–1822</span><span class="event-text"><span class="event-name">Colonisation portugaise du Brésil</span><span class="event-context">Capitaineries héréditaires ; exploitation agricole ; esclavage massif d'Africains</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1654–1661</span><span class="event-text"><span class="event-name">Occupation hollandaise du Brésil</span><span class="event-context">Prise du Pernambouc ; contrôle du commerce du sucre ; bataille pour l'indépendance</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1763</span><span class="event-text"><span class="event-name">Rio de Janeiro devient capitale du Brésil</span><span class="event-context">Déplacement depuis Salvador ; centre politique et économique du Brésil colonial</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1808</span><span class="event-text"><span class="event-name">La cour portugaise se réfugie au Brésil (fuite de Napoléon)</span><span class="event-context">Prince Jean VI arrive à Rio ; élévation du Brésil au rang de royaume-uni</span><span class="event-people">Jean VI du Portugal</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">7 septembre 1822</span><span class="event-text"><span class="event-name">Indépendance du Brésil : Pedro Ier proclame l'Empire</span><span class="event-context">Libération du joug portugais ; Empire du Brésil ; union avec Portugal jusqu'à 1825</span><span class="event-people">Pedro Ier du Brésil</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1888</span><span class="event-text"><span class="event-name">Abolition de l'esclavage au Brésil</span><span class="event-context">Dernier pays des Amériques à abolir l'esclavage ; Lei Áurea de Pedro II</span><span class="event-people">Pedro II du Brésil</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1889</span><span class="event-text"><span class="event-name">Proclamation de la République brésilienne</span><span class="event-context">Fin de l'Empire ; République brésilienne ; affaiblissement de la monarchie</span><span class="event-people">Deodoro da Fonseca</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1960</span><span class="event-text"><span class="event-name">Inauguration de Brasília : nouvelle capitale</span><span class="event-context">Oscar Niemeyer architecte ; déplacement depuis Rio ; symbole du développement brésilien</span><span class="event-people">Juscelino Kubitschek, Oscar Niemeyer</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1985–2002</span><span class="event-text"><span class="event-name">Démocratisation et montée en puissance économique</span><span class="event-context">Fin de la dictature 1985 ; nouvelle constitution 1988 ; émergence BRICS</span><span class="event-people">Tancredo Neves, Fernando Henrique Cardoso</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇲🇽 MEXIQUE -->
+  <div class="era-section" id="country-mexico">
+    <div class="era-header" style="background-color: rgba(255, 51, 51, 0.05); border-color: rgba(255, 51, 51, 0.1);">
+      <div style="font-size: 2rem;">🇲🇽</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Mexique</h3>
+        <p>Dix événements de l'histoire mexicaine</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1325</span><span class="event-text"><span class="event-name">Fondation de Tenochtitlan : capitale aztèque</span><span class="event-context">Cité-île sur le lac Texcoco ; 200 000 habitants ; mégalopole précolombienne</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1519–1521</span><span class="event-text"><span class="event-name">Cortès conquiert l'Empire aztèque</span><span class="event-context">600 conquistadores + alliés indiens + épidémies ; Tenochtitlan détruite ; fondation Mexico</span><span class="event-people">Hernán Cortès, Moctezuma II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1570</span><span class="event-text"><span class="event-name">Mexico-Tenochtitlan reconstruite par les Espagnols</span><span class="event-context">Capitale coloniale ; mélange architectural espagnol et aztèque</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1692</span><span class="event-text"><span class="event-name">Révolte du Maïs à Mexico City</span><span class="event-context">Révolte populaire contre les autorités coloniales ; conséquences importantes pour la vice-royauté</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">16 septembre 1810</span><span class="event-text"><span class="event-name">Guerre d'indépendance du Mexique : cri de Dolores</span><span class="event-context">Miguel Hidalgo lance la révolte ; longue lutte jusqu'à 1821 ; indépendance obtenue</span><span class="event-people">Miguel Hidalgo y Costilla, Agustín de Iturbide</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1836–1848</span><span class="event-text"><span class="event-name">Guerres avec les États-Unis et perte territoriale</span><span class="event-context">Perte du Texas 1836 ; guerre 1846–48 ; Mexique perd ½ de son territoire</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1862–1867</span><span class="event-text"><span class="event-name">Intervention française et Empire de Maximilien</span><span class="event-context">Maximilien Ier empereur títere ; reconquête par Benito Juárez ; exécution Maximilien</span><span class="event-people">Benito Juárez, Maximilien d'Autriche</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1910–1920</span><span class="event-text"><span class="event-name">Révolution mexicaine : transformation sociale majeure</span><span class="event-context">10 millions de morts ; réforme agraire ; nouvelle constitution 1917</span><span class="event-people">Emilio Zapata, Pancho Villa, Venustiano Carranza</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1968</span><span class="event-text"><span class="event-name">Jeux olympiques de Mexico City et massacre de Tlatelolco</span><span class="event-context">Manifestations étudiantes réprimées ; 300+ morts ; traumatisme national</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1994</span><span class="event-text"><span class="event-name">Traité de libre-échange Aléna avec USA et Canada</span><span class="event-context">Intégration économique ; montée des échanges commerciaux ; TLCAN débattu</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇿🇦 AFRIQUE DU SUD -->
+  <div class="era-section" id="country-sa">
+    <div class="era-header" style="background-color: rgba(34, 139, 34, 0.05); border-color: rgba(34, 139, 34, 0.1);">
+      <div style="font-size: 2rem;">🇿🇦</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Afrique du Sud</h3>
+        <p>Dix événements de l'histoire sud-africaine</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1600–1800</span><span class="event-text"><span class="event-name">Royaumes bantous et empires zulu en Afrique du Sud</span><span class="event-context">Royaumes sophistiqués ; militarisme zulu ; équilibre précolonial</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1652</span><span class="event-text"><span class="event-name">Fondation du Cap par la Compagnie hollandaise des Indes orientales</span><span class="event-context">Poste de ravitaillement ; implantation hollandaise ; premiers Blancs permanents</span><span class="event-people">Jan van Riebeeck</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1795–1806</span><span class="event-text"><span class="event-name">Occupation britannique du Cap</span><span class="event-context">Guerres napoléoniennes ; Britanniques prennent le contrôle du Cap</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1806–1860</span><span class="event-text"><span class="event-name">Grand Trek : migration des Afrikaners vers l'intérieur</span><span class="event-context">10 000+ colons s'enfuient ; fondent Transvaal et État libre d'Orange</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1899–1902</span><span class="event-text"><span class="event-name">Guerres des Boers : conflit britannique-afrikaner</span><span class="event-context">50 000 morts ; concentration camps ; victoire britannique ; union sud-africaine</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1910</span><span class="event-text"><span class="event-name">Création de l'Union sud-africaine</span><span class="event-context">Fédération d'États coloniaux ; domination blanche institutionnalisée</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1948–1994</span><span class="event-text"><span class="event-name">Apartheid : ségrégation raciale officielle</span><span class="event-context">Lois raciales oppressives ; répression des Noirs ; 46 ans de discrimination systématique</span><span class="event-people">D. F. Malan, B. J. Vorster, P. W. Botha</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1962–1990</span><span class="event-text"><span class="event-name">Nelson Mandela emprisonné : symbole de la résistance</span><span class="event-context">27 ans de prison pour activisme ; figure mondiale de la liberté et de la justice</span><span class="event-people">Nelson Mandela</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1994</span><span class="event-text"><span class="event-name">Fin de l'apartheid : Mandela devient président</span><span class="event-context">Premières élections multiraciales ; fin de la discrimination ; réconciliation</span><span class="event-people">Nelson Mandela, F. W. de Klerk</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">2010</span><span class="event-text"><span class="event-name">Coupe du Monde de Football en Afrique du Sud</span><span class="event-context">Premier tournoi mondial en Afrique ; "Bafana Bafana" hôtes ; unité nationale</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+  </div>
+
+  <!-- 🇳🇬 NIGERIA -->
+  <div class="era-section" id="country-nigeria">
+    <div class="era-header" style="background-color: rgba(34, 34, 34, 0.05); border-color: rgba(34, 34, 34, 0.1);">
+      <div style="font-size: 2rem;">🇳🇬</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Nigeria</h3>
+        <p>Dix événements de l'histoire nigériane</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">800–1600</span><span class="event-text"><span class="event-name">Empires du Sahel : Ghana, Mali, Songhaï</span><span class="event-context">Royaumes puissants ; commerce transsaharien ; islam ; contrôle de routes d'or</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1600–1800</span><span class="event-text"><span class="event-name">Royaume du Bénin : puissance artistique et militaire</span><span class="event-context">Plaques de bronze ; armée de cavaliers ; civilisation raffinée précoloniale</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1652–1807</span><span class="event-text"><span class="event-name">Commerce des esclaves : Nigeria hub majeur</span><span class="event-context">Millions d'esclaves exportés vers les Amériques via ports côtiers</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1807</span><span class="event-text"><span class="event-name">Abolition du commerce des esclaves par la Grande-Bretagne</span><span class="event-context">Interdiction du trafic ; fin graduelle de l'esclavage en zones contrôlées</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1860–1914</span><span class="event-text"><span class="event-name">Colonisation britannique progressive : Lagos, puis intérieur</span><span class="event-context">Établissement du protectorat ; exploitation des ressources ; administration coloniale</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1914</span><span class="event-text"><span class="event-name">Fusion des protectorats britanniques : Nigéria moderne créée</span><span class="event-context">Création administrative du Nigeria britannique ; unification géographique artificialisée</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1 octobre 1960</span><span class="event-text"><span class="event-name">Indépendance de la Nigéria</span><span class="event-context">Fin du contrôle britannique ; première démocratie africaine majeure</span><span class="event-people">Nnamdi Azikiwe, Abubakar Tafawa Balewa</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1967–1970</span><span class="event-text"><span class="event-name">Guerre du Biafra : séparatisme igbo</span><span class="event-context">1–3 millions de morts par la faim ; génocide médiatisé ; Nigeria survivre</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1970–1999</span><span class="event-text"><span class="event-name">Boom pétrolier et dictatures militaires</span><span class="event-context">Exploitations pétrolières ; coup d'État récurrents ; dépendance pétrolière</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1999–2023</span><span class="event-text"><span class="event-name">Retour à la démocratie et émergence comme puissance africaine</span><span class="event-context">Démocratie ininterrompue depuis 1999 ; Nollywood cinéma majeur ; économie émergente</span><span class="event-people">Olusegun Obasanjo</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇪🇹 ÉTHIOPIE -->
+  <div class="era-section" id="country-ethiopia">
+    <div class="era-header" style="background-color: rgba(255, 192, 0, 0.05); border-color: rgba(255, 192, 0, 0.1);">
+      <div style="font-size: 2rem;">🇪🇹</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Éthiopie</h3>
+        <p>Dix événements de l'histoire éthiopienne</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">100–940 ap. J.-C.</span><span class="event-text"><span class="event-name">Royaume d'Aksoum : puissance méditerranéenne</span><span class="event-context">Monnaie propre ; commerce transoceanique ; christianisation ; état majeur antique</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">330</span><span class="event-text"><span class="event-name">Christianisation de l'Éthiopie (Aksoum)</span><span class="event-context">Roi Ezana convertit ; Église copte orthodoxe ; identité religieuse durable</span><span class="event-people">Ezana d'Aksoum</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1268–1974</span><span class="event-text"><span class="event-name">Dynastie Solomonide : 700 ans de continuité</span><span class="event-context">Légitimité salomonienne ; Kebre Nagast ; tradition et modernité ; rois des rois</span><span class="event-people">Yékuno Amlak, Haïlé Sélassié</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">2 novembre 1896</span><span class="event-text"><span class="event-name">Bataille d'Adwa : victoire contre l'Italie</span><span class="event-context">Éthiopie repousse la colonisation italienne ; seule nation africaine libre à l'époque</span><span class="event-people">Ménélik II, le Négus Seyoum</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1889–1906</span><span class="event-text"><span class="event-name">Règne de Ménélik II : modernisation et expansion</span><span class="event-context">Réformes administratives ; victoire d'Adwa ; Addis-Abeba capitale fondée 1886</span><span class="event-people">Ménélik II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1936–1941</span><span class="event-text"><span class="event-name">Invasion italienne et occupation de Mussolini</span><span class="event-context">Haïlé Sélassié appelle la SDN ; occupation fasciste ; résistance continues</span><span class="event-people">Haïlé Sélassié, Benito Mussolini</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1930–1974</span><span class="event-text"><span class="event-name">Haïlé Sélassié : roi des rois et réformateur</span><span class="event-context">Abolition de l'esclavage 1942 ; modernisation ; figure vénérée dans le rastafari</span><span class="event-people">Ras Tafari Makonnen (Haïlé Sélassié)</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1974</span><span class="event-text"><span class="event-name">Coup d'État du Derg : fin de la monarchie</span><span class="event-context">Renversement de Haïlé Sélassié ; régime marxiste ; transition brutale</span><span class="event-people">Mengistu Haile Mariam</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1984–1985</span><span class="event-text"><span class="event-name">Grande famine éthiopienne : 400 000–1 million de morts</span><span class="event-context">Sécheresse et politique ; crise humanitaire mondiale ; téléthon Live Aid</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1991–2023</span><span class="event-text"><span class="event-name">TPLF arrive au pouvoir et émergence de l'Éthiopie</span><span class="event-context">Fin du régime Derg ; transition démocratique ; croissance économique ; Abiy Ahmed réformes</span><span class="event-people">Meles Zenawi, Abiy Ahmed</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇮🇱 ISRAËL -->
+  <div class="era-section" id="country-israel">
+    <div class="era-header" style="background-color: rgba(0, 51, 153, 0.05); border-color: rgba(0, 51, 153, 0.1);">
+      <div style="font-size: 2rem;">🇮🇱</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Israël</h3>
+        <p>Dix événements de l'histoire israélienne</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">≈ 1050 av. J.-C.</span><span class="event-text"><span class="event-name">Établissement des royaumes hébreux : David et Salomon</span><span class="event-context">Royaume d'Israël unifié ; Temple de Salomon ; fondements religieux</span><span class="event-people">David, Salomon</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">586 av. J.-C.</span><span class="event-text"><span class="event-name">Destruction du Temple de Jérusalem par Nabuchodonosor</span><span class="event-context">Captivité babylonienne ; dispersion ; naissance de la diaspora juive</span><span class="event-people">Nabuchodonosor II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1880–1948</span><span class="event-text"><span class="event-name">Mouvement sioniste et immigration en Palestine</span><span class="event-context">Aliyah ; colonisation ; tension avec populations arabes ; mandat britannique 1920</span><span class="event-people">Théodor Herzl, Chaim Weizmann</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1933–1945</span><span class="event-text"><span class="event-name">Holocauste nazi : 6 millions de Juifs exterminés</span><span class="event-context">Génocide systématique ; camps de concentration ; tragédie transforme la politique mondiale</span><span class="event-people">Adolf Hitler, Himmler</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">14 mai 1948</span><span class="event-text"><span class="event-name">Proclamation de l'État d'Israël</span><span class="event-context">Ben Gourion lit la déclaration ; lendemain : première guerre arabo-israélienne</span><span class="event-people">David Ben Gourion</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1948–1973</span><span class="event-text"><span class="event-name">Guerres arabo-israéliennes successives : 1948, 1956, 1967, 1973</span><span class="event-context">Israël militairement dominant ; occupation des territoires 1967 ; intifada</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1967</span><span class="event-text"><span class="event-name">Guerre des Six Jours : Israël triple sa territoire</span><span class="event-context">Occupation de la Cisjordanie, Gaza, Golan ; résolution 242 de l'ONU</span><span class="event-people">Moshe Dayan, Yitzhak Rabin</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1979</span><span class="event-text"><span class="event-name">Traité de paix entre Israël et Égypte (Camp David)</span><span class="event-context">Première paix arabo-israélienne formelle ; restitution du Sinaï ; base pour futurs accords</span><span class="event-people">Yitzhak Rabin, Anwar Sadate, Jimmy Carter</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1993–1995</span><span class="event-text"><span class="event-name">Accords d'Oslo : paix israélo-palestinienne tentative</span><span class="event-context">Reconnaissance mutuelle ; autorité palestinienne créée ; processus suspendu après 1995</span><span class="event-people">Yitzhak Rabin, Yasser Arafat</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">2023</span><span class="event-text"><span class="event-name">Escalade de la violence : nouvel affrontement majeur</span><span class="event-context">Attaque du Hamas ; riposte israélienne ; crise humanitaire à Gaza</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇮🇷 IRAN -->
+  <div class="era-section" id="country-iran">
+    <div class="era-header" style="background-color: rgba(206, 17, 38, 0.05); border-color: rgba(206, 17, 38, 0.1);">
+      <div style="font-size: 2rem;">🇮🇷</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Iran</h3>
+        <p>Dix événements de l'histoire iranienne</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">550–330 av. J.-C.</span><span class="event-text"><span class="event-name">Empire achéménide : Cyrus le Grand et Darius</span><span class="event-context">Premier empire multilingue ; routes commerciales ; tolérance religieuse</span><span class="event-people">Cyrus II, Darius Ier</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">330 av. J.-C.</span><span class="event-text"><span class="event-name">Conquête d'Alexandre le Grand : fin de l'empire perse</span><span class="event-context">Défaite de Gaugamèla ; empire achéménide s'effondre ; hellénisation</span><span class="event-people">Alexandre le Grand, Darius III</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">651 ap. J.-C.</span><span class="event-text"><span class="event-name">Conquête arabe et islamisation progressive de la Perse</span><span class="event-context">Bataille de Qadissiyah ; fin de l'Empire sassanide ; transformation religieuse et culturelle</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1501–1736</span><span class="event-text"><span class="event-name">Empire safavide : établissement du chiisme</span><span class="event-context">Ismail Ier fonde l'empire ; Iran devient chiite ; identité religieuse durable</span><span class="event-people">Ismail Ier, Abbas Ier le Grand</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1768–1921</span><span class="event-text"><span class="event-name">Déclin de la Perse : guerres russo-persanes et influence occidentale</span><span class="event-context">Perte de territoires ; traités inégaux ; dépendance envers les puissances européennes</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1925</span><span class="event-text"><span class="event-name">Coup d'État de Reza Khan : fondation de la dynastie Pahlavi</span><span class="event-context">Modernisation forcée ; centralisation ; réformes mais autoritarisme croissant</span><span class="event-people">Reza Khan (Reza Chah)</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1951–1953</span><span class="event-text"><span class="event-name">Nationalisation du pétrole et Mohammad Mossadegh</span><span class="event-context">Premier ministre nationaliste ; coup CIA-SIS 1953 ; retour du Shah</span><span class="event-people">Mohammad Mossadegh</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1953–1979</span><span class="event-text"><span class="event-name">Règne du Shah Mohammad Reza Pahlavi : modernité et répression</span><span class="event-context">Réformes occidentalistes ; SAVAK secret police ; inégalités croissantes</span><span class="event-people">Mohammad Reza Pahlavi</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1979</span><span class="event-text"><span class="event-name">Révolution iranienne : République islamique de Khomeini</span><span class="event-context">Renversement du Shah ; Khomeini revient ; théocratie islamique ; nouvel ordre régional</span><span class="event-people">Ayatollah Khomeini</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1980–1988</span><span class="event-text"><span class="event-name">Guerre Iran-Irak : conflit long et destructeur</span><span class="event-context">1 million de morts ; épuisement des deux pays ; impact régional durable</span><span class="event-people">Saddam Hussein, Khomeini</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇹🇷 TURQUIE -->
+  <div class="era-section" id="country-turkey">
+    <div class="era-header" style="background-color: rgba(206, 17, 38, 0.05); border-color: rgba(206, 17, 38, 0.1);">
+      <div style="font-size: 2rem;">🇹🇷</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Turquie</h3>
+        <p>Dix événements de l'histoire turque</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1299</span><span class="event-text"><span class="event-name">Fondation de l'Empire ottoman par Osman Ier</span><span class="event-context">Petit principauté turcomane ; début de l'expansion ; 600 ans de domination</span><span class="event-people">Osman Ier</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1453</span><span class="event-text"><span class="event-name">Conquête de Constantinople : fin de Byzance</span><span class="event-context">Mehmed II le Conquérant ; chute du dernier empire romain ; Istanbul devient capitale</span><span class="event-people">Mehmed II le Conquérant</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1520–1566</span><span class="event-text"><span class="event-name">Soliman le Magnifique : apogée ottoman</span><span class="event-context">Empire s'étend à 3 continents ; législateur ; Sainte-Sophie rénovée ; splendeur</span><span class="event-people">Soliman Ier le Magnifique</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1683</span><span class="event-text"><span class="event-name">Bataille de Vienne : tournant du déclin ottoman</span><span class="event-context">Ottomans repoussés ; Européens contre-attaquent ; fin de l'expansion turque</span><span class="event-people">Mehmed IV, Jean Sobieski</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1878–1923</span><span class="event-text"><span class="event-name">Déclin et démantèlement de l'Empire ottoman</span><span class="event-context">Traités successifs ; pertes territoriales ; Première Guerre mondiale ; fin de l'empire</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1923</span><span class="event-text"><span class="event-name">Fondation de la République turque par Atatürk</span><span class="event-context">Traité de Lausanne ; séparation religion-état ; occidentalisation ; nouvelle nation</span><span class="event-people">Mustafa Kemal Atatürk</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1923–1938</span><span class="event-text"><span class="event-name">Réformes d'Atatürk : modernisation forcée</span><span class="event-context">Alphabet latin ; droits des femmes ; industrialisation ; sécularisation</span><span class="event-people">Mustafa Kemal Atatürk</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1945–1952</span><span class="event-text"><span class="event-name">Turquie rejoint l'OTAN et s'aligne occidentalement</span><span class="event-context">Adhésion 1952 ; géopolitique Guerre froide ; alliance occidentale durable</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1974</span><span class="event-text"><span class="event-name">Invasion turque de Chypre</span><span class="event-context">Opération Attila ; partition de l'île ; tensions gréco-turques chroniques</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">2000–2023</span><span class="event-text"><span class="event-name">Montée en puissance économique et revendications régionales</span><span class="event-context">AKP au pouvoir depuis 2002 ; croissance économique ; redevient acteur régional majeur</span><span class="event-people">Recep Tayyip Erdoğan</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇵🇱 POLOGNE -->
+  <div class="era-section" id="country-poland">
+    <div class="era-header" style="background-color: rgba(220, 20, 60, 0.05); border-color: rgba(220, 20, 60, 0.1);">
+      <div style="font-size: 2rem;">🇵🇱</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Pologne</h3>
+        <p>Dix événements de l'histoire polonaise</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">966</span><span class="event-text"><span class="event-name">Christianisation de la Pologne</span><span class="event-context">Prince Mieszko Ier ; christianisation ; naissance de la Pologne médiévale</span><span class="event-people">Mieszko Ier</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1569</span><span class="event-text"><span class="event-name">Union de Lublin : République des Deux Nations</span><span class="event-context">Pologne et Lituanie unies ; régime électif ; puissance majeure européenne</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1772–1795</span><span class="event-text"><span class="event-name">Partages de la Pologne : disparition de la nation indépendante</span><span class="event-context">Trois partages par Russie, Prusse, Autriche ; Pologne disparaît de la carte ; 123 ans</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">11 novembre 1918</span><span class="event-text"><span class="event-name">Restauration de l'indépendance polonaise après WWI</span><span class="event-context">Après 123 ans d'occupation ; Jozef Piłsudski chef d'État ; nation ressuscitée</span><span class="event-people">Jozef Piłsudski</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1939</span><span class="event-text"><span class="event-name">Invasion de la Pologne : début de la Seconde Guerre mondiale</span><span class="event-context">Hitler et Staline déclarent la Pologne ; 6 millions de Polonais morts dans la guerre</span><span class="event-people">Adolf Hitler, Staline</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1945–1989</span><span class="event-text"><span class="event-name">Régime communiste dominé par l'Union soviétique</span><span class="event-context">Régime du bloc de l'Est ; répression ; mouvements d'opposition croissants</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1980–1990</span><span class="event-text"><span class="event-name">Solidarité : mouvement de libération polonaise</span><span class="event-context">Lech Wałęsa syndicat libre ; grèves ; résistance pacifique ; inspiration mondiale</span><span class="event-people">Lech Wałęsa</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1989</span><span class="event-text"><span class="event-name">Fin du communisme : transition vers la démocratie</span><span class="event-context">Table ronde 1989 ; élections libres ; première démocratie en Europe de l'Est</span><span class="event-people">Lech Wałęsa, Tadeusz Mazowiecki</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1999–2004</span><span class="event-text"><span class="event-name">Adhésion à l'OTAN et l'Union européenne</span><span class="event-context">OTAN 1999 ; UE 2004 ; intégration occidentale complète ; fin d'isolation</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇸🇪 SUÈDE -->
+  <div class="era-section" id="country-sweden">
+    <div class="era-header" style="background-color: rgba(6, 82, 221, 0.05); border-color: rgba(6, 82, 221, 0.1);">
+      <div style="font-size: 2rem;">🇸🇪</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Suède</h3>
+        <p>Dix événements de l'histoire suédoise</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">800–1066</span><span class="event-text"><span class="event-name">Ère Viking : expansion suédoise vers l'est et le sud</span><span class="event-context">Varangiens ; fondation de Kiev et Novgorod ; commerce avec Byzance et l'Islam</span></span><span class="event-cat cat-exploration">Exploration</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1397</span><span class="event-text"><span class="event-name">Union de Kalmar : Suède, Danemark et Norvège unies</span><span class="event-context">Reine Marguerite règne ; union nordique ; dure 126 ans</span><span class="event-people">Marguerite Ire de Danemark</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1523</span><span class="event-text"><span class="event-name">Suède se sépare de l'Union de Kalmar</span><span class="event-context">Révolte contre la domination danoise ; Gustav Ier fonde la Suède moderne ; indépendance</span><span class="event-people">Gustav Ier Vasa</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1630–1648</span><span class="event-text"><span class="event-name">Suède intervient dans la Guerre de Trente Ans</span><span class="event-context">Gustave-Adolphe II commande ; puissance militaire ; traité de Westphalie</span><span class="event-people">Gustave-Adolphe II</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1660–1721</span><span class="event-text"><span class="event-name">Suède Grande Puissance : apogée de l'empire</span><span class="event-context">Charles X et XI ; empire baltique ; Riga et autres possessions ; puissance maximale</span><span class="event-people">Charles X, Charles XI</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1709–1721</span><span class="event-text"><span class="event-name">Grande Guerre du Nord : Suède perdre statut de Grande Puissance</span><span class="event-context">Charles XII défait ; Poltava 1709 ; Suède perd empire baltique ; déclin</span><span class="event-people">Charles XII, Pierre le Grand</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1809</span><span class="event-text"><span class="event-name">Suède perd la Finlande face à la Russie</span><span class="event-context">Guerre russo-suédoise ; Finlande devient grand-duché russe ; réduction territoriale</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1865–1948</span><span class="event-text"><span class="event-name">Instauration du régime parlementaire et expansion sociale</span><span class="event-context">Réformes progressives ; suffrage universel ; État-providence en construction</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1945–2023</span><span class="event-text"><span class="event-name">Neutralité et État-providence : modèle suédois</span><span class="event-context">Évite OTAN jusque 2024 ; État-providence ; richesse, stabilité, égalité</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">2023</span><span class="event-text"><span class="event-name">Suède adhère enfin à l'OTAN</span><span class="event-context">Changement radical de politique ; fin de 200 ans de non-alignement face aux menaces russes</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇮🇩 INDONÉSIE -->
+  <div class="era-section" id="country-indonesia">
+    <div class="era-header" style="background-color: rgba(206, 17, 38, 0.05); border-color: rgba(206, 17, 38, 0.1);">
+      <div style="font-size: 2rem;">🇮🇩</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Indonésie</h3>
+        <p>Dix événements de l'histoire indonésienne</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">650–1450</span><span class="event-text"><span class="event-name">Royaumes hindou-bouddhistes : Srivijaya et Majapahit</span><span class="event-context">Maritimes florissants ; bouddhisme theravada ; contrôle du commerce maritime</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1450–1520</span><span class="event-text"><span class="event-name">Islamisation progressive de l'archipel</span><span class="event-context">Sultans musulmans ; syncrétisme religieux ; essor des sultanats côtiers</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1602–1800</span><span class="event-text"><span class="event-name">Domination de la Compagnie hollandaise des Indes orientales (VOC)</span><span class="event-context">Monopole commercial ; exploitation ; établissement du contrôle hollandais</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1800–1942</span><span class="event-text"><span class="event-name">Indes orientales néerlandaises : colonie systématique</span><span class="event-context">Gouvernement direct ; extraction de ressources ; mouvements nationalistes émergents</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1942–1945</span><span class="event-text"><span class="event-name">Occupation japonaise pendant la Seconde Guerre mondiale</span><span class="event-context">Invasion ; occupation ; millions de morts ; affaiblissement du contrôle colonial</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">17 août 1945</span><span class="event-text"><span class="event-name">Proclamation d'indépendance de l'Indonésie</span><span class="event-context">Sukarno et Hatta déclarent l'indépendance ; guerre d'indépendance contre les Pays-Bas</span><span class="event-people">Sukarno, Mohammad Hatta</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1945–1949</span><span class="event-text"><span class="event-name">Guerre d'indépendance indonésienne</span><span class="event-context">4 ans de lutte armée ; Conférence de La Haye 1949 ; Pays-Bas reconnaissent indépendance</span><span class="event-people">Sukarno, Dutch army</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1966–1998</span><span class="event-text"><span class="event-name">Dictature de Suharto : 32 ans de Nouvel Ordre</span><span class="event-context">Coup 1965 contre Sukarno ; répression ; croissance économique ; corruption systémique</span><span class="event-people">Mohammad Suharto</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1998</span><span class="event-text"><span class="event-name">Réforme (Reformasi) : transition vers la démocratie</span><span class="event-context">Suharto chute ; crise économique ; mouvements pro-démocratie ; nouvelle constitution</span><span class="event-people">B.J. Habibie, Abdurrahman Wahid</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">2004–2023</span><span class="event-text"><span class="event-name">Démocratie stable et émergence économique</span><span class="event-context">Élections directes présidentielles ; économie G20 ; démographie 270 millions habitants</span><span class="event-people">Susilo Bambang Yudhoyono, Joko Widodo</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇰🇷 CORÉE DU SUD -->
+  <div class="era-section" id="country-korea">
+    <div class="era-header" style="background-color: rgba(206, 17, 38, 0.05); border-color: rgba(206, 17, 38, 0.1);">
+      <div style="font-size: 2rem;">🇰🇷</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Corée du Sud</h3>
+        <p>Dix événements de l'histoire sud-coréenne</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">57 av. J.-C.–935 ap. J.-C.</span><span class="event-text"><span class="event-name">Trois Royaumes de Corée : Goguryeo, Baekje, Silla</span><span class="event-context">États rivaux ; bouddhisme ; Silla unifie la Corée en 676</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1392–1910</span><span class="event-text"><span class="event-name">Dynastie Joseon : 500 ans de stabilité et confucianisme</span><span class="event-context">Alphabet hangul inventé 1443 ; civilisation florissante ; isolation progressive</span><span class="event-people">Yi Seong-gye, Sejong le Grand</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1910–1945</span><span class="event-text"><span class="event-name">Colonisation japonaise de la Corée</span><span class="event-context">Protectorat puis annexion 1910 ; répression ; exploitation ; mouvements d'indépendance</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">15 août 1945</span><span class="event-text"><span class="event-name">Libération de la domination japonaise</span><span class="event-context">Fin de WWII ; Japon se rend ; Corée divisée par l'ONU en deux zones</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1950–1953</span><span class="event-text"><span class="event-name">Guerre de Corée : division permanente</span><span class="event-context">3 millions de morts ; armistice non paix ; DMZ ; deux États distincts</span><span class="event-people">Kim Il-sung, Syngman Rhee, MacArthur</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1961–1979</span><span class="event-text"><span class="event-name">Park Chung-hee : industrialisation forcée et autoritarisme</span><span class="event-context">Coup d'État 1961 ; réformes économiques massives ; répression politique</span><span class="event-people">Park Chung-hee</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1980–1987</span><span class="event-text"><span class="event-name">Dictature Chun Doo-hwan et mouvement pro-démocratie</span><span class="event-context">Massacre de Gwangju 1980 ; résistance populaire ; manifestations ; fin de la dictature</span><span class="event-people">Chun Doo-hwan</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1988–1990</span><span class="event-text"><span class="event-name">Transition vers la démocratie</span><span class="event-context">Jeux Olympiques de Séoul 1988 ; démocratisation ; Roh Tae-woo réformes</span><span class="event-people">Roh Tae-woo</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1990–2023</span><span class="event-text"><span class="event-name">Miracle du Tigre Asiatique : puissance économique majeure</span><span class="event-context">Samsung, LG, Hyundai ; technologies ; Hallyu (vague coréenne) ; rang G20</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">2018–2023</span><span class="event-text"><span class="event-name">Tentatives de dialogue avec la Corée du Nord</span><span class="event-context">Sommet inter-coréen 2018 ; dénucléarisation échouée ; tensions récurrentes</span><span class="event-people">Moon Jae-in, Donald Trump, Kim Jong-un</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇻🇳 VIETNAM -->
+  <div class="era-section" id="country-vietnam">
+    <div class="era-header" style="background-color: rgba(206, 17, 38, 0.05); border-color: rgba(206, 17, 38, 0.1);">
+      <div style="font-size: 2rem;">🇻🇳</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Vietnam</h3>
+        <p>Dix événements de l'histoire vietnamienne</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">179 av. J.-C.–938 ap. J.-C.</span><span class="event-text"><span class="event-name">Domination chinoise : 1100 ans d'occupation</span><span class="event-context">Intégration culturelle ; adoption du sinisme ; révoltes périodiques ; résistance</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">938</span><span class="event-text"><span class="event-name">Indépendance du Vietnam vis-à-vis de la Chine</span><span class="event-context">Bataille de Bach Dang River ; naissance de l'État vietnamien ; dynasties successives</span><span class="event-people">Ngo Quyen</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1858–1887</span><span class="event-text"><span class="event-name">Colonisation française : Indochine française</span><span class="event-context">Conquête militaire ; Vietnam devient colonie française ; exploitation économique</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1940–1945</span><span class="event-text"><span class="event-name">Occupation japonaise durant la Seconde Guerre mondiale</span><span class="event-context">Armée impériale japonaise ; affaiblissement du contrôle français ; famine</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">2 septembre 1945</span><span class="event-text"><span class="event-name">Proclamation d'indépendance du Vietnam</span><span class="event-context">Ho Chi Minh déclare l'indépendance ; Viet Minh gouvernement provisoire</span><span class="event-people">Ho Chi Minh</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1945–1954</span><span class="event-text"><span class="event-name">Guerre d'Indochine : contre la France</span><span class="event-context">9 ans de conflit ; bataille de Diên Biên Phu 1954 ; France se retire ; accord de Genève</span><span class="event-people">Ho Chi Minh, Vo Nguyen Giap</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1954–1975</span><span class="event-text"><span class="event-name">Guerre du Vietnam : conflit USA-Viet Cong/Nord Vietnam</span><span class="event-context">2–3 millions de morts ; Agent Orange ; offensive du Tết 1968 ; guerre idéologique majeure</span><span class="event-people">Ho Chi Minh, Lyndon B. Johnson, Richard Nixon</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">30 avril 1975</span><span class="event-text"><span class="event-name">Chute de Saigon : réunification du Vietnam sous le communisme</span><span class="event-context">Nord-Vietnam conquiert le Sud ; fin de la partition ; 20 ans après Genève</span><span class="event-people">Pham Van Dong, Le Duan</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1986</span><span class="event-text"><span class="event-name">Doi Moi (Rénovation) : réformes économiques et ouverture</span><span class="event-context">Système de marché ; fin de l'isolement ; croissance économique ; modernisation</span><span class="event-people">Nguyen Van Linh</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1995–2023</span><span class="event-text"><span class="event-name">Intégration économique mondiale et montée en puissance</span><span class="event-context">Relations USA normalisées 1995 ; OMC 2007 ; FDI ; croissance continue ; puissance régionale</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+  <!-- 🇹🇭 THAÏLANDE -->
+  <div class="era-section" id="country-thailand">
+    <div class="era-header" style="background-color: rgba(206, 17, 38, 0.05); border-color: rgba(206, 17, 38, 0.1);">
+      <div style="font-size: 2rem;">🇹🇭</div>
+      <div class="era-title-block">
+        <h3 style="margin: 0; font-size: 1.8rem;">Thaïlande</h3>
+        <p>Dix événements de l'histoire thaïlandaise</p>
+      </div>
+    </div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">649–1351</span><span class="event-text"><span class="event-name">Royaume de Sukhothai : golden age du bouddhisme thaï</span><span class="event-context">Roi Ramkhamhaeng inventeur de la langue thaïe ; art et culture florissants</span><span class="event-people">Ramkhamhaeng le Grand</span></span><span class="event-cat cat-culture">Culture</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1351–1767</span><span class="event-text"><span class="event-name">Royaume d'Ayutthaya : puissance régionale majeure</span><span class="event-context">400 ans d'apogée ; capitale cosmopolite ; commerce international ; chute en 1767</span><span class="event-people">Ramathihodi Ier</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1767–1782</span><span class="event-text"><span class="event-name">Période Thonburi : récupération après destruction d'Ayutthaya</span><span class="event-context">Reconstruction rapide ; roi Taksin ; revitalisation économique et militaire</span><span class="event-people">Taksin</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event major"><div class="event-dot"></div><div class="event-content"><span class="event-date">1782–1947</span><span class="event-text"><span class="event-name">Dynastie Chakri : modernisation et stabilité</span><span class="event-context">Rama I déplace la capitale à Bangkok 1782 ; dynast redevient puissance régionale</span><span class="event-people">Rama Ier</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1851–1868</span><span class="event-text"><span class="event-name">Rama IV (Mongkut) : modernisation face au colonialisme</span><span class="event-context">Réformes administratives ; diplomatie habiles ; évite colonisation française/britannique</span><span class="event-people">Rama IV (Mongkut)</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1868–1910</span><span class="event-text"><span class="event-name">Rama V (Chulalongkorn) : occidentalisation et Menam</span><span class="event-context">Réformes : abolition esclavage, chemin de fer, éducation ; indépendance préservée</span><span class="event-people">Rama V (Chulalongkorn)</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1932</span><span class="event-text"><span class="event-name">Révolution constitutionnelle : fin de l'absolutisme</span><span class="event-context">Coup d'État ; transition de monarchie absolue à constitutionnelle</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1939–1945</span><span class="event-text"><span class="event-name">Seconde Guerre mondiale : occupation japonaise</span><span class="event-context">Jonction stratégique ; occupation japonaise ; coopération pragmatique</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1946–2023</span><span class="event-text"><span class="event-name">Roi Rama IX Bhumibol : règne le plus long de l'histoire</span><span class="event-context">70 ans de règne ; stabilité; respect religieux et royal ; décès 2016</span><span class="event-people">Rama IX (Bhumibol), Rama X</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+    <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1960–2023</span><span class="event-text"><span class="event-name">Instabilité politique : coups d'État successifs</span><span class="event-context">13 coups en 90 ans ; tensions civiles ; alternance démocratie-dictature militaire</span></span><span class="event-cat cat-politique">Politique</span></div></div>
+  </div>
+
+</section>
+
+
 
 <footer>
   <p>Frise chronologique à usage pédagogique — Niveau lycée avancé / début universitaire</p>
@@ -1891,6 +2577,103 @@ document.addEventListener('keydown', event => {
 
 updateStats();
 applyFilters();
+
+// ═════════════════════════════════════════════════════════ SIDEBAR NAVIGATION
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebarContent = document.getElementById('sidebarContent');
+const main = document.querySelector('main');
+
+let sidebarOpen = false;
+
+function toggleSidebar() {
+  sidebarOpen = !sidebarOpen;
+  sidebar.classList.toggle('active', sidebarOpen);
+  sidebarToggle.classList.toggle('active', sidebarOpen);
+  main.classList.toggle('sidebar-open', sidebarOpen);
+}
+
+sidebarToggle.addEventListener('click', toggleSidebar);
+
+function buildSidebarContent() {
+  const sections = [
+    {
+      title: '📜 Périodes historiques',
+      items: [
+        { label: 'Préhistoire', id: 'era-prehist' },
+        { label: 'Antiquité', id: 'era-antiquite' },
+        { label: 'Moyen Âge', id: 'era-moyen-age' },
+        { label: 'Temps modernes', id: 'era-modernes' },
+        { label: 'Époque contemporaine', id: 'era-contemporain' },
+        { label: '⭐ Top 150 dates', id: 'era-top50' }
+      ]
+    },
+    {
+      title: '🌍 Événements majeurs par pays',
+      items: [
+        { label: '🇫🇷 France', id: 'country-france' },
+        { label: '🇬🇧 Royaume-Uni', id: 'country-uk' },
+        { label: '🇩🇪 Allemagne', id: 'country-germany' },
+        { label: '🇮🇹 Italie', id: 'country-italy' },
+        { label: '🇪🇸 Espagne', id: 'country-spain' },
+        { label: '🇷🇺 Russie', id: 'country-russia' },
+        { label: '🇨🇳 Chine', id: 'country-china' },
+        { label: '🇯🇵 Japon', id: 'country-japan' },
+        { label: '🇺🇸 États-Unis', id: 'country-usa' },
+        { label: '🇪🇬 Égypte', id: 'country-egypt' },
+        { label: '🇮🇳 Inde', id: 'country-india' },
+        { label: '🇧🇷 Brésil', id: 'country-brazil' },
+        { label: '🇲🇽 Mexique', id: 'country-mexico' },
+        { label: '🇿🇦 Afrique du Sud', id: 'country-sa' },
+        { label: '🇳🇬 Nigeria', id: 'country-nigeria' },
+        { label: '🇪🇹 Éthiopie', id: 'country-ethiopia' },
+        { label: '🇮🇱 Israël', id: 'country-israel' },
+        { label: '🇮🇷 Iran', id: 'country-iran' },
+        { label: '🇹🇷 Turquie', id: 'country-turkey' },
+        { label: '🇵🇱 Pologne', id: 'country-poland' },
+        { label: '🇸🇪 Suède', id: 'country-sweden' },
+        { label: '🇮🇩 Indonésie', id: 'country-indonesia' },
+        { label: '🇰🇷 Corée du Sud', id: 'country-korea' },
+        { label: '🇻🇳 Vietnam', id: 'country-vietnam' },
+        { label: '🇹🇭 Thaïlande', id: 'country-thailand' }
+      ]
+    }
+  ];
+
+  sidebarContent.innerHTML = sections.map(section => `
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">${section.title}</div>
+      <div class="sidebar-items">
+        ${section.items.map(item => `
+          <div class="sidebar-item" data-target="${item.id}">${item.label}</div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  // Ajoute les événements aux items
+  document.querySelectorAll('.sidebar-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const target = document.getElementById(item.dataset.target);
+      if (target) {
+        // Ferme le sidebar en mobile
+        if (window.innerWidth < 640) {
+          toggleSidebar();
+        }
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Highlight temporaire
+          target.style.backgroundColor = 'rgba(0, 113, 227, 0.05)';
+          setTimeout(() => {
+            target.style.backgroundColor = '';
+          }, 2000);
+        }, 100);
+      }
+    });
+  });
+}
+
+buildSidebarContent();
 
 const detailMode = urlParams.get('view') === 'detail';
 if (detailMode) {

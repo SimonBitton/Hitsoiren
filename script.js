@@ -12,41 +12,7 @@ const detailMeta = document.getElementById('detailMeta');
 const detailBackLink = document.getElementById('detailBackLink');
 const detailSearchLink = document.getElementById('detailSearchLink');
 const urlParams = new URLSearchParams(window.location.search);
-const state = { 
-  era: 'all', 
-  type: 'all', 
-  search: '',
-  currentView: 'timeline' // 'timeline', 'countries', 'stats'
-};
-
-// ══════════════════ VIEW ROUTER ══════════════════
-function setView(viewName) {
-  state.currentView = viewName;
-  
-  // Update Tabs UI
-  document.querySelectorAll('.nav-tab').forEach(tab => {
-    tab.classList.toggle('active', tab.dataset.view === viewName);
-  });
-  
-  // Update Containers UI
-  document.querySelectorAll('.view-container').forEach(container => {
-    container.classList.toggle('active', container.id === `view-${viewName}`);
-  });
-  
-  // Rebuild Sidebar based on view
-  buildSidebarContent();
-  
-  // Specific view logic
-  if (viewName === 'countries') {
-    renderCountriesList();
-  } else if (viewName === 'stats') {
-    renderStatsView();
-  }
-}
-
-document.querySelectorAll('.nav-tab').forEach(tab => {
-  tab.addEventListener('click', () => setView(tab.dataset.view));
-});
+const state = { era: 'all', type: 'all', search: '' };
 
 const eraConfigs = {
   prehist: { label: 'Préhistoire', kind: 'ère' },
@@ -493,118 +459,6 @@ document.addEventListener('keydown', event => {
 updateStats();
 applyFilters();
 
-// ══════════════════ COUNTRIES & STATS RENDERING ══════════════════
-let countriesData = [];
-
-async function loadCountriesData() {
-  try {
-    const response = await fetch('data/countries.json');
-    countriesData = await response.json();
-  } catch (error) {
-    console.error('Failed to load countries.json:', error);
-  }
-}
-
-function renderCountriesList() {
-  const grid = document.getElementById('countriesGrid');
-  if (!grid) return;
-  
-  const search = normalizeText(document.getElementById('countrySearchInput').value);
-  const filtered = countriesData.filter(c => normalizeText(c.name).includes(search));
-  
-  grid.innerHTML = filtered.map(country => `
-    <div class="country-card" onclick="showCountryDetail('${country.id}')">
-      <div class="country-flag">${country.flag}</div>
-      <div class="country-info">
-        <h3>${country.name}</h3>
-        <p>${country.events.length} Événements</p>
-      </div>
-    </div>
-  `).join('');
-}
-
-function filterCountries() {
-  renderCountriesList();
-}
-
-function showCountryDetail(countryId) {
-  const country = countriesData.find(c => c.id === countryId);
-  if (!country) return;
-  
-  // Create a temporary "Detail" overlay or reuse the existing one
-  // For now, let's just use the existing detail logic if possible, 
-  // but country events are structured differently.
-  // Let's implement a simple modal-like view for country history.
-  const modalHtml = `
-    <div id="countryModal" class="country-modal">
-      <div class="country-modal-content">
-        <div class="modal-header">
-          <span class="close-modal" onclick="closeCountryModal()">&times;</span>
-          <h2>${country.flag} ${country.name}</h2>
-          <p>Chronologie nationale</p>
-        </div>
-        <div class="modal-body">
-          ${country.events.map(event => `
-            <div class="country-event">
-              <div class="event-date">${event.date}</div>
-              <div class="event-info">
-                <strong>${event.name}</strong>
-                <p>${event.context}</p>
-                <span class="event-cat ${getCategoryClass(event.category)}">${event.category}</span>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    </div>
-  `;
-  document.body.insertAdjacentHTML('beforeend', modalHtml);
-  setTimeout(() => document.getElementById('countryModal').classList.add('active'), 10);
-}
-
-window.closeCountryModal = function() {
-  const modal = document.getElementById('countryModal');
-  modal.classList.remove('active');
-  setTimeout(() => modal.remove(), 300);
-};
-
-function renderStatsView() {
-  const container = document.getElementById('statsContent');
-  if (!container) return;
-  
-  const totalEvents = eventEntries.length;
-  const countriesCount = countriesData.length;
-  const categories = {};
-  eventEntries.forEach(e => {
-    categories[e.category] = (categories[e.category] || 0) + 1;
-  });
-  
-  container.innerHTML = `
-    <div class="stats-grid">
-      <div class="stat-card">
-        <strong>${totalEvents}</strong>
-        <span>Événements chronologiques</span>
-      </div>
-      <div class="stat-card">
-        <strong>${countriesCount}</strong>
-        <span>Pays documentés</span>
-      </div>
-      ${Object.entries(categories).map(([cat, count]) => `
-        <div class="stat-card">
-          <strong>${count}</strong>
-          <span>${cat}</span>
-        </div>
-      `).join('')}
-    </div>
-    <div class="stats-extra">
-      <h3>Dernières mises à jour</h3>
-      <p>Base de données enrichie avec les drapeaux et les histoires nationales de plus de 25 pays.</p>
-    </div>
-  `;
-}
-
-loadCountriesData();
-
 // ═════════════════════════════════════════════════════════ SIDEBAR NAVIGATION
 const sidebar = document.getElementById('sidebar');
 const sidebarToggle = document.getElementById('sidebarToggle');
@@ -623,47 +477,56 @@ function toggleSidebar() {
 sidebarToggle.addEventListener('click', toggleSidebar);
 
 function buildSidebarContent() {
-  let sections = [];
-  
-  if (state.currentView === 'timeline') {
-    sections = [
-      {
-        title: '📜 Périodes historiques',
-        items: [
-          { label: 'Préhistoire', id: 'era-prehist' },
-          { label: 'Antiquité', id: 'era-antiquite' },
-          { label: 'Moyen Âge', id: 'era-moyen-age' },
-          { label: 'Temps modernes', id: 'era-modernes' },
-          { label: 'Époque contemporaine', id: 'era-contemporain' },
-          { label: '⭐ Top 150 dates', id: 'era-top50' }
-        ]
-      }
-    ];
-  } else if (state.currentView === 'countries') {
-    sections = [
-      {
-        title: '🌍 Pays disponibles',
-        items: countriesData.map(c => ({ label: `${c.flag} ${c.name}`, id: c.id, type: 'country' }))
-      }
-    ];
-  } else {
-    sections = [
-      {
-        title: '📊 Statistiques',
-        items: [
-          { label: 'Aperçu général', id: 'stats-overview' },
-          { label: 'Répartition thématique', id: 'stats-categories' }
-        ]
-      }
-    ];
-  }
+  const sections = [
+    {
+      title: '📜 Périodes historiques',
+      items: [
+        { label: 'Préhistoire', id: 'era-prehist' },
+        { label: 'Antiquité', id: 'era-antiquite' },
+        { label: 'Moyen Âge', id: 'era-moyen-age' },
+        { label: 'Temps modernes', id: 'era-modernes' },
+        { label: 'Époque contemporaine', id: 'era-contemporain' },
+        { label: '⭐ Top 150 dates', id: 'era-top50' }
+      ]
+    },
+    {
+      title: '🌍 Événements majeurs par pays',
+      items: [
+        { label: '🇫🇷 France', id: 'country-france' },
+        { label: '🇬🇧 Royaume-Uni', id: 'country-uk' },
+        { label: '🇩🇪 Allemagne', id: 'country-germany' },
+        { label: '🇮🇹 Italie', id: 'country-italy' },
+        { label: '🇪🇸 Espagne', id: 'country-spain' },
+        { label: '🇷🇺 Russie', id: 'country-russia' },
+        { label: '🇨🇳 Chine', id: 'country-china' },
+        { label: '🇯🇵 Japon', id: 'country-japan' },
+        { label: '🇺🇸 États-Unis', id: 'country-usa' },
+        { label: '🇪🇬 Égypte', id: 'country-egypt' },
+        { label: '🇮🇳 Inde', id: 'country-india' },
+        { label: '🇧🇷 Brésil', id: 'country-brazil' },
+        { label: '🇲🇽 Mexique', id: 'country-mexico' },
+        { label: '🇿🇦 Afrique du Sud', id: 'country-sa' },
+        { label: '🇳🇬 Nigeria', id: 'country-nigeria' },
+        { label: '🇪🇹 Éthiopie', id: 'country-ethiopia' },
+        { label: '🇮🇱 Israël', id: 'country-israel' },
+        { label: '🇮🇷 Iran', id: 'country-iran' },
+        { label: '🇹🇷 Turquie', id: 'country-turkey' },
+        { label: '🇵🇱 Pologne', id: 'country-poland' },
+        { label: '🇸🇪 Suède', id: 'country-sweden' },
+        { label: '🇮🇩 Indonésie', id: 'country-indonesia' },
+        { label: '🇰🇷 Corée du Sud', id: 'country-korea' },
+        { label: '🇻🇳 Vietnam', id: 'country-vietnam' },
+        { label: '🇹🇭 Thaïlande', id: 'country-thailand' }
+      ]
+    }
+  ];
 
   sidebarContent.innerHTML = sections.map(section => `
     <div class="sidebar-section">
       <div class="sidebar-section-title">${section.title}</div>
       <div class="sidebar-items">
         ${section.items.map(item => `
-          <div class="sidebar-item" data-target="${item.id}" data-type="${item.type || ''}">${item.label}</div>
+          <div class="sidebar-item" data-target="${item.id}">${item.label}</div>
         `).join('')}
       </div>
     </div>
@@ -671,16 +534,7 @@ function buildSidebarContent() {
 
   document.querySelectorAll('.sidebar-item').forEach(item => {
     item.addEventListener('click', () => {
-      const targetId = item.dataset.target;
-      const type = item.dataset.type;
-      
-      if (type === 'country') {
-        showCountryDetail(targetId);
-        if (window.innerWidth < 640) toggleSidebar();
-        return;
-      }
-      
-      const target = document.getElementById(targetId);
+      const target = document.getElementById(item.dataset.target);
       if (target) {
         if (window.innerWidth < 640) {
           toggleSidebar();

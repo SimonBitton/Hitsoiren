@@ -459,24 +459,115 @@ document.addEventListener('keydown', event => {
 updateStats();
 applyFilters();
 
-// Sidebar handled by countries.js
+// ═════════════════════════════════════════════════════════ SIDEBAR NAVIGATION
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebarContent = document.getElementById('sidebarContent');
+const main = document.querySelector('main');
 
-// ═════════════════════════════════════════════════════════ DETAIL MODE
+let sidebarOpen = false;
+
+function toggleSidebar() {
+  sidebarOpen = !sidebarOpen;
+  sidebar.classList.toggle('active', sidebarOpen);
+  sidebarToggle.classList.toggle('active', sidebarOpen);
+  main.classList.toggle('sidebar-open', sidebarOpen);
+}
+
+sidebarToggle.addEventListener('click', toggleSidebar);
+
+function buildSidebarContent() {
+  const sections = [
+    {
+      title: '📜 Périodes historiques',
+      items: [
+        { label: 'Préhistoire', id: 'era-prehist' },
+        { label: 'Antiquité', id: 'era-antiquite' },
+        { label: 'Moyen Âge', id: 'era-moyen-age' },
+        { label: 'Temps modernes', id: 'era-modernes' },
+        { label: 'Époque contemporaine', id: 'era-contemporain' },
+        { label: '⭐ Top 150 dates', id: 'era-top50' }
+      ]
+    },
+    {
+      title: '🌍 Événements majeurs par pays',
+      items: [
+        { label: '🇫🇷 France', id: 'country-france' },
+        { label: '🇬🇧 Royaume-Uni', id: 'country-uk' },
+        { label: '🇩🇪 Allemagne', id: 'country-germany' },
+        { label: '🇮🇹 Italie', id: 'country-italy' },
+        { label: '🇪🇸 Espagne', id: 'country-spain' },
+        { label: '🇷🇺 Russie', id: 'country-russia' },
+        { label: '🇨🇳 Chine', id: 'country-china' },
+        { label: '🇯🇵 Japon', id: 'country-japan' },
+        { label: '🇺🇸 États-Unis', id: 'country-usa' },
+        { label: '🇪🇬 Égypte', id: 'country-egypt' },
+        { label: '🇮🇳 Inde', id: 'country-india' },
+        { label: '🇧🇷 Brésil', id: 'country-brazil' },
+        { label: '🇲🇽 Mexique', id: 'country-mexico' },
+        { label: '🇿🇦 Afrique du Sud', id: 'country-sa' },
+        { label: '🇳🇬 Nigeria', id: 'country-nigeria' },
+        { label: '🇪🇹 Éthiopie', id: 'country-ethiopia' },
+        { label: '🇮🇱 Israël', id: 'country-israel' },
+        { label: '🇮🇷 Iran', id: 'country-iran' },
+        { label: '🇹🇷 Turquie', id: 'country-turkey' },
+        { label: '🇵🇱 Pologne', id: 'country-poland' },
+        { label: '🇸🇪 Suède', id: 'country-sweden' },
+        { label: '🇮🇩 Indonésie', id: 'country-indonesia' },
+        { label: '🇰🇷 Corée du Sud', id: 'country-korea' },
+        { label: '🇻🇳 Vietnam', id: 'country-vietnam' },
+        { label: '🇹🇭 Thaïlande', id: 'country-thailand' }
+      ]
+    }
+  ];
+
+  sidebarContent.innerHTML = sections.map(section => `
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">${section.title}</div>
+      <div class="sidebar-items">
+        ${section.items.map(item => `
+          <div class="sidebar-item" data-target="${item.id}">${item.label}</div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  document.querySelectorAll('.sidebar-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const target = document.getElementById(item.dataset.target);
+      if (target) {
+        if (window.innerWidth < 640) {
+          toggleSidebar();
+        }
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          target.style.backgroundColor = 'rgba(0, 113, 227, 0.05)';
+          setTimeout(() => {
+            target.style.backgroundColor = '';
+          }, 2000);
+        }, 100);
+      }
+    });
+  });
+}
+
+buildSidebarContent();
+
 const detailMode = urlParams.get('view') === 'detail';
 if (detailMode) {
   document.body.classList.add('detail-mode');
   const entry = getEntryById(urlParams.get('id'));
   const backId = urlParams.get('back');
-  detailBackLink.href = window.location.pathname + (backId ? '#' + backId : '');
+  detailBackLink.href = `${window.location.pathname}${backId ? `#${backId}` : ''}`;
   if (entry) {
     renderDetail(entry);
   } else {
     detailKicker.textContent = 'Fiche historique';
     detailDate.textContent = '';
-    detailTitle.textContent = 'Evenement introuvable';
-    detailSummary.textContent = 'Cette fiche ne peut pas etre chargee.';
-    detailBullets.innerHTML = '<li>Reviens a la frise.</li>';
-    detailArticleTitle.textContent = 'Retour conseille';
-    detailArticleBody.innerHTML = '<p>Reclique sur une date pour ouvrir une fiche.</p>';
+    detailTitle.textContent = 'Événement introuvable';
+    detailSummary.textContent = 'Cette fiche n’a pas pu être chargée. Utilise le bouton de retour pour revenir à la frise.';
+    detailBullets.innerHTML = '<li>Le lien ne correspond peut-être plus à un événement existant.</li>';
+    detailArticleTitle.textContent = 'Retour conseillé';
+    detailArticleBody.innerHTML = '<p>Reviens à la frise et reclique sur une date pour ouvrir une fiche à jour.</p>';
   }
 }

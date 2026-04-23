@@ -1,0 +1,24 @@
+:root {
+  --ink: #0f172a;
+  --ink-soft: #475569;
+  --parchment: #f8fafc;
+  --gold: #d4af37; /* More historical gold */
+  --gold-dark: #b8860b;
+  --accent: #0071e3; /* Apple-style blue */
+  --accent-soft: rgba(0, 113, 227, 0.1);
+  --rust: #92400e;
+  --olive: #166534;
+  --slate: #334155;
+  --cream: rgba(255, 255, 255, 0.8);
+  --border: rgba(15, 23, 42, 0.08);
+  --prehist: #64748b;
+  --antiquite: #7c3aed;
+  --moyen-age: #2563eb;
+  --modernes: #059669;
+  --contemporain: #1e293b;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-strong: rgba(255, 255, 255, 0.92);
+  --shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+  --shadow-soft: 0 8px 20px rgba(15, 23, 42, 0.04);
+  --glass: blur(12px) saturate(160%);
+}

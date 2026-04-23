@@ -1,0 +1,2526 @@
+{
+  "eras": [
+    {
+      "id": "prehist",
+      "name": "Préhistoire",
+      "icon": "🦴",
+      "subtitle": "≈ 3 300 000 av. J.-C. → ≈ 3 200 av. J.-C. | De l'apparition des hominidés à l'écriture"
+    },
+    {
+      "id": "antiquite",
+      "name": "Antiquité",
+      "icon": "🏛",
+      "subtitle": "≈ 3 200 av. J.-C. → 476 ap. J.-C. | Des premières écritures à la chute de Rome"
+    },
+    {
+      "id": "moyen-age",
+      "name": "Moyen Âge",
+      "icon": "⚔️",
+      "subtitle": "476 → 1492 | De la chute de Rome à la découverte des Amériques"
+    },
+    {
+      "id": "modernes",
+      "name": "Temps Modernes",
+      "icon": "🔭",
+      "subtitle": "1492 → 1789 | Des Grandes Découvertes à la Révolution française"
+    },
+    {
+      "id": "contemporain",
+      "name": "Époque Contemporaine",
+      "icon": "⚡",
+      "subtitle": "1789 → nos jours | De la Révolution française à l'ère de l'intelligence artificielle"
+    }
+  ],
+  "events": [
+    {
+      "era": "prehist",
+      "major": true,
+      "date": "≈ 7 000 000 av. J.-C.",
+      "name": "Toumaï — plus ancien hominidé connu (Sahelanthropus tchadensis)",
+      "context": "Crâne découvert au Tchad en 2001 ; ancêtre potentiel de la lignée humaine",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 4 000 000 av. J.-C.",
+      "name": "Australopithèques — bipédie attestée en Afrique orientale",
+      "context": "Lucy (Australopithecus afarensis, Éthiopie) : preuve d'une marche verticale",
+      "people": "Australopithecus afarensis",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "prehist",
+      "major": true,
+      "date": "≈ 3 300 000 av. J.-C.",
+      "name": "Premiers outils en pierre taillée — industrie oldowayenne",
+      "context": "Éclats et galets taillés ; premières traces d'un comportement technique",
+      "people": "Homo habilis",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 2 000 000 av. J.-C.",
+      "name": "Homo erectus — expansion hors d'Afrique vers l'Asie",
+      "context": "Premiers hominidés à quitter le continent africain (Géorgie, Java, Pékin)",
+      "people": "Homo erectus",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 1 800 000 av. J.-C.",
+      "name": "Maîtrise du feu",
+      "context": "Cuisson des aliments ; socialisation autour du feu ; cerveau augmenté par nutrition améliorée",
+      "people": "Homo erectus",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 400 000 av. J.-C.",
+      "name": "Apparition des Néandertaliens en Europe",
+      "context": "Espèce adaptée au froid ; sépultures, parures ; coexistence avec Homo sapiens",
+      "people": "Homo neanderthalensis",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "prehist",
+      "major": true,
+      "date": "≈ 300 000 av. J.-C.",
+      "name": "Apparition d'Homo sapiens en Afrique du Nord",
+      "context": "Fossiles de Jebel Irhoud (Maroc) ; homme anatomiquement moderne",
+      "people": "Homo sapiens",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 165 000 av. J.-C.",
+      "name": "Premiers comportements symboliques — ocre et coquillages percés (Blombos, Afrique du Sud)",
+      "context": "Premières parures et pigments utilisés à des fins symboliques",
+      "people": "",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "prehist",
+      "major": true,
+      "date": "≈ 70 000 av. J.-C.",
+      "name": "Grande migration hors d'Afrique d'Homo sapiens",
+      "context": "Dispersion vers l'Asie, l'Australie, puis l'Europe ; peuplement progressif de la planète",
+      "people": "",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 50 000 av. J.-C.",
+      "name": "Peuplement de l'Australie par les ancêtres des Aborigènes",
+      "context": "Traversée maritime depuis l'Asie du Sud-Est ; présence humaine continue depuis",
+      "people": "",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 40 000 av. J.-C.",
+      "name": "Extinction des Néandertaliens",
+      "context": "Remplacement progressif par Homo sapiens ; métissage partiel attesté par ADN",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "prehist",
+      "major": true,
+      "date": "≈ 36 000 av. J.-C.",
+      "name": "Art pariétal de la grotte Chauvet (Ardèche)",
+      "context": "Rhinocéros laineux, lions, mammouths ; plus ancienne grande fresque connue d'Europe",
+      "people": "",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 28 000 av. J.-C.",
+      "name": "Vénus de Willendorf et statuettes féminines",
+      "context": "Premières sculptures en ronde-bosse ; culte probable de la fertilité",
+      "people": "",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "prehist",
+      "major": true,
+      "date": "≈ 17 000 av. J.-C.",
+      "name": "Peintures de Lascaux (Dordogne)",
+      "context": "Chef-d'œuvre de l'art magdalénien : chevaux, bisons, cerfs ; perspectivisme proto-cinétique",
+      "people": "",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 15 000 av. J.-C.",
+      "name": "Peuplement des Amériques via le détroit de Béring",
+      "context": "Migration par le pont terrestre de Béringie pendant le maximum glaciaire",
+      "people": "",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 12 000 av. J.-C.",
+      "name": "Fin du dernier âge glaciaire — réchauffement climatique",
+      "context": "Fonte des glaces, montée des mers, disparition de nombreux mégafaunes",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "prehist",
+      "major": true,
+      "date": "≈ 10 000 av. J.-C.",
+      "name": "Révolution néolithique — invention de l'agriculture (Croissant fertile)",
+      "context": "Domestication du blé, de l'orge, des moutons ; sédentarisation ; villages permanents",
+      "people": "Cultures natoufienne et proto-néolithique",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 9 000 av. J.-C.",
+      "name": "Fondation de Jéricho — première cité fortifiée connue",
+      "context": "Tour de pierre de 8 m, remparts ; 3 000 habitants ; source permanente d'eau",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 8 000 av. J.-C.",
+      "name": "Domestication du chien, cochon, chèvre, vache",
+      "context": "Révolution zootechnique accompagnant la sédentarisation agricole",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 7 000 av. J.-C.",
+      "name": "Çatalhöyük (Anatolie) — ville néolithique de 10 000 habitants",
+      "context": "Habitations mitoyennes sans rues ; peintures murales domestiques ; société égalitaire",
+      "people": "",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 6 000 av. J.-C.",
+      "name": "Apparition de la métallurgie du cuivre (Balkans, Moyen-Orient)",
+      "context": "Début du Chalcolithique ; le métal remplace progressivement la pierre",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 5 500 av. J.-C.",
+      "name": "Agriculture indépendante en Chine (millet, riz) et en Méso-Amérique (maïs)",
+      "context": "Foyers indépendants de néolithisation prouvant que l'agriculture est une invention convergente",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 4 500 av. J.-C.",
+      "name": "Début de l'âge du Bronze (Moyen-Orient)",
+      "context": "Alliage cuivre-étain ; outils et armes plus solides ; essor des échanges commerciaux",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 3 500 av. J.-C.",
+      "name": "Invention de la roue et du tour de potier (Mésopotamie)",
+      "context": "Révolution des transports et de l'artisanat ; base de toute mécanique ultérieure",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "prehist",
+      "major": false,
+      "date": "≈ 3 200 av. J.-C.",
+      "name": "Construction de Stonehenge (phase initiale, Angleterre)",
+      "context": "Monument mégalithique à fonction astronomique et cultuelle ; chantier de plusieurs siècles",
+      "people": "",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "≈ 3 200 av. J.-C.",
+      "name": "Invention de l'écriture cunéiforme (Sumer, Uruk)",
+      "context": "Née de besoins comptables sur tablettes d'argile ; 3 000 signes → 600 signes phonétiques",
+      "people": "Civilisation sumérienne",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 2 900 av. J.-C.",
+      "name": "Cités-États sumériennes — Ur, Lagash, Nippur",
+      "context": "Premières organisations politiques urbaines avec temples (ziggourats) et rois-prêtres",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 2 350 av. J.-C.",
+      "name": "Empire akkadien de Sargon d'Akkad — premier empire connu",
+      "context": "Unification de la Mésopotamie par la conquête ; première administration centralisée",
+      "people": "Sargon d'Akkad",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "≈ 1 754 av. J.-C.",
+      "name": "Code de Hammurabi — Babylone",
+      "context": "282 lois gravées sur stèle de basalte noir ; principe de lex talionis ; droit codifié",
+      "people": "Roi Hammurabi",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 1 200 av. J.-C.",
+      "name": "Effondrement de l'âge du Bronze — catastrophe civilisationnelle",
+      "context": "Disparition simultanée des empires hittite, mycénien, ugaritien ; causes encore débattues",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 900 av. J.-C.",
+      "name": "Empire assyrien à son apogée (Assyriens)",
+      "context": "Premier empire disposant d'une armée professionnelle et d'une administration impériale",
+      "people": "Assurnasirpal II, Sargon II, Assurbanipal",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "539 av. J.-C.",
+      "name": "Cyrus le Grand prend Babylone — Perse achéménide",
+      "context": "Libération des Juifs captifs ; Cyrus publie le premier \"édit de tolérance\" religieuse",
+      "people": "Cyrus II le Grand",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "≈ 3 100 av. J.-C.",
+      "name": "Unification de l'Égypte — naissance du pharaonisme",
+      "context": "Narmer unifie Haute et Basse Égypte ; début de la période dynastique (I à XXX)",
+      "people": "Pharaon Narmer / Méni",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 2 650 av. J.-C.",
+      "name": "Pyramide de Djoser à Saqqara — première pyramide à degrés",
+      "context": "Conçue par l'architecte Imhotep ; première grande construction en pierre de taille",
+      "people": "Pharaon Djoser, Imhotep",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "≈ 2 560 av. J.-C.",
+      "name": "Construction de la Grande Pyramide de Gizeh",
+      "context": "2,3 millions de blocs ; 146 m de haut ; seule des 7 Merveilles du monde encore debout",
+      "people": "Pharaon Khéops (Khnoum-Khouf)",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 1 550 av. J.-C.",
+      "name": "Nouvel Empire égyptien — apogée de la puissance pharaonique",
+      "context": "Expulsion des Hyksos ; expansion vers la Nubie et le Levant ; Karnak et Louxor",
+      "people": "Ahmosis Ier, Thoutmosis III, Ramsès II",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 1 350 av. J.-C.",
+      "name": "Révolution religieuse d'Akhénaton — monothéisme d'Aton",
+      "context": "Fermeture des temples traditionnels ; capital déplacée à Akhetaton ; effacé post-mortem",
+      "people": "Akhénaton, Néfertiti, Toutankhamon",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 1 274 av. J.-C.",
+      "name": "Bataille de Qadesh & premier traité de paix écrit",
+      "context": "Égypte vs Hittites ; résultat indécis ; traité sigillé en argent conservé à Istanbul et à l'ONU",
+      "people": "Ramsès II, Hattousil III",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "30 av. J.-C.",
+      "name": "Mort de Cléopâtre VII — fin de l'Égypte pharaonique",
+      "context": "Suicide après la défaite d'Antoine ; l'Égypte devient province romaine",
+      "people": "Cléopâtre VII, Marc Antoine, Octave",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 2 600 av. J.-C.",
+      "name": "Civilisation de l'Indus — Mohenjo-daro et Harappa",
+      "context": "Cités planifiées en damier avec égouts, bains ; 50 000 habitants ; écriture non déchiffrée",
+      "people": "",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 1 500 av. J.-C.",
+      "name": "Rédaction des Védas — fondements de l'hindouisme",
+      "context": "Textes sacrés sanskrits ; base de la civilisation indienne ; transmis oralement pendant des siècles",
+      "people": "",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 1 046 av. J.-C.",
+      "name": "Fondation de la dynastie Zhou en Chine",
+      "context": "Longest dynasty in Chinese history ; mandat du ciel ; féodalité chinoise",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "≈ 563 av. J.-C.",
+      "name": "Naissance du Bouddha (Siddhārtha Gautama) à Lumbini",
+      "context": "Prince renonçant ; Éveil à Bodh Gaya ; fondation du bouddhisme, religion mondiale",
+      "people": "Siddhārtha Gautama",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "≈ 551 av. J.-C.",
+      "name": "Naissance de Confucius — philosophie éthique chinoise",
+      "context": "Ren (bienveillance), Li (rite), Zhengming (rectification des noms) ; 2 500 ans d'influence",
+      "people": "Kongzi / Confucius",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 500 av. J.-C.",
+      "name": "Lao-Tseu & rédaction du Tao Te Ching — fondation du taoïsme",
+      "context": "Philosophie de l'harmonie avec la nature ; 81 chapitres ; texte le plus traduit après la Bible",
+      "people": "Lao-Tseu (légendaire)",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "221 av. J.-C.",
+      "name": "Qin Shi Huang unifie la Chine — premier empire",
+      "context": "Standardisation écriture, poids, mesures, monnaie ; Grande Muraille ; armée de terre cuite",
+      "people": "Qin Shi Huang",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "206 av. J.-C.",
+      "name": "Fondation de la dynastie Han — âge d'or chinois",
+      "context": "Route de la Soie, papier, boussole, Confucianisme d'État ; 60 millions d'habitants",
+      "people": "Liu Bang (Gaozu)",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "269–232 av. J.-C.",
+      "name": "Règne d'Ashoka — Empire Maurya et diffusion du bouddhisme",
+      "context": "Après Kalinga, se convertit au bouddhisme ; envoie des missionnaires jusqu'en Grèce",
+      "people": "Ashoka le Grand",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 800 av. J.-C.",
+      "name": "Homère — composition de l'Iliade et de l'Odyssée",
+      "context": "Fondements de la littérature et de la culture occidentale ; transmission orale puis écrite",
+      "people": "Homère (attribué)",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "776 av. J.-C.",
+      "name": "Premiers Jeux Olympiques à Olympie",
+      "context": "Trêve sacrée (ekecheiria) ; unification symbolique des cités ; tous les 4 ans pendant 1 000 ans",
+      "people": "",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 750 av. J.-C.",
+      "name": "Grande colonisation grecque — Méditerranée et mer Noire",
+      "context": "Fondation de Marseille (Massalia), Naples, Syracuse ; diffusion de la culture grecque",
+      "people": "",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "594 av. J.-C.",
+      "name": "Réformes de Solon à Athènes",
+      "context": "Abolition de l'esclavage pour dettes ; classes censitaires ; base du droit athénien",
+      "people": "Solon",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "508 av. J.-C.",
+      "name": "Réformes de Clisthène — démocratie athénienne",
+      "context": "10 tribus civiques ; assemblée (Ecclesia) ; ostracisme ; naissance de la démocratie directe",
+      "people": "Clisthène d'Athènes",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "13 septembre 490 av. J.-C.",
+      "name": "Bataille de Marathon",
+      "context": "10 000 Athéniens et Platéens battent 25 000 Perses de Darios ; la course du messager",
+      "people": "Miltiade, Darios Ier",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "480 av. J.-C.",
+      "name": "Thermopyles & Salamine — guerres médiques (IIe invasion)",
+      "context": "300 Spartiates de Léonidas ; victoire navale de Thémistocle ; fin de l'expansion perse",
+      "people": "Léonidas, Thémistocle, Xerxès Ier",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "461–429 av. J.-C.",
+      "name": "Siècle de Périclès — âge d'or d'Athènes",
+      "context": "Construction du Parthénon ; tragédie grecque ; Socrate, Sophocle, Hérodote",
+      "people": "Périclès, Phidias, Sophocle, Hérodote",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "431–404 av. J.-C.",
+      "name": "Guerre du Péloponnèse — Athènes vs Sparte",
+      "context": "27 ans de guerre ; défaite d'Athènes ; fin de l'hégémonie athénienne",
+      "people": "Thucydide (historien), Alcibiade",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "399 av. J.-C.",
+      "name": "Procès et mort de Socrate",
+      "context": "Condamné pour impiété et corruption de la jeunesse ; boit la ciguë ; fondateur de la philosophie morale",
+      "people": "Socrate, Platon (témoin)",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "387 av. J.-C.",
+      "name": "Platon fonde l'Académie à Athènes",
+      "context": "Première université du monde occidental ; enseignement de 900 ans jusqu'en 529 ap. J.-C.",
+      "people": "Platon",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "334–323 av. J.-C.",
+      "name": "Conquêtes d'Alexandre le Grand",
+      "context": "De la Grèce à l'Inde en 10 ans ; hellénisation de l'Orient ; fondation d'Alexandrie",
+      "people": "Alexandre III de Macédoine",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "323 av. J.-C.",
+      "name": "Mort d'Alexandre — démembrement de l'empire (Diadoques)",
+      "context": "Trois royaumes hellénistiques : Séleucides, Ptolémées, Antigonides ; koiné grecque répandue",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 300 av. J.-C.",
+      "name": "Euclide — Éléments de géométrie",
+      "context": "13 livres fondant la géométrie axiomatic ; manuel de mathématiques le plus utilisé pendant 2 000 ans",
+      "people": "Euclide d'Alexandrie",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 240 av. J.-C.",
+      "name": "Ératosthène calcule la circonférence de la Terre",
+      "context": "Résultat à 1% d'erreur par la géométrie des ombres ; preuve de la sphéricité terrestre",
+      "people": "Ératosthène de Cyrène",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "≈ 250 av. J.-C.",
+      "name": "Archimède — principe du levier et de la poussée",
+      "context": "Vis d'Archimède, calcul de π, loi de la flottaison ; génie universel de l'Antiquité",
+      "people": "Archimède de Syracuse",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "753 av. J.-C.",
+      "name": "Fondation légendaire de Rome",
+      "context": "Romulus aurait fondé Rome le 21 avril ; tradition maintenue dans le calendrier romain",
+      "people": "Romulus (légendaire)",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "509 av. J.-C.",
+      "name": "Fondation de la République romaine",
+      "context": "Expulsion de Tarquin le Superbe ; deux consuls élus ; Sénat ; tribuns de la plèbe",
+      "people": "Brutus l'Ancien, Publius Valerius Publicola",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "450 av. J.-C.",
+      "name": "Loi des Douze Tables — premier code de droit romain écrit",
+      "context": "Droit public, privé, pénal ; exposé sur le Forum pour que tous puissent le lire",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "264–146 av. J.-C.",
+      "name": "Guerres Puniques I, II et III — Rome vs Carthage",
+      "context": "Hégémonie méditerranéenne en jeu ; Hannibal passe les Alpes ; Carthago delenda est",
+      "people": "Hannibal Barca, Scipion l'Africain, Caton",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "133–121 av. J.-C.",
+      "name": "Réformes agraires des Gracques — crises de la République",
+      "context": "Tiberius et Caius Gracchus assassinés ; début de 100 ans d'instabilité politique romaine",
+      "people": "Tiberius et Caius Gracchus",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "73–71 av. J.-C.",
+      "name": "Révolte de Spartacus",
+      "context": "70 000 esclaves en armes ; écrasée par Crassus ; 6 000 crucifiés sur la via Appia",
+      "people": "Spartacus, Marcus Crassus",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "60 av. J.-C.",
+      "name": "Premier triumvirat — César, Pompée, Crassus",
+      "context": "Alliance informelle qui concentre le pouvoir réel hors du Sénat",
+      "people": "Jules César, Pompée, Crassus",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "58–50 av. J.-C.",
+      "name": "Conquête de la Gaule par Jules César",
+      "context": "Commentarii de Bello Gallico ; siège d'Alésia 52 av. J.-C. ; Vercingétorix capitule",
+      "people": "Jules César, Vercingétorix",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "10 janvier 49 av. J.-C.",
+      "name": "César franchit le Rubicon — guerre civile",
+      "context": "\"Alea jacta est\" — acte irréversible de trahison envers la République",
+      "people": "Jules César",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "15 mars 44 av. J.-C.",
+      "name": "Assassinat de Jules César — Ides de Mars",
+      "context": "23 coups de poignard au Sénat par Brutus, Cassius et 21 conjurés",
+      "people": "Jules César, Brutus, Cassius",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "27 av. J.-C.",
+      "name": "Octave devient Auguste — naissance de l'Empire romain",
+      "context": "Pax Romana inaugurée ; 44 millions de sujets ; apogée territorial sous Trajan (117)",
+      "people": "Auguste (Caius Octavius)",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "≈ 4 av. J.-C.",
+      "name": "Naissance de Jésus de Nazareth",
+      "context": "Fondateur du christianisme ; crucifié vers 30 ap. J.-C. ; plus grande religion mondiale",
+      "people": "Jésus de Nazareth",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "70",
+      "name": "Destruction du Temple de Jérusalem par Titus",
+      "context": "Fin de la Grande Révolte juive ; diaspora juive massive ; seul le mur occidental (Kotel) subsiste",
+      "people": "Titus Flavius",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "24 août 79",
+      "name": "Éruption du Vésuve — destruction de Pompéi et Herculanum",
+      "context": "Ensevelissement sous cendres et lapilli ; instantané unique de la vie romaine du Ier s.",
+      "people": "Pline le Jeune (témoin épistolaire)",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "98–117",
+      "name": "Règne de Trajan — Empire romain à son maximum territorial",
+      "context": "Dace, Arabie, Mésopotamie annexées ; 5 millions de km² ; forum et colonne trajane",
+      "people": "Trajan",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "212",
+      "name": "Édit de Caracalla — citoyenneté romaine à tous les hommes libres",
+      "context": "Constitutio Antoniniana ; unification juridique de l'Empire ; motivations fiscales",
+      "people": "Caracalla",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "313",
+      "name": "Édit de Milan — tolérance du christianisme",
+      "context": "Constantin légalise le christianisme ; début de la christianisation de l'Empire",
+      "people": "Constantin Ier",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "325",
+      "name": "Concile de Nicée — définition du dogme chrétien",
+      "context": "Credo de Nicée ; Jésus déclaré consubstantiel au Père ; arianisme condamné",
+      "people": "Constantin Ier",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "380",
+      "name": "Édit de Thessalonique — le christianisme religion d'État de Rome",
+      "context": "Théodose Ier impose le christianisme nicéen ; paganisme interdit",
+      "people": "Théodose Ier",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "395",
+      "name": "Division définitive de l'Empire romain — Occident et Orient",
+      "context": "À la mort de Théodose ; les deux empires ne seront plus jamais réunis",
+      "people": "Théodose Ier",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "410",
+      "name": "Sac de Rome par les Wisigoths d'Alaric",
+      "context": "Premier sac de Rome en 800 ans ; choc psychologique immense ; inspire La Cité de Dieu",
+      "people": "Alaric Ier",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "4 septembre 476",
+      "name": "Chute de l'Empire romain d'Occident",
+      "context": "Romulus Augustule déposé par Odoacre ; fin conventionnelle de l'Antiquité",
+      "people": "Romulus Augustule, Odoacre",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "481–511",
+      "name": "Clovis — fondation du royaume franc et conversion au catholicisme",
+      "context": "Baptême de Reims ≈ 496 ; alliance Église-État qui structure l'Europe médiévale",
+      "people": "Clovis Ier",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "529",
+      "name": "Fondation de l'ordre bénédictin — Monte-Cassino",
+      "context": "Ora et Labora ; monastères centres de copie, d'agriculture et de savoir pendant 500 ans",
+      "people": "Saint Benoît de Nursie",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "527–565",
+      "name": "Règne de Justinien — apogée de Byzance",
+      "context": "Code Justinien ; construction de Sainte-Sophie ; reconquête de l'Afrique du Nord et de l'Italie",
+      "people": "Justinien Ier, Bélisaire, Théodora",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "622",
+      "name": "Hégire de Mahomet — fondation de l'islam",
+      "context": "Départ de La Mecque vers Médine ; an 1 de l'ère hégirien ; naissance de la communauté (Umma)",
+      "people": "Mahomet (Muhammad)",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "632–750",
+      "name": "Conquêtes arabes — de la Perse à l'Espagne",
+      "context": "En un siècle, l'islam couvre un territoire plus vaste que l'Empire romain à son apogée",
+      "people": "Abu Bakr, Omar Ier, Othman, Ali",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "10 octobre 732",
+      "name": "Bataille de Poitiers — arrêt de l'expansion arabe en Europe",
+      "context": "Charles Martel repousse l'armée d'Abd al-Rahman ; l'Europe demeure chrétienne",
+      "people": "Charles Martel",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "25 décembre 800",
+      "name": "Couronnement de Charlemagne — Saint-Empire carolingien",
+      "context": "Pape Léon III couronne Charlemagne à Rome ; renaissance carolingienne ; refondation de l'Europe",
+      "people": "Charlemagne, pape Léon III",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "830",
+      "name": "Maison de la Sagesse (Bayt al-Hikma) à Bagdad — âge d'or islamique",
+      "context": "Traductions grecques, avancées en algèbre, optique, médecine ; Al-Kindi, Al-Khwarizmi",
+      "people": "Calife al-Ma'mun, Al-Khwarizmi",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "843",
+      "name": "Traité de Verdun — partition de l'Empire carolingien",
+      "context": "3 royaumes pour les petits-fils de Charlemagne ; prémices de la France, l'Allemagne, l'Italie",
+      "people": "Charles le Chauve, Louis le Germanique, Lothaire",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "≈ 860",
+      "name": "Invention de l'imprimerie xylographique en Chine (bloc de bois)",
+      "context": "Livre Diamond Sutra (868) : plus vieux livre daté imprimé du monde",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "≈ 870–930",
+      "name": "Vikings en Islande et au Groenland (Eirik le Rouge)",
+      "context": "Peuplement de l'Islande ; Leif Erikson atteindrait le \"Vinland\" (Amérique du Nord) vers 1000",
+      "people": "Eirik le Rouge, Leif Erikson",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "1054",
+      "name": "Grand Schisme d'Orient — Catholiques vs Orthodoxes",
+      "context": "Excommunications mutuelles de Rome et Constantinople ; rupture encore non résolue",
+      "people": "Pape Léon IX, Patriarche Michel Cérulaire",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "14 octobre 1066",
+      "name": "Bataille d'Hastings — conquête normande de l'Angleterre",
+      "context": "Guillaume le Conquérant bat Harold II ; Domesday Book 1086 ; fusion franco-anglaise",
+      "people": "Guillaume le Conquérant, Harold II",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "1077",
+      "name": "Humiliation de Canossa — querelle des Investitures",
+      "context": "Henri IV s'agenouille devant le pape Grégoire VII ; la papauté domine le pouvoir temporel",
+      "people": "Henri IV, pape Grégoire VII",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "1095–1099",
+      "name": "Première Croisade — prise de Jérusalem",
+      "context": "Appel d'Urbain II à Clermont ; 100 000 croisés ; Jérusalem prise le 15 juillet 1099",
+      "people": "Godefroy de Bouillon, pape Urbain II",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "≈ 1088",
+      "name": "Fondation de l'université de Bologne — première université d'Europe",
+      "context": "Enseignement du droit romain ; modèle pour Oxford (1096), Paris (1150), Cambridge (1209)",
+      "people": "",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "1187",
+      "name": "Saladin reprend Jérusalem aux Croisés",
+      "context": "Victoire de Hattin ; générosité envers les vaincus ; respecté même par ses adversaires",
+      "people": "Saladin (Salah ad-Din)",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "1215",
+      "name": "Magna Carta — premiers droits écrits limitant le roi d'Angleterre",
+      "context": "63 articles ; habeas corpus en germe ; matrice du constitutionnalisme britannique et américain",
+      "people": "Roi Jean sans Terre, barons anglais",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "1209",
+      "name": "Croisade des Albigeois — extermination des Cathares",
+      "context": "\"Tuez-les tous, Dieu reconnaîtra les siens\" (Arnaud Amaury) ; massacres de Béziers",
+      "people": "Simon de Montfort",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "1215",
+      "name": "Fondation de l'ordre dominicain",
+      "context": "Ordre des Frères prêcheurs fondé par Dominique de Guzman ; inquisition médiévale",
+      "people": "Saint Dominique",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "1206–1227",
+      "name": "Conquêtes de Gengis Khan — Empire mongol",
+      "context": "Plus grand empire terrestre continu de l'histoire ; de la Chine à la Hongrie",
+      "people": "Gengis Khan (Temüjin)",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "1258",
+      "name": "Destruction de Bagdad par Hulagu Khan",
+      "context": "Fin du califat abbasside ; bibliothèques incendiées ; fin de l'âge d'or islamique",
+      "people": "Hulagu Khan (petit-fils de Gengis)",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "1271–1295",
+      "name": "Voyage de Marco Polo en Chine",
+      "context": "Séjour à la cour de Kubilaï Khan ; Le Livre des Merveilles inspire l'imaginaire européen",
+      "people": "Marco Polo, Rustichello de Pise",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "≈ 1325",
+      "name": "Fondation de Tenochtitlan — Empire aztèque (Mexique)",
+      "context": "Cité-île sur le lac Texcoco ; 200 000 habitants au XVe siècle ; future Mexico",
+      "people": "",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "≈ 1438",
+      "name": "Apogée de l'Empire inca (Tawantinsuyu)",
+      "context": "Pachacuti agrandit l'empire ; réseau de 40 000 km de routes ; Machu Picchu construit",
+      "people": "Pachacuti Inca Yupanqui",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "1347–1353",
+      "name": "Pandémie de Peste noire",
+      "context": "Yersinia pestis via Caffa (Crimée) ; 25–50 millions de morts en Europe ; ⅓ à ½ de la population",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "1337–1453",
+      "name": "Guerre de Cent Ans — France vs Angleterre",
+      "context": "Revendications sur le trône de France ; Azincourt 1415 ; Joan of Arc ; fin de la féodalité",
+      "people": "Édouard III, Henri V, Charles VII, Jeanne d'Arc",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "30 mai 1431",
+      "name": "Exécution de Jeanne d'Arc à Rouen",
+      "context": "Brûlée comme hérétique ; réhabilitée en 1456 ; canonisée en 1920",
+      "people": "Jeanne d'Arc",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "1378–1417",
+      "name": "Grand Schisme d'Occident — 3 papes simultanés",
+      "context": "Crise de légitimité de l'Église ; concile de Constance (1414–1418) y met fin",
+      "people": "",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "≈ 1440",
+      "name": "Florence — apogée de la Renaissance italienne",
+      "context": "Humanisme, retour à l'Antiquité ; Brunelleschi, Donatello, Ghiberti, début de Botticelli",
+      "people": "Côme de Médicis, Brunelleschi, Alberti",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "≈ 1455",
+      "name": "Gutenberg — imprimerie à caractères mobiles métalliques",
+      "context": "Bible à 42 lignes ; révolution de la diffusion du savoir ; prélude de la Réforme",
+      "people": "Johannes Gutenberg",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "29 mai 1453",
+      "name": "Chute de Constantinople — fin de l'Empire byzantin",
+      "context": "Mehmed II prend la ville après 53 jours de siège ; Sainte-Sophie convertie en mosquée",
+      "people": "Mehmed II le Conquérant, Constantin XI Paléologue",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "1469",
+      "name": "Mariage d'Isabelle de Castille et Ferdinand d'Aragon — unification espagnole",
+      "context": "Base de la future Espagne ; Reconquista achevée en 1492 ; Grenade prise",
+      "people": "Isabelle Ire, Ferdinand II",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "1492",
+      "name": "Expulsion des Juifs d'Espagne (édit de l'Alhambra)",
+      "context": "200 000 Juifs expulsés ; Inquisition espagnole ; diaspora séfarade vers l'Empire ottoman",
+      "people": "Isabelle Ire, Ferdinand II, Torquemada",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "12 octobre 1492",
+      "name": "Christophe Colomb atteint les Amériques (Bahamas)",
+      "context": "Premier contact permanent Europe-Amériques ; début de l'échange colombien",
+      "people": "Christophe Colomb",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1494",
+      "name": "Traité de Tordesillas — partage du monde entre Espagne et Portugal",
+      "context": "La bulle du pape divise les terres nouvelles à 370 lieues à l'ouest des Açores",
+      "people": "Pape Alexandre VI, Ferdinand II, Jean II du Portugal",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "8 juillet 1497",
+      "name": "Vasco de Gama contourne l'Afrique — route des Indes",
+      "context": "Cap de Bonne-Espérance ; Calicut en mai 1498 ; Portugal domine le commerce des épices",
+      "people": "Vasco de Gama",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1500",
+      "name": "Pedro Álvares Cabral découvre le Brésil",
+      "context": "Pendant le voyage vers les Indes ; le Brésil devient territoire portugais",
+      "people": "Pedro Álvares Cabral",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1507",
+      "name": "Le continent américain baptisé \"America\" par Waldseemüller",
+      "context": "En hommage à Amerigo Vespucci ; première carte à nommer le Nouveau Monde",
+      "people": "Martin Waldseemüller, Amerigo Vespucci",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1519–1521",
+      "name": "Cortès conquiert l'Empire aztèque",
+      "context": "600 conquistadores + alliés indiens + épidémies ; Tenochtitlan détruite ; Mexique fondé",
+      "people": "Hernán Cortès, Moctezuma II",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "6 septembre 1522",
+      "name": "Magellan-Elcano — premier tour du monde",
+      "context": "18 survivants sur 265 partants ; preuve définitive de la sphéricité terrestre",
+      "people": "Fernand de Magellan (mort aux Philippines), Juan Sebastián Elcano",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1532–1535",
+      "name": "Pizarro conquiert l'Empire inca",
+      "context": "Atahualpa capturé et exécuté ; Cuzco prise ; disparition d'une civilisation de 10 millions d'âmes",
+      "people": "Francisco Pizarro, Atahualpa",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1534",
+      "name": "Jacques Cartier explore le Saint-Laurent — Canada français",
+      "context": "Premiers contacts avec les Iroquois ; fondations du Canada français (Nouvelle-France)",
+      "people": "Jacques Cartier",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "31 octobre 1517",
+      "name": "Luther affiche ses 95 thèses à Wittemberg",
+      "context": "Critique des indulgences ; rupture de l'unité chrétienne ; Réforme protestante lancée",
+      "people": "Martin Luther",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1534",
+      "name": "Henri VIII crée l'Église anglicane — Acte de Suprématie",
+      "context": "Séparation d'avec Rome pour pouvoir divorcer ; le roi chef de l'Église d'Angleterre",
+      "people": "Henri VIII",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1536",
+      "name": "Calvin à Genève — théologie réformée et prédestination",
+      "context": "L'Institution de la Religion Chrétienne ; Genève \"Rome protestante\" ; puritanisme futur",
+      "people": "Jean Calvin",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1545–1563",
+      "name": "Concile de Trente — Contre-Réforme catholique",
+      "context": "Clarification du dogme, réforme des abus, Jésuites, Inquisition ; baroque comme art",
+      "people": "",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "24 août 1572",
+      "name": "Massacre de la Saint-Barthélemy",
+      "context": "3 000–30 000 huguenots massacrés en France ; paroxysme des guerres de religion (1562–98)",
+      "people": "Catherine de Médicis, Charles IX",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "13 avril 1598",
+      "name": "Édit de Nantes — tolérance religieuse en France",
+      "context": "Henri IV garantit libertés aux protestants ; paix civile ; révoqué par Louis XIV en 1685",
+      "people": "Henri IV de France",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1618–1648",
+      "name": "Guerre de Trente Ans — Europe centrale dévastée",
+      "context": "8 millions de morts ; la Bohême perd 1/3 de sa population ; recomposition territoriale",
+      "people": "Gustave II Adolf, Richelieu, Wallenstein, Tilly",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "24 octobre 1648",
+      "name": "Traités de Westphalie — naissance du droit international moderne",
+      "context": "Souveraineté des États, non-ingérence, équilibre des puissances ; base du droit international",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1495–1498",
+      "name": "Léonard de Vinci — La Cène et machines visionnaires",
+      "context": "Homme universaliste : peintre, anatomiste, ingénieur militaire, architecte",
+      "people": "Léonard de Vinci",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1508–1512",
+      "name": "Michel-Ange peint la Chapelle Sixtine",
+      "context": "4 ans couché sur l'échafaud ; 300 figures ; sommet absolu de la Renaissance italienne",
+      "people": "Michel-Ange Buonarroti",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1516",
+      "name": "Thomas More publie Utopia",
+      "context": "Première réflexion politique moderne sur la société idéale ; naissance de l'utopisme",
+      "people": "Thomas More",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "1543",
+      "name": "Copernic — De Revolutionibus : système héliocentrique",
+      "context": "La Terre tourne autour du Soleil ; rupture cosmologique après 1 400 ans de ptolémée",
+      "people": "Nicolas Copernic",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1600",
+      "name": "Giordano Bruno brûlé vif à Rome",
+      "context": "Défend l'infinité de l'univers et la pluralité des mondes ; martyr de la pensée libre",
+      "people": "Giordano Bruno",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1609",
+      "name": "Galilée observe les lunes de Jupiter au télescope",
+      "context": "Siderius Nuncius ; lunes galiléennes ; preuve que tout ne tourne pas autour de la Terre",
+      "people": "Galileo Galilei",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1628",
+      "name": "Harvey découvre la circulation sanguine",
+      "context": "Exercitatio Anatomica de Motu Cordis ; le cœur comme pompe ; fin du galénisme",
+      "people": "William Harvey",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1637",
+      "name": "Descartes — Discours de la Méthode",
+      "context": "\"Je pense donc je suis\" ; fondation du rationalisme moderne ; mathématisation du monde",
+      "people": "René Descartes",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "1687",
+      "name": "Newton — Principia Mathematica",
+      "context": "Lois du mouvement + gravitation universelle ; mécanique classique valide pendant 3 siècles",
+      "people": "Isaac Newton",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1690",
+      "name": "Locke — Deux Traités du gouvernement civil",
+      "context": "Contrat social, droits naturels, droit de résistance ; fondements du libéralisme politique",
+      "people": "John Locke",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "1661–1715",
+      "name": "Règne de Louis XIV — apogée de l'absolutisme français",
+      "context": "Versailles, mercantilisme (Colbert), guerres de succession ; \"L'État c'est moi\"",
+      "people": "Louis XIV, Colbert, Vauban",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1688",
+      "name": "Glorieuse Révolution anglaise — monarchie constitutionnelle",
+      "context": "Bill of Rights 1689 ; parlement souverain ; modèle de démocratie libérale pour l'Europe",
+      "people": "Guillaume III d'Orange, Jacques II Stuart",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1700–1721",
+      "name": "Pierre le Grand modernise la Russie",
+      "context": "Victoire de Poltava sur la Suède ; Saint-Pétersbourg fondée ; ouverture vers l'Occident",
+      "people": "Pierre le Grand",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1751–1772",
+      "name": "L'Encyclopédie de Diderot et d'Alembert",
+      "context": "35 volumes ; somme des Lumières ; rationalisme, tolérance, critique de la religion",
+      "people": "Denis Diderot, Jean le Rond d'Alembert, Voltaire, Rousseau",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1756–1763",
+      "name": "Guerre de Sept Ans — première guerre mondiale",
+      "context": "5 continents impliqués ; perte du Canada français ; montée en puissance de la Grande-Bretagne",
+      "people": "Frederick II de Prusse, Pitt l'Ancien, Montcalm",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1762",
+      "name": "Rousseau — Du Contrat Social",
+      "context": "\"La volonté générale\" ; souveraineté populaire ; influence directe sur la Révolution française",
+      "people": "Jean-Jacques Rousseau",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1763",
+      "name": "Traité de Paris — fin du premier empire colonial français",
+      "context": "France cède le Canada et la Louisiane orientale ; Grande-Bretagne domine les mers",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1769",
+      "name": "James Watt perfectionne la machine à vapeur",
+      "context": "Condenseur séparé ; rendement triple ; brevet déposé ; prémice de la révolution industrielle",
+      "people": "James Watt",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1770",
+      "name": "James Cook — cartographie de l'Australie et de la Nouvelle-Zélande",
+      "context": "3 voyages dans le Pacifique ; dernier continent inconnu cartographié",
+      "people": "James Cook",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1776",
+      "name": "Adam Smith — La Richesse des Nations",
+      "context": "Fondation de l'économie politique libérale ; division du travail, main invisible du marché",
+      "people": "Adam Smith",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "4 juillet 1776",
+      "name": "Déclaration d'Indépendance des États-Unis",
+      "context": "13 colonies ; \"Tous les hommes sont créés égaux\" ; première démocratie républicaine moderne",
+      "people": "Thomas Jefferson, Benjamin Franklin, John Adams",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1781",
+      "name": "Kant — Critique de la Raison Pure",
+      "context": "Révolution copernicienne en philosophie ; conditions de possibilité de la connaissance",
+      "people": "Emmanuel Kant",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1783",
+      "name": "Traité de Paris — indépendance américaine reconnue par la Grande-Bretagne",
+      "context": "Naissance officielle des États-Unis d'Amérique",
+      "people": "Benjamin Franklin, John Adams",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1785",
+      "name": "Lavoisier — loi de conservation de la masse, naissance de la chimie moderne",
+      "context": "Nomenclature chimique ; oxygène nommé ; fin de la phlogistique ; guillotiné en 1794",
+      "people": "Antoine Lavoisier",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "5 mai 1789",
+      "name": "Ouverture des États Généraux",
+      "context": "Louis XVI convoque les 3 ordres pour résoudre la crise financière ; bascule vers la révolution",
+      "people": "Louis XVI, Necker",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "14 juillet 1789",
+      "name": "Prise de la Bastille",
+      "context": "Symbole de la liberté contre l'arbitraire ; début de la Révolution française",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "4 août 1789",
+      "name": "Nuit du 4 Août — abolition des privilèges féodaux",
+      "context": "L'Assemblée détruit en une nuit le système féodal millénaire",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "26 août 1789",
+      "name": "Déclaration des Droits de l'Homme et du Citoyen",
+      "context": "17 articles ; liberté, égalité, propriété, sûreté, résistance à l'oppression",
+      "people": "Assemblée nationale constituante, La Fayette",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "20 septembre 1792",
+      "name": "Bataille de Valmy — victoire de la République sur la Prusse",
+      "context": "\"Ici et maintenant commence une nouvelle ère de l'histoire du monde\" (Goethe)",
+      "people": "Dumouriez, Kellermann",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "21 janvier 1793",
+      "name": "Exécution de Louis XVI à la guillotine",
+      "context": "Régicide ; choc dans toute l'Europe monarchique ; coalitions contre la France",
+      "people": "Louis XVI",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1793–1794",
+      "name": "La Terreur — 17 000 exécutions en France",
+      "context": "Comité de Salut public dirigé par Robespierre ; guillotine quotidienne ; chute du 9 Thermidor",
+      "people": "Robespierre, Saint-Just, Danton (guillotiné)",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1794",
+      "name": "Abolition de l'esclavage dans les colonies françaises",
+      "context": "Décret de la Convention ; annulé par Napoléon en 1802 ; définitivement aboli en 1848",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1798",
+      "name": "Campagne d'Égypte de Bonaparte",
+      "context": "Découverte de la pierre de Rosette ; Description de l'Égypte ; naissance de l'égyptologie",
+      "people": "Napoléon Bonaparte, Champollion (plus tard)",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "2 décembre 1804",
+      "name": "Sacre de Napoléon Bonaparte à Notre-Dame de Paris",
+      "context": "Il se couronne lui-même ; Code civil, Légion d'honneur, lycées, Banque de France",
+      "people": "Napoléon Bonaparte, pape Pie VII",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "2 décembre 1805",
+      "name": "Bataille d'Austerlitz — \"la plus belle bataille de Napoléon\"",
+      "context": "60 000 Français battent 90 000 Russo-Autrichiens ; fin du Saint-Empire germanique",
+      "people": "Napoléon Bonaparte, Alexandre Ier, François II",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1808–1814",
+      "name": "Guerre d'Espagne — le \"bourbier espagnol\" de Napoléon",
+      "context": "Guérilla ; Goya peint les horreurs ; Wellington aide l'Espagne ; début du déclin napoléonien",
+      "people": "Wellington, Joseph Bonaparte, Guerrilleros",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1812",
+      "name": "Campagne de Russie — catastrophe napoléonienne",
+      "context": "600 000 soldats partent ; 100 000 reviennent ; hiver russe, Borodino, Moscou brûlée",
+      "people": "Napoléon, Alexandre Ier, Koutouzov",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "18 juin 1815",
+      "name": "Bataille de Waterloo — défaite définitive de Napoléon",
+      "context": "Wellington + Blücher battent Napoléon ; exil à Sainte-Hélène ; fin de l'épopée impériale",
+      "people": "Napoléon Bonaparte, Wellington, Blücher",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1815",
+      "name": "Congrès de Vienne — recomposition de l'Europe",
+      "context": "Metternich redessine la carte ; Saint-Alliance ; principe de légitimité monarchique",
+      "people": "Metternich, Talleyrand, Tsar Alexandre Ier",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "1814–1860",
+      "name": "Révolution industrielle — Angleterre puis Europe",
+      "context": "Charbon, acier, chemin de fer, textile ; urbanisation massive ; capitalisme industriel",
+      "people": "George Stephenson, Brunel, Arkwright",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1825",
+      "name": "Première ligne de chemin de fer publique (Stockton-Darlington, Angleterre)",
+      "context": "Locomotive à vapeur de Stephenson ; révolution des transports terrestres",
+      "people": "George Stephenson",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "1848",
+      "name": "Printemps des peuples & Manifeste communiste",
+      "context": "Révolutions en France, Autriche, Allemagne, Italie ; Marx et Engels publient le Manifeste",
+      "people": "Karl Marx, Friedrich Engels, Louis-Napoléon",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1854–1856",
+      "name": "Guerre de Crimée — première guerre médiatisée",
+      "context": "France, Royaume-Uni, Turquie vs Russie ; Florence Nightingale ; premières photos de guerre",
+      "people": "Florence Nightingale",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "1859",
+      "name": "Darwin — L'Origine des espèces",
+      "context": "Sélection naturelle ; évolution des espèces ; révolution dans la biologie et la pensée humaine",
+      "people": "Charles Darwin",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1861–1865",
+      "name": "Guerre de Sécession américaine",
+      "context": "620 000 morts ; États du Sud vs Nord ; esclavage au cœur du conflit",
+      "people": "Abraham Lincoln, Ulysses Grant, Robert E. Lee",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1er janvier 1863",
+      "name": "Proclamation d'émancipation (Lincoln) — esclaves libres dans les États rebelles",
+      "context": "Acte symbolique et politique ; XIIIe Amendement ratifié en décembre 1865",
+      "people": "Abraham Lincoln",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1866",
+      "name": "Mendel — lois de l'hérédité",
+      "context": "Expériences sur les pois ; gènes dominants/récessifs ; base de la génétique moderne",
+      "people": "Gregor Mendel",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "18 janvier 1871",
+      "name": "Proclamation de l'Empire allemand à Versailles",
+      "context": "Après la défaite de Sedan (1870) ; Bismarck unifie l'Allemagne ; nouveau rapport de force européen",
+      "people": "Guillaume Ier, Bismarck",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1871",
+      "name": "Commune de Paris — première révolution ouvrière",
+      "context": "72 jours de gouvernement révolutionnaire ; Semaine sanglante ; 10 000–30 000 morts",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1876",
+      "name": "Graham Bell invente le téléphone",
+      "context": "Premier appel \"Mr. Watson, come here\" ; révolution des communications",
+      "people": "Alexander Graham Bell",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1879",
+      "name": "Edison invente l'ampoule électrique à incandescence",
+      "context": "Après 1 200 essais ; électrification des villes ; naissance de l'ère électrique",
+      "people": "Thomas Edison",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1885",
+      "name": "Pasteur invente le vaccin contre la rage",
+      "context": "Joseph Meister, 9 ans, premier humain vacciné ; naissance de la vaccinologie moderne",
+      "people": "Louis Pasteur",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1895",
+      "name": "Lumière — première projection cinématographique publique",
+      "context": "Grand Café, Paris, 28 décembre 1895 ; naissance du 7e art",
+      "people": "Auguste et Louis Lumière",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1895",
+      "name": "Röntgen découvre les rayons X",
+      "context": "Première radiographie (main de sa femme) ; Nobel 1901 ; révolution médicale",
+      "people": "Wilhelm Röntgen",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1898",
+      "name": "Marie Curie découvre le polonium et le radium",
+      "context": "Deux Nobel (physique 1903, chimie 1911) ; radioactivité ; première femme à la Sorbonne",
+      "people": "Marie et Pierre Curie",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "1905",
+      "name": "Einstein — annus mirabilis : relativité restreinte + E=mc²",
+      "context": "4 articles révolutionnaires en une seule année ; physique quantique et nucléaire en germe",
+      "people": "Albert Einstein",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "17 décembre 1903",
+      "name": "Les frères Wright — premier vol motorisé (Kitty Hawk)",
+      "context": "12 secondes, 37 mètres ; premier vol d'aéronef plus lourd que l'air",
+      "people": "Orville et Wilbur Wright",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "28 juin 1914",
+      "name": "Assassinat de François-Ferdinand à Sarajevo",
+      "context": "Gavrilo Princip membre de la Main Noire ; déclencheur de la Première Guerre mondiale",
+      "people": "François-Ferdinand, Gavrilo Princip",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "28 juillet 1914",
+      "name": "Déclaration de guerre — début de la Première Guerre mondiale",
+      "context": "Autriche-Hongrie vs Serbie ; effet domino des alliances ; 18 millions de morts",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "Février–Décembre 1916",
+      "name": "Bataille de Verdun",
+      "context": "300 000 morts, 400 000 blessés ; symbole de l'horreur de la Grande Guerre",
+      "people": "Pétain (France), Falkenhayn (Allemagne)",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "7 novembre 1917",
+      "name": "Révolution bolchévique — prise du Palais d'Hiver",
+      "context": "Lénine au pouvoir ; Décrets sur la paix et la terre ; naissance de l'URSS en 1922",
+      "people": "Lénine, Trotski, Staline",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1918–1919",
+      "name": "Grippe espagnole — 50–100 millions de morts",
+      "context": "Pandémie H1N1 ; plus meurtrière que la guerre ; 500 millions d'infectés",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "11 novembre 1918",
+      "name": "Armistice de la Première Guerre mondiale",
+      "context": "Rethondes, forêt de Compiègne ; 11h, 11e jour, 11e mois",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "28 juin 1919",
+      "name": "Traité de Versailles — paix punitive contre l'Allemagne",
+      "context": "231 articles ; clause de culpabilité ; reparations ; SDN fondée ; germe du nazisme",
+      "people": "Wilson, Clemenceau, Lloyd George",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1921",
+      "name": "Einstein reçoit le prix Nobel de physique",
+      "context": "Pour l'effet photoélectrique (1905), pas pour la relativité ; confirmation du génie",
+      "people": "Albert Einstein",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "24 octobre 1929",
+      "name": "Jeudi noir de Wall Street — Grande Dépression",
+      "context": "Krach boursier ; 25% de chômage aux USA ; crise mondiale ; montée des extrémismes",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "30 janvier 1933",
+      "name": "Hitler nommé chancelier d'Allemagne",
+      "context": "Nomination \"légale\" par Hindenburg ; Reichstag incendié (27 fév.) ; dictature en 6 mois",
+      "people": "Adolf Hitler, Paul von Hindenburg",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1935–1937",
+      "name": "Lois de Nuremberg & début des persécutions antisémites",
+      "context": "Citoyenneté retirée aux Juifs ; mariage mixte interdit ; mise en place de l'exclusion",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "1 septembre 1939",
+      "name": "Invasion de la Pologne — début de la Seconde Guerre mondiale",
+      "context": "Blitzkrieg ; 70–85 millions de morts ; dont 6 millions de Juifs exterminés (Shoah)",
+      "people": "Hitler, Staline (pacte Ribbentrop-Molotov)",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "10 mai – 25 juin 1940",
+      "name": "Défaite et armistice de la France",
+      "context": "6 semaines suffisent ; Pétain demande l'armistice ; de Gaulle lance l'Appel du 18 juin",
+      "people": "De Gaulle, Pétain, Weygand",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1941–1945",
+      "name": "Shoah — génocide de 6 millions de Juifs",
+      "context": "Conférence de Wannsee (1942) ; camps d'extermination : Auschwitz, Treblinka, Sobibor…",
+      "people": "Himmler, Heydrich, Eichmann",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "7 décembre 1941",
+      "name": "Attaque de Pearl Harbor — les USA entrent en guerre",
+      "context": "350 avions japonais ; 2 403 morts américains ; tournant décisif : les USA rejoignent les Alliés",
+      "people": "Yamamoto, Roosevelt",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "6 juin 1944",
+      "name": "Débarquement en Normandie — Jour J (D-Day)",
+      "context": "156 000 soldats alliés ; 5 plages normandes ; tournant de la guerre à l'Ouest",
+      "people": "Eisenhower, Montgomery, De Gaulle",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "6 août 1945",
+      "name": "Bombe atomique sur Hiroshima, puis Nagasaki (9 août)",
+      "context": "140 000 + 70 000 morts ; reddition japonaise le 2 sept. ; ère nucléaire inaugurée",
+      "people": "Truman, Oppenheimer (Manhattan Project)",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "10 décembre 1948",
+      "name": "Déclaration universelle des Droits de l'Homme (ONU)",
+      "context": "30 articles ; fondement du droit international humanitaire moderne",
+      "people": "Eleanor Roosevelt, René Cassin (rédacteur)",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "14 mai 1948",
+      "name": "Proclamation de l'État d'Israël",
+      "context": "Ben Gourion lit la déclaration ; lendemain : début de la première guerre arabo-israélienne",
+      "people": "David Ben Gourion",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "1 octobre 1949",
+      "name": "Mao proclame la République populaire de Chine",
+      "context": "Victoire sur Tchang Kaï-chek ; 1/4 de l'humanité passe dans le camp communiste",
+      "people": "Mao Zedong",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1950–1953",
+      "name": "Guerre de Corée",
+      "context": "USA + ONU vs Chine + URSS ; armistice sans traité de paix ; statu quo au 38e parallèle",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "1953",
+      "name": "Watson, Crick & Franklin — structure de l'ADN (double hélice)",
+      "context": "Publiée dans Nature le 25 avril ; révolution de la biologie moléculaire",
+      "people": "James Watson, Francis Crick, Rosalind Franklin",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1954–1962",
+      "name": "Guerre d'indépendance algérienne",
+      "context": "FLN vs France ; Évian 1962 ; 1 million de pieds-noirs rapatriés ; trauma national français",
+      "people": "De Gaulle, Ben Bella, Massu",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "4 octobre 1957",
+      "name": "Spoutnik — premier satellite artificiel (URSS)",
+      "context": "Bip bip depuis l'espace ; début de la course à l'espace ; choc aux USA",
+      "people": "Sergueï Korolev",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1 janvier 1959",
+      "name": "Révolution cubaine — Castro prend le pouvoir",
+      "context": "Batista renversé ; nationalisation des entreprises américaines ; embargo US depuis 1962",
+      "people": "Fidel Castro, Che Guevara, Camilo Cienfuegos",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "12 avril 1961",
+      "name": "Gagarine — premier homme dans l'espace",
+      "context": "Vostok 1 ; 108 minutes en orbite ; \"La Terre est bleue\"",
+      "people": "Youri Gagarine",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "16–28 octobre 1962",
+      "name": "Crise des missiles de Cuba",
+      "context": "13 jours au bord du nucléaire ; Kennedy-Khrouchtchev ; hotline Moscou-Washington créée",
+      "people": "JFK, Khrouchtchev, Fidel Castro",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "28 août 1963",
+      "name": "Martin Luther King — \"I Have a Dream\" à Washington",
+      "context": "250 000 personnes ; discours fondateur des droits civiques américains",
+      "people": "Martin Luther King Jr.",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "22 novembre 1963",
+      "name": "Assassinat de JFK à Dallas",
+      "context": "Lee Harvey Oswald arrêté puis tué par Jack Ruby ; complot ou acte isolé, encore débattu",
+      "people": "John F. Kennedy",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "Mai 1968",
+      "name": "Mai 68 — révolte étudiante et sociale en France",
+      "context": "10 millions de grévistes ; soulèvement mondial ; remise en cause des valeurs traditionnelles",
+      "people": "Cohn-Bendit, De Gaulle",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "21 juillet 1969",
+      "name": "Apollo 11 — premier homme sur la Lune",
+      "context": "\"Un petit pas pour l'homme…\" ; 600 millions de téléspectateurs ; 384 400 km parcourus",
+      "people": "Neil Armstrong, Buzz Aldrin, Michael Collins",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1972",
+      "name": "Nixon en Chine — réconciliation sino-américaine",
+      "context": "Fin de 25 ans d'hostilité ; diplomatie du ping-pong ; Kissinger en coulisses",
+      "people": "Nixon, Kissinger, Mao Zedong, Zhou Enlai",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1973",
+      "name": "Premier choc pétrolier — OPEP triple les prix",
+      "context": "Représailles pour le soutien occidental à Israël (Yom Kippour) ; fin des Trente Glorieuses",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1975",
+      "name": "Fin de la guerre du Vietnam — chute de Saïgon",
+      "context": "30 avril 1975 ; réunification communiste du Vietnam ; 3 millions de morts",
+      "people": "Hô Chi Minh (mort en 1969), Kissinger",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1979",
+      "name": "Révolution iranienne — République islamique",
+      "context": "Khomeini renverse le Shah ; islamisme politique au pouvoir ; reconfiguration du Moyen-Orient",
+      "people": "Khomeini, Shah Mohammad Reza Pahlavi",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1980",
+      "name": "Naissance de Solidarność en Pologne",
+      "context": "Premier syndicat libre en URSS ; Lech Walesa ; début du déclin du bloc communiste",
+      "people": "Lech Wałęsa",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1986",
+      "name": "Catastrophe nucléaire de Tchernobyl",
+      "context": "Réacteur 4 explose le 26 avril ; 350 000 évacués ; accélère la chute de l'URSS",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "3–4 juin 1989",
+      "name": "Massacre de Tiananmen (Chine)",
+      "context": "Char contre l'homme seul ; des milliers de morts ; répression de la démocratie",
+      "people": "Deng Xiaoping",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "9 novembre 1989",
+      "name": "Chute du mur de Berlin",
+      "context": "Annonce par erreur à la télé ; foule submerge les checkpoints ; fin symbolique de la Guerre froide",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1990",
+      "name": "Libération de Nelson Mandela — fin de l'apartheid en vue",
+      "context": "27 ans de prison ; Mandela président en 1994 ; modèle de réconciliation nationale",
+      "people": "Nelson Mandela",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "25 décembre 1991",
+      "name": "Dissolution de l'URSS",
+      "context": "Gorbatchev démissionne ; 15 États indépendants ; fin de 74 ans de communisme soviétique",
+      "people": "Mikhaïl Gorbatchev, Boris Eltsine",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "6 août 1991",
+      "name": "Tim Berners-Lee — création du World Wide Web (premier site en ligne)",
+      "context": "CERN, Genève ; protocole HTTP + HTML ; révolution absolue de la communication mondiale",
+      "people": "Tim Berners-Lee",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1993",
+      "name": "Accords d'Oslo — paix israélo-palestinienne (tentative)",
+      "context": "Rabin et Arafat se serrent la main ; Nobel de la Paix 1994 ; processus suspendu",
+      "people": "Yitzhak Rabin, Yasser Arafat, Bill Clinton",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1994",
+      "name": "Génocide du Rwanda — 800 000 Tutsis massacrés en 100 jours",
+      "context": "Radio des Mille Collines ; ONU paralysée ; honte de la communauté internationale",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1997",
+      "name": "Dolly — premier mammifère cloné (brebis)",
+      "context": "Ian Wilmut (Écosse) ; révolution du clonage ; débat éthique mondial",
+      "people": "Ian Wilmut",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "11 septembre 2001",
+      "name": "Attentats du 11-Septembre",
+      "context": "3 000 morts ; Tours Jumelles, Pentagone ; redéfinition de la géopolitique mondiale",
+      "people": "Oussama Ben Laden, Al-Qaïda",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "2003",
+      "name": "Séquençage complet du génome humain",
+      "context": "3 milliards de paires de bases cartographiées ; révolution médicale en cours",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "2007",
+      "name": "Lancement du premier iPhone (Apple)",
+      "context": "Steve Jobs présente l'iPhone le 9 janvier ; smartphone transforme les usages numériques",
+      "people": "Steve Jobs",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "2008",
+      "name": "Crise financière mondiale — effondrement de Lehman Brothers",
+      "context": "15 sept. 2008 ; plus grave crise depuis 1929 ; 700 milliards $ de renflouement",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "2010–2012",
+      "name": "Printemps arabes — vague de révolutions au Maghreb et Moyen-Orient",
+      "context": "Tunisie, Égypte, Libye, Syrie ; espoir démocratique souvent déçu",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "2015",
+      "name": "Accord de Paris sur le climat (COP21)",
+      "context": "195 pays s'engagent à limiter le réchauffement à 1,5–2°C ; première accord universel sur le climat",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "2016",
+      "name": "Brexit — le Royaume-Uni vote pour quitter l'UE",
+      "context": "52% pour le Leave ; 4 ans de négociations ; départ effectif le 31 janv. 2020",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "Décembre 2019",
+      "name": "Pandémie de COVID-19",
+      "context": "Wuhan, Chine ; 7 millions de morts officiels ; confinements planétaires ; vaccins ARNm en 1 an",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "24 février 2022",
+      "name": "Invasion russe de l'Ukraine",
+      "context": "Violation du droit international ; plus grande guerre en Europe depuis 1945 ; OTAN renforcée",
+      "people": "Vladimir Poutine, Volodymyr Zelensky",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "30 novembre 2022",
+      "name": "Lancement de ChatGPT — révolution de l'IA générative",
+      "context": "100 millions d'utilisateurs en 2 mois ; transformation du travail, de l'éducation, de la création",
+      "people": "OpenAI, Sam Altman",
+      "category": "Science",
+      "catSlug": "science"
+    }
+  ]
+}

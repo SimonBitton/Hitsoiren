@@ -4,20 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Frise Chronologique Mondiale</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
 
-<aside class="right-sidebar" id="rightSidebar" aria-label="Navigation">
-  <div class="right-sidebar-inner">
-    <div class="right-sidebar-title">Navigation</div>
-    <div class="right-sidebar-content" id="rightSidebarContent"></div>
+<button class="sidebar-toggle" id="sidebarToggle" title="Ouvrir la navigation rapide">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor"/>
+  </svg>
+</button>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">🧭 Navigation rapide</div>
+  <div class="sidebar-content" id="sidebarContent">
   </div>
-</aside>
+</div>
 
 <div class="top-menu">
   <div class="top-menu-inner">
@@ -45,7 +47,8 @@
 </div>
 
 <header>
-  <h1><span class="g-blue">Frise</span> <span class="g-red">Chrono</span><span class="g-yellow">lo</span><span class="g-green">gique</span><br>de l'Histoire Mondiale</h1>
+  <div class="ornament">✦ ✦ ✦</div>
+  <h1>Frise Chronologique<br><span>de l'Histoire Mondiale</span></h1>
   <p>De la Préhistoire à l'ère numérique — Rigueur historique & précision documentaire</p>
   <div class="header-meta">
     <span>🦴 Préhistoire</span>
@@ -1228,8 +1231,6 @@
     <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1946–2023</span><span class="event-text"><span class="event-name">Roi Rama IX Bhumibol : règne le plus long de l'histoire</span><span class="event-context">70 ans de règne ; stabilité; respect religieux et royal ; décès 2016</span><span class="event-people">Rama IX (Bhumibol), Rama X</span></span><span class="event-cat cat-politique">Politique</span></div></div>
     <div class="event"><div class="event-dot"></div><div class="event-content"><span class="event-date">1960–2023</span><span class="event-text"><span class="event-name">Instabilité politique : coups d'État successifs</span><span class="event-context">13 coups en 90 ans ; tensions civiles ; alternance démocratie-dictature militaire</span></span><span class="event-cat cat-politique">Politique</span></div></div>
   </div>
-
-  <div id="countriesMount"></div>
 
 </section>
 

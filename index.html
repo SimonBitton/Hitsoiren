@@ -6,19 +6,39 @@
   <title>Frise Chronologique Mondiale</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
+  <script src="countries.js" defer></script>
 </head>
 <body>
 
-<button class="sidebar-toggle" id="sidebarToggle" title="Ouvrir la navigation rapide">
+<button class="sidebar-toggle" id="sidebarToggle" title="Navigation rapide" aria-label="Ouvrir la navigation">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor"/>
   </svg>
 </button>
 
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <div class="sidebar" id="sidebar">
-  <div class="sidebar-header">🧭 Navigation rapide</div>
-  <div class="sidebar-content" id="sidebarContent">
+  <div class="sidebar-header">
+    <div class="sidebar-header-icon">🧭</div>
+    <div class="sidebar-header-text">
+      <div class="sidebar-header-title">Navigation</div>
+      <div class="sidebar-header-sub">Frise chronologique</div>
+    </div>
+    <button class="sidebar-close-btn" id="sidebarClose" aria-label="Fermer">✕</button>
   </div>
+  <div class="sidebar-search">
+    <div class="sidebar-search-wrap">
+      <span class="sidebar-search-icon">🔍</span>
+      <input class="sidebar-search-input" id="sidebarSearchInput" type="text" placeholder="Chercher un pays, une période…" autocomplete="off">
+    </div>
+  </div>
+  <div class="sidebar-tabs">
+    <button class="sidebar-tab active" data-tab="eras">Périodes</button>
+    <button class="sidebar-tab" data-tab="countries">Pays</button>
+    <button class="sidebar-tab" data-tab="all">Tout</button>
+  </div>
+  <div class="sidebar-content" id="sidebarContent"></div>
 </div>
 
 <div class="top-menu">

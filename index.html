@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Frise Chronologique Mondiale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
@@ -21,43 +24,31 @@
   </div>
 </div>
 
-<div class="top-menu">
-  <div class="top-menu-inner">
-    <div class="menu-group">
-      <div class="menu-title">Périodes historiques</div>
-      <div class="menu-buttons" id="periodMenu">
-        <button class="active" data-era="all" onclick="setEraFilter('all', this)">Toutes</button>
-        <button data-era="prehist" onclick="setEraFilter('prehist', this)">Préhistoire</button>
-        <button data-era="antiquite" onclick="setEraFilter('antiquite', this)">Antiquité</button>
-        <button data-era="moyen-age" onclick="setEraFilter('moyen-age', this)">Moyen Âge</button>
-        <button data-era="modernes" onclick="setEraFilter('modernes', this)">Temps modernes</button>
-        <button data-era="contemporain" onclick="setEraFilter('contemporain', this)">Contemporain</button>
-        <button data-era="top50" onclick="setEraFilter('top50', this)">Top 150</button>
-      </div>
-    </div>
-    <div class="menu-group">
-      <div class="menu-title">Affichage</div>
-      <div class="menu-buttons" id="typeMenu">
-        <button class="active" data-type="all" onclick="setTypeFilter('all', this)">Tout voir</button>
-        <button data-type="events" onclick="setTypeFilter('events', this)">Événements</button>
-        <button data-type="people" onclick="setTypeFilter('people', this)">Personnes importantes</button>
-      </div>
-    </div>
+<nav class="main-nav">
+  <div class="nav-tab active" data-view="timeline">
+    <span>📜 Chronologie</span>
   </div>
-</div>
+  <div class="nav-tab" data-view="countries">
+    <span>🌍 Par Pays</span>
+  </div>
+  <div class="nav-tab" data-view="stats">
+    <span>📊 Statistiques</span>
+  </div>
+</nav>
 
-<header>
-  <div class="ornament">✦ ✦ ✦</div>
-  <h1>Frise Chronologique<br><span>de l'Histoire Mondiale</span></h1>
-  <p>De la Préhistoire à l'ère numérique — Rigueur historique & précision documentaire</p>
-  <div class="header-meta">
-    <span>🦴 Préhistoire</span>
-    <span>🏛 Antiquité</span>
-    <span>⚔️ Moyen Âge</span>
-    <span>🔭 Temps Modernes</span>
-    <span>⚡ Contemporain</span>
-  </div>
-</header>
+<div id="view-timeline" class="view-container active">
+  <header>
+    <div class="ornament">✦ ✦ ✦</div>
+    <h1>Frise Chronologique<br><span>de l'Histoire Mondiale</span></h1>
+    <p>De la Préhistoire à l'ère numérique — Rigueur historique & précision documentaire</p>
+    <div class="header-meta">
+      <span>🦴 Préhistoire</span>
+      <span>🏛 Antiquité</span>
+      <span>⚔️ Moyen Âge</span>
+      <span>🔭 Temps Modernes</span>
+      <span>⚡ Contemporain</span>
+    </div>
+  </header>
 
 <div class="search-bar">
   <label>Rechercher :</label>
@@ -1235,6 +1226,34 @@
 </section>
 
 
+  </div> <!-- End of view-timeline -->
+
+  <div id="view-countries" class="view-container">
+    <header>
+      <div class="ornament">🌍 🌍 🌍</div>
+      <h1>Histoire par Pays<br><span>Les Jalons Nationaux</span></h1>
+      <p>Explorez les événements fondateurs des nations qui ont façonné le monde.</p>
+    </header>
+    <div class="search-bar">
+      <label>Rechercher un pays :</label>
+      <input type="text" id="countrySearchInput" placeholder="France, Chine, États-Unis..." oninput="filterCountries()">
+    </div>
+    <div id="countriesGrid" class="countries-grid">
+      <!-- To be populated by JS -->
+    </div>
+  </div>
+
+  <div id="view-stats" class="view-container">
+    <header>
+      <div class="ornament">📊 📊 📊</div>
+      <h1>Statistiques & Infos<br><span>L'Histoire en Chiffres</span></h1>
+      <p>Visualisez la portée et la richesse de notre base de données historique.</p>
+    </header>
+    <div id="statsContent" class="stats-content">
+      <!-- To be populated by JS -->
+    </div>
+  </div>
+</main>
 
 <footer>
   <p>Frise chronologique à usage pédagogique — Niveau lycée avancé / début universitaire</p>

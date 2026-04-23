@@ -61,23 +61,17 @@ main {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1.5rem 5rem;
-  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Fix for sidebar overlapping text */
+/* Fix for sidebar overlapping text and centering */
 main.sidebar-open {
-  margin-left: 300px; /* Adjust based on sidebar width + margin */
-}
-
-@media (max-width: 1200px) {
-  main.sidebar-open {
-    margin-left: 280px;
-  }
+  padding-left: calc(1.5rem + 280px); /* Adjust based on sidebar width */
 }
 
 @media (max-width: 900px) {
   main.sidebar-open {
-    margin-left: 0; /* Sidebar becomes overlay on small screens */
+    padding-left: 1.5rem; /* Sidebar becomes overlay on small screens */
   }
 }
 

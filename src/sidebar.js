@@ -1,6 +1,4 @@
 import { state } from './state.js';
-import { showCountryDetail } from './main.js';
-
 export function toggleSidebar() {
   state.sidebarOpen = !state.sidebarOpen;
   const sidebar = document.getElementById('sidebar');

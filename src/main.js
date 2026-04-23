@@ -92,4 +92,4 @@ window.closeCountryModal = function() {
 };
 
 // Start the app
-document.addEventListener('DOMContentLoaded', init);
+init();

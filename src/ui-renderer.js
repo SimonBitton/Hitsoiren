@@ -2,7 +2,7 @@ import { state, eraConfigs } from './state.js';
 import { escapeHtml, getCategoryClass, normalizeText } from './utils.js';
 
 export function renderTimeline() {
-  const container = document.getElementById('view-timeline');
+  const container = document.getElementById('timelineContent');
   if (!container || !state.timelineData) return;
 
   const search = normalizeText(state.search);

@@ -45,16 +45,99 @@ async function init() {
   setView('presentation');
 }
 
-// Global functions for inline event handlers (if any)
-window.showDetail = function(id) {
+// Global function to show event detail
+window.showDetail = function(id, source = 'timeline') {
   const entry = getEventById(id);
-  if (!entry) return;
-  // Handle detail view logic or navigation
-  const url = new URL(window.location.href);
-  url.searchParams.set('view', 'detail');
-  url.searchParams.set('id', id);
-  window.location.href = url.toString();
+  if (!entry) {
+    console.error('Event not found:', id);
+    return;
+  }
+  
+  // Store the source for back navigation
+  state.detailSource = source;
+  
+  // Show detail page
+  showDetailPage(entry);
 };
+
+function showDetailPage(event) {
+  const detailPage = document.getElementById('detailPage');
+  if (!detailPage) return;
+  
+  // Get era info for badge
+  const era = state.timelineData?.eras.find(e => e.id === event.era);
+  const badge = era ? era.icon : '📜';
+  
+  // Update detail page content
+  document.getElementById('detailBadge').textContent = badge;
+  document.getElementById('detailCategory').textContent = event.category;
+  document.getElementById('detailCategory').className = `detail-category ${getCategoryClass(event.category)}`;
+  document.getElementById('detailDate').textContent = event.date;
+  document.getElementById('detailTitle').textContent = event.name;
+  
+  // Summary (use context if available, otherwise generic)
+  const summary = event.context || 'Événement historique majeur qui a marqué son époque.';
+  document.getElementById('detailSummary').textContent = summary;
+  
+  // People section
+  const peopleSection = document.getElementById('detailPeopleSection');
+  const peopleEl = document.getElementById('detailPeople');
+  if (event.people && event.people.trim()) {
+    peopleEl.textContent = event.people;
+    peopleSection.style.display = 'block';
+  } else {
+    peopleSection.style.display = 'none';
+  }
+  
+  // Context section (additional info if available)
+  const contextSection = document.getElementById('detailContextSection');
+  const contextEl = document.getElementById('detailContext');
+  if (event.context && event.context.length > 100) {
+    contextEl.textContent = event.context;
+    contextSection.style.display = 'block';
+  } else {
+    contextSection.style.display = 'none';
+  }
+  
+  // Search links
+  const searchQuery = encodeURIComponent(event.name);
+  document.getElementById('detailSearchLink').href = `https://www.google.com/search?q=${searchQuery}`;
+  
+  // Wikipedia link (if we can construct one)
+  const wikiLink = document.getElementById('detailWikipediaLink');
+  if (event.source?.eventQid) {
+    wikiLink.href = `https://fr.wikipedia.org/wiki/Special:EntityPage/${event.source.eventQid}`;
+    wikiLink.style.display = 'inline-flex';
+  } else {
+    wikiLink.style.display = 'none';
+  }
+  
+  // Back button handler
+  const backBtn = document.getElementById('detailBackBtn');
+  backBtn.onclick = () => {
+    detailPage.classList.remove('active');
+    // Optionally scroll back to the event
+    if (state.detailSource === 'timeline') {
+      const eventEl = document.querySelector(`[data-id="${event.id}"]`);
+      if (eventEl) {
+        eventEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  };
+  
+  // Show the detail page
+  detailPage.classList.add('active');
+  detailPage.scrollTop = 0;
+}
+
+function getCategoryClass(category) {
+  const normalized = normalizeText(category);
+  if (normalized.includes('politique')) return 'cat-politique';
+  if (normalized.includes('science')) return 'cat-science';
+  if (normalized.includes('culture')) return 'cat-culture';
+  if (normalized.includes('exploration')) return 'cat-exploration';
+  return 'cat-politique';
+}
 
 window.showCountryDetail = function(countryId) {
   const country = state.countriesData.find(c => c.id === countryId);
@@ -70,11 +153,11 @@ window.showCountryDetail = function(countryId) {
         </div>
         <div class="modal-body">
           ${country.events.map(event => `
-            <div class="country-event">
+            <div class="country-event" data-event-id="${event.source?.eventQid || ''}" onclick="showCountryEventDetail('${country.id}', '${event.name}', '${event.date}')">
               <div class="event-date">${event.date}</div>
               <div class="event-info">
                 <strong>${event.name}</strong>
-                <p>${event.context}</p>
+                <p>${event.context || 'Cliquez pour plus de détails'}</p>
               </div>
             </div>
           `).join('')}
@@ -84,6 +167,32 @@ window.showCountryDetail = function(countryId) {
   `;
   document.body.insertAdjacentHTML('beforeend', modalHtml);
   setTimeout(() => document.getElementById('countryModal').classList.add('active'), 10);
+};
+
+window.showCountryEventDetail = function(countryId, eventName, eventDate) {
+  const country = state.countriesData.find(c => c.id === countryId);
+  if (!country) return;
+  
+  const event = country.events.find(e => e.name === eventName && e.date === eventDate);
+  if (!event) return;
+  
+  // Close the country modal
+  closeCountryModal();
+  
+  // Create a pseudo-event object for the detail view
+  const detailEvent = {
+    id: `country-${countryId}-${event.isoDate}`,
+    name: event.name,
+    date: event.date,
+    context: event.context || `Événement important dans l'histoire de ${country.name}.`,
+    category: event.category,
+    people: '',
+    era: 'contemporain',
+    source: event.source
+  };
+  
+  state.detailSource = 'country';
+  showDetailPage(detailEvent);
 };
 
 window.closeCountryModal = function() {

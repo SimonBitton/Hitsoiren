@@ -129,32 +129,56 @@
     <!-- Detail Page (Hidden by default, handled by logic) -->
     <div id="detailPage" class="detail-page">
       <div class="detail-shell">
-        <div class="detail-top">
-          <div>
-            <div id="detailKicker" class="detail-kicker"></div>
-            <div id="detailDate" class="detail-date"></div>
-          </div>
-          <a href="#" id="detailBackLink" class="detail-close">Retour à la frise</a>
+        <div class="detail-header">
+          <button id="detailBackBtn" class="detail-back-btn">
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Retour
+          </button>
+          <div class="detail-badge" id="detailBadge"></div>
         </div>
-        <h3 id="detailTitle"></h3>
         
-        <div class="detail-grid" style="margin-top: 2rem;">
-          <div class="detail-card">
-            <h4>Résumé</h4>
-            <p id="detailSummary" class="detail-summary"></p>
+        <div class="detail-content">
+          <div class="detail-meta-top">
+            <span id="detailCategory" class="detail-category"></span>
+            <span id="detailDate" class="detail-date-large"></span>
           </div>
-          <div class="detail-card">
-            <h4>Points clés</h4>
-            <ul id="detailBullets" class="detail-list"></ul>
-          </div>
-          <article class="detail-card" style="grid-column: 1 / -1;">
-            <h4 id="detailArticleTitle">Article express</h4>
-            <div id="detailArticleBody" class="detail-article-body"></div>
-            <div id="detailMeta" class="detail-meta"></div>
-            <div style="margin-top: 1.5rem;">
-              <a href="#" id="detailSearchLink" target="_blank" class="detail-link">En savoir plus sur Google</a>
+          
+          <h1 id="detailTitle" class="detail-title"></h1>
+          
+          <div class="detail-body">
+            <div class="detail-section">
+              <h3>📝 Résumé</h3>
+              <p id="detailSummary" class="detail-summary"></p>
             </div>
-          </article>
+            
+            <div class="detail-section" id="detailPeopleSection" style="display: none;">
+              <h3>👤 Personnages clés</h3>
+              <p id="detailPeople" class="detail-people"></p>
+            </div>
+            
+            <div class="detail-section" id="detailContextSection" style="display: none;">
+              <h3>🔍 Contexte historique</h3>
+              <p id="detailContext" class="detail-context-text"></p>
+            </div>
+            
+            <div class="detail-actions">
+              <a id="detailSearchLink" href="#" target="_blank" rel="noopener noreferrer" class="detail-action-btn primary">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Rechercher sur Google
+              </a>
+              <a id="detailWikipediaLink" href="#" target="_blank" rel="noopener noreferrer" class="detail-action-btn secondary" style="display: none;">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/>
+                  <path d="M11 7h2v2h-2zm0 4h2v6h-2z" fill="currentColor"/>
+                </svg>
+                Article Wikipédia
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -22,6 +22,7 @@
 
   <!-- Navigation principale -->
   <nav class="main-nav">
+    <div class="nav-tab" data-view="presentation">🏛 Présentation</div>
     <div class="nav-tab active" data-view="timeline">📜 Chronologie</div>
     <div class="nav-tab" data-view="countries">🌍 Par Pays</div>
     <div class="nav-tab" data-view="stats">📊 Statistiques</div>
@@ -33,12 +34,53 @@
   </button>
 
   <!-- Sidebar -->
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-header">Navigation Rapide</div>
-    <div id="sidebarContent" class="sidebar-content"></div>
+  <aside class="quick-nav" id="quickNav">
+    <div class="quick-nav-title">Accès rapide</div>
+    <div class="quick-nav-links" id="quickNavLinks">
+      <!-- Links will be populated by JavaScript -->
+    </div>
   </aside>
 
   <main>
+    <!-- Vue Présentation -->
+    <div id="view-presentation" class="view-container">
+      <header>
+        <div class="ornament">Histoiren</div>
+        <h1><span>Bienvenue</span> sur Histoiren</h1>
+        <p>Votre portail vers l'histoire mondiale</p>
+      </header>
+      
+      <div class="presentation-content">
+        <section class="intro-card">
+          <h2>📜 À propos d'Histoiren</h2>
+          <p>Histoiren est une chronologie interactive qui vous permet d'explorer les événements majeurs de l'histoire mondiale, de la préhistoire à nos jours. Découvrez les moments clés qui ont façonné notre civilisation.</p>
+        </section>
+        
+        <section class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">📜</div>
+            <h3>Chronologie complète</h3>
+            <p>Parcourez les événements historiques organisés par époques, de la préhistoire à l'ère contemporaine.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🌍</div>
+            <h3>Histoire par pays</h3>
+            <p>Explorez l'histoire nation par nation avec des événements spécifiques à chaque pays.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Statistiques</h3>
+            <p>Analysez la répartition des événements par catégorie, époque et thématique.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <h3>Recherche avancée</h3>
+            <p>Trouvez rapidement les événements qui vous intéressent grâce à notre moteur de recherche.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+
     <!-- Vue Timeline -->
     <div id="view-timeline" class="view-container active">
       <header>

@@ -16,13 +16,15 @@ export function setView(viewName) {
     container.classList.toggle('active', container.id === `view-${viewName}`);
   });
   
-  // Reset scroll to top when switching BACK to timeline
-  if (viewName === 'timeline' && previousView !== 'timeline') {
+  // Reset scroll to top when switching views
+  if (viewName !== previousView) {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
-  // Build Sidebar based on view
-  buildSidebarContent();
+  // Build Sidebar based on view (only for timeline and countries)
+  if (viewName === 'timeline' || viewName === 'countries') {
+    buildSidebarContent();
+  }
   
   // Specific view logic
   if (viewName === 'countries') {
@@ -32,6 +34,7 @@ export function setView(viewName) {
   } else if (viewName === 'timeline') {
     renderTimeline();
   }
+  // presentation view is static HTML, no rendering needed
 }
 
 export function initRouter() {

@@ -33,3 +33,30 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+}
+
+.ornament {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  footer {
+    padding: 1.5rem 1rem;
+    font-size: 0.85rem;
+    margin-top: 3rem;
+  }
+}

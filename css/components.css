@@ -39,6 +39,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .event-date {
@@ -75,6 +77,38 @@
 .cat-culture { background: #f3e8ff; color: #7e22ce; }
 .cat-exploration { background: #ffedd5; color: #9a3412; }
 
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .event {
+    gap: 0.8rem;
+    padding: 1rem;
+    border-radius: 16px;
+  }
+  
+  .event-dot {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .event.major .event-dot {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .event-name {
+    font-size: 1rem;
+  }
+  
+  .event-context {
+    font-size: 0.9rem;
+  }
+  
+  .event-cat {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+  }
+}
+
 /* ══════════════════ STAT CARDS ══════════════════ */
 .stats-grid {
   display: grid;
@@ -104,6 +138,26 @@
   letter-spacing: 0.1em;
   color: var(--ink-soft);
   font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .stat-card {
+    padding: 1.5rem 1rem;
+    border-radius: 16px;
+  }
+  
+  .stat-card strong {
+    font-size: 2rem;
+  }
+  
+  .stat-card span {
+    font-size: 0.7rem;
+  }
 }
 
 /* ══════════════════ SEARCH BAR ══════════════════ */
@@ -137,4 +191,20 @@
   top: 50%;
   transform: translateY(-50%);
   color: var(--ink-soft);
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    margin: 0 auto 2rem;
+  }
+  
+  .search-container input {
+    padding: 1rem 1rem 1rem 3rem;
+    font-size: 1rem;
+    border-radius: 16px;
+  }
+  
+  .search-icon {
+    left: 1rem;
+  }
 }

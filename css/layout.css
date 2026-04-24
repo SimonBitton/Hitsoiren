@@ -11,6 +11,8 @@
   justify-content: center;
   gap: 2rem;
   padding: 0 1.5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .nav-tab {
@@ -24,6 +26,8 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-tab:hover, .nav-tab.active {
@@ -34,6 +38,19 @@
   border-bottom-color: var(--accent);
 }
 
+/* Mobile: Hamburger menu */
+@media (max-width: 768px) {
+  .main-nav {
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+  
+  .nav-tab {
+    font-size: 0.8rem;
+    padding: 1rem 0.3rem;
+  }
+}
+
 header {
   padding: 6rem 1.5rem 3rem;
   text-align: center;
@@ -41,9 +58,9 @@ header {
 }
 
 header h1 {
-  font-size: clamp(2.8rem, 7vw, 5.6rem);
+  font-size: clamp(2rem, 7vw, 5.6rem);
   font-weight: 700;
-  line-height: 0.95;
+  line-height: 1.1;
   letter-spacing: -0.06em;
   margin-bottom: 1.5rem;
 }
@@ -56,6 +73,16 @@ header h1 span {
   color: transparent;
 }
 
+header p {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+}
+
+@media (max-width: 768px) {
+  header {
+    padding: 4rem 1rem 2rem;
+  }
+}
+
 /* ══════════════════ MAIN CONTENT AREA ══════════════════ */
 main {
   max-width: 1200px;
@@ -66,12 +93,18 @@ main {
 
 /* Fix for sidebar overlapping text and centering */
 main.sidebar-open {
-  padding-left: calc(1.5rem + 280px); /* Adjust based on sidebar width */
+  padding-left: calc(1.5rem + 280px);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   main.sidebar-open {
-    padding-left: 1.5rem; /* Sidebar becomes overlay on small screens */
+    padding-left: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  main {
+    padding: 1.5rem 1rem 3rem;
   }
 }
 
@@ -90,8 +123,8 @@ main.sidebar-open {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ══════════════════ SIDEBAR ══════════════════ */
-.sidebar {
+/* ══════════════════ QUICK NAV SIDEBAR ══════════════════ */
+.quick-nav {
   position: fixed;
   left: 0;
   top: 0;
@@ -106,26 +139,54 @@ main.sidebar-open {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
-.sidebar.active {
+.quick-nav.active {
   transform: translateX(0);
 }
 
-.sidebar-header {
+.quick-nav-title {
   padding: 1.5rem;
   border-bottom: 1px solid var(--border);
   font-weight: 700;
   color: var(--ink);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  font-size: 1.1rem;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  backdrop-filter: var(--glass);
+  -webkit-backdrop-filter: var(--glass);
+  z-index: 10;
 }
 
-.sidebar-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1rem 0;
+.quick-nav-links {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+}
+
+.quick-nav-links a {
+  display: block;
+  padding: 0.9rem 1.5rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+  font-size: 0.95rem;
+}
+
+.quick-nav-links a:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+.quick-nav-links a.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 600;
 }
 
 .sidebar-toggle {
@@ -146,6 +207,14 @@ main.sidebar-open {
   transition: all 0.2s ease;
 }
 
+.sidebar-toggle svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--ink);
+  stroke-width: 2;
+  fill: none;
+}
+
 .sidebar-toggle:hover {
   transform: scale(1.05);
   border-color: var(--accent);
@@ -153,12 +222,29 @@ main.sidebar-open {
 
 .sidebar-toggle.active {
   background: var(--accent);
-  color: white;
-  left: 295px; /* Adjust to stay visible next to sidebar */
+  left: 295px;
 }
 
-@media (max-width: 900px) {
+.sidebar-toggle.active svg {
+  stroke: white;
+}
+
+@media (max-width: 1024px) {
   .sidebar-toggle.active {
     left: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .quick-nav {
+    width: 85%;
+    max-width: 320px;
+  }
+  
+  .sidebar-toggle {
+    left: 1rem;
+    top: 4rem;
+    width: 40px;
+    height: 40px;
   }
 }

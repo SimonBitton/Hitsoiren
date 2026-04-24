@@ -22,6 +22,7 @@
   justify-content: center;
   font-size: 2rem;
   box-shadow: var(--shadow-soft);
+  flex-shrink: 0;
 }
 
 .era-title-block h2 {
@@ -33,6 +34,32 @@
 .era-title-block p {
   color: var(--ink-soft);
   font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .era-section {
+    margin-bottom: 3rem;
+  }
+  
+  .era-header {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .era-badge {
+    width: 48px;
+    height: 48px;
+    font-size: 1.5rem;
+    border-radius: 12px;
+  }
+  
+  .era-title-block h2 {
+    font-size: 1.5rem;
+  }
+  
+  .era-title-block p {
+    font-size: 0.85rem;
+  }
 }
 
 /* ══════════════════ COUNTRIES VIEW ══════════════════ */
@@ -63,6 +90,7 @@
 .country-flag {
   font-size: 3rem;
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+  flex-shrink: 0;
 }
 
 .country-info h3 {
@@ -74,6 +102,26 @@
   font-size: 0.85rem;
   color: var(--ink-soft);
   font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .countries-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+  
+  .country-card {
+    padding: 1.2rem;
+    border-radius: 16px;
+  }
+  
+  .country-flag {
+    font-size: 2.5rem;
+  }
+  
+  .country-info h3 {
+    font-size: 1.1rem;
+  }
 }
 
 /* ══════════════════ COUNTRY MODAL ══════════════════ */
@@ -189,4 +237,139 @@ body.detail-mode .detail-page {
 .stats-extra h3 {
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
+}
+
+/* ══════════════════ PRESENTATION VIEW ══════════════════ */
+.presentation-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.intro-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 3rem;
+}
+
+.intro-card h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--ink);
+}
+
+.intro-card p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+  color: var(--ink);
+}
+
+.feature-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 768px) {
+  .intro-card {
+    padding: 1.5rem;
+    border-radius: 16px;
+    margin-bottom: 2rem;
+  }
+  
+  .intro-card h2 {
+    font-size: 1.5rem;
+  }
+  
+  .intro-card p {
+    font-size: 1rem;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .feature-card {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+  
+  .feature-icon {
+    font-size: 2.5rem;
+  }
+  
+  .feature-card h3 {
+    font-size: 1.2rem;
+  }
+}
+
+/* ══════════════════ RESPONSIVE MODAL ══════════════════ */
+@media (max-width: 768px) {
+  .country-modal-content {
+    width: 95%;
+    max-height: 90vh;
+    border-radius: 24px;
+  }
+  
+  .modal-header {
+    padding: 1.5rem;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .close-modal {
+    top: 1rem;
+    right: 1rem;
+    font-size: 2rem;
+  }
+  
+  .modal-body {
+    padding: 1.5rem;
+  }
+  
+  .country-event {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .country-event .event-date {
+    min-width: auto;
+  }
 }

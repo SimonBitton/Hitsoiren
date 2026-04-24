@@ -26,7 +26,7 @@ export function renderTimeline() {
         </div>
         <div class="events-list">
           ${eraEvents.map(event => `
-            <div class="event ${event.major ? 'major' : ''}" data-id="${event.id}" onclick="showDetail('${event.id}')">
+            <div class="event ${event.major ? 'major' : ''}" data-id="${event.id}">
               <div class="event-dot"></div>
               <div class="event-content">
                 <span class="event-date">${escapeHtml(event.date)}</span>
@@ -45,6 +45,16 @@ export function renderTimeline() {
   }).join('');
 
   container.innerHTML = html;
+  
+  // Add click handlers to events
+  container.querySelectorAll('.event').forEach(eventEl => {
+    eventEl.addEventListener('click', () => {
+      const eventId = eventEl.dataset.id;
+      if (window.showDetail) {
+        window.showDetail(eventId);
+      }
+    });
+  });
 }
 
 export function renderCountries() {
@@ -57,7 +67,7 @@ export function renderCountries() {
   );
 
   container.innerHTML = filtered.map(country => `
-    <div class="country-card" onclick="showCountryDetail('${country.id}')">
+    <div class="country-card" data-country-id="${country.id}">
       <div class="country-flag">${country.flag}</div>
       <div class="country-info">
         <h3>${country.name}</h3>
@@ -65,6 +75,16 @@ export function renderCountries() {
       </div>
     </div>
   `).join('');
+  
+  // Add click handlers to country cards
+  container.querySelectorAll('.country-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const countryId = card.dataset.countryId;
+      if (window.showCountryDetail) {
+        window.showCountryDetail(countryId);
+      }
+    });
+  });
 }
 
 export function renderStats() {

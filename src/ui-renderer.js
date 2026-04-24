@@ -3,7 +3,10 @@ import { escapeHtml, getCategoryClass, normalizeText } from './utils.js';
 
 export function renderTimeline() {
   const container = document.getElementById('timelineContent');
-  if (!container || !state.timelineData) return;
+  if (!container || !state.timelineData) {
+    console.error('Timeline container or data not found', { container, data: state.timelineData });
+    return;
+  }
 
   const search = normalizeText(state.search);
   
@@ -47,11 +50,17 @@ export function renderTimeline() {
   container.innerHTML = html;
   
   // Add click handlers to events
-  container.querySelectorAll('.event').forEach(eventEl => {
-    eventEl.addEventListener('click', () => {
+  const eventElements = container.querySelectorAll('.event');
+  console.log(`Attaching click handlers to ${eventElements.length} events`);
+  
+  eventElements.forEach(eventEl => {
+    eventEl.addEventListener('click', (e) => {
       const eventId = eventEl.dataset.id;
+      console.log('Event clicked:', eventId);
       if (window.showDetail) {
         window.showDetail(eventId);
+      } else {
+        console.error('showDetail function not found');
       }
     });
   });

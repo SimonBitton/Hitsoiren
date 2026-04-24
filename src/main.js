@@ -40,6 +40,9 @@ async function init() {
   // Initial render
   renderTimeline();
   buildSidebarContent();
+  
+  // Set initial view to presentation
+  setView('presentation');
 }
 
 // Global functions for inline event handlers (if any)

@@ -44,7 +44,7 @@ export function initRouter() {
 
   // Handle initial view from URL
   const params = new URLSearchParams(window.location.search);
-  const view = params.get('view') || 'timeline';
+  const view = params.get('view') || 'presentation';
   if (view !== 'detail') {
     setView(view);
   }

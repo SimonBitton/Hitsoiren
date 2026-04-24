@@ -23,7 +23,8 @@ export function buildSidebarContent() {
       { label: 'Antiquité', id: 'era-antiquite' },
       { label: 'Moyen Âge', id: 'era-moyen-age' },
       { label: 'Temps modernes', id: 'era-modernes' },
-      { label: 'Contemporain', id: 'era-contemporain' }
+      { label: 'Contemporain', id: 'era-contemporain' },
+      { label: '🏆 Top 50', id: 'top50-section', type: 'top50' }
     ];
   } else if (state.currentView === 'countries') {
     links = state.countriesData.map(c => ({ 
@@ -50,8 +51,36 @@ export function buildSidebarContent() {
       link.classList.add('active');
       
       if (type === 'country') {
-        window.showCountryDetail(targetId);
-        if (window.innerWidth < 1024) toggleSidebar();
+        // Scroll to country card instead of showing modal
+        const countryCard = document.querySelector(`.country-card[data-country-id="${targetId}"]`);
+        if (countryCard) {
+          if (window.innerWidth < 1024) toggleSidebar();
+          countryCard.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          // Highlight the card temporarily
+          countryCard.style.transition = 'box-shadow 0.3s ease, transform 0.3s ease';
+          countryCard.style.boxShadow = '0 0 0 3px var(--accent), 0 0 20px rgba(0, 113, 227, 0.3)';
+          countryCard.style.transform = 'scale(1.02)';
+          setTimeout(() => {
+            countryCard.style.boxShadow = '';
+            countryCard.style.transform = '';
+          }, 1500);
+        }
+        return;
+      }
+      
+      if (type === 'top50') {
+        // Scroll to Top 50 section
+        const top50Section = document.getElementById('top50-section');
+        if (top50Section) {
+          if (window.innerWidth < 1024) toggleSidebar();
+          top50Section.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+        }
         return;
       }
       

@@ -10,7 +10,7 @@ export function renderTimeline() {
 
   const search = normalizeText(state.search);
   
-  const html = state.timelineData.eras.map(era => {
+  let html = state.timelineData.eras.map(era => {
     const eraEvents = state.timelineData.events.filter(e => 
       e.era === era.id && 
       (search === '' || normalizeText(`${e.name} ${e.context}`).includes(search))
@@ -46,6 +46,54 @@ export function renderTimeline() {
       </section>
     `;
   }).join('');
+
+  // Add Top 50 section at the end (only if no search is active)
+  if (search === '' && state.timelineData.events.length > 0) {
+    // Get top 50 major events, or top 50 events if not enough major ones
+    const majorEvents = state.timelineData.events.filter(e => e.major);
+    const nonMajorEvents = state.timelineData.events.filter(e => !e.major);
+    
+    // Sort major events to the front, then take top 50
+    const sortedEvents = [...majorEvents, ...nonMajorEvents].sort((a, b) => {
+      // First by major (major first), then by era order
+      const eraOrder = ['prehist', 'antiquite', 'moyen-age', 'modernes', 'contemporain'];
+      const aMajor = a.major ? 1 : 0;
+      const bMajor = b.major ? 1 : 0;
+      if (aMajor !== bMajor) return bMajor - aMajor;
+      const aEraIndex = eraOrder.indexOf(a.era);
+      const bEraIndex = eraOrder.indexOf(b.era);
+      return aEraIndex - bEraIndex;
+    }).slice(0, 50);
+
+    html += `
+      <section class="era-section top50-section" id="top50-section">
+        <div class="era-header">
+          <div class="era-badge">🏆</div>
+          <div class="era-title-block">
+            <h2>Top 50 des Dates les Plus Importantes</h2>
+            <p>Les événements qui ont le plus marqué l'histoire de l'humanité</p>
+          </div>
+        </div>
+        <div class="events-list top50-list">
+          ${sortedEvents.map((event, index) => `
+            <div class="event top50-event ${event.major ? 'major' : ''}" data-id="${event.id}">
+              <div class="event-dot"></div>
+              <div class="event-content">
+                <span class="top50-rank">#${index + 1}</span>
+                <span class="event-date">${escapeHtml(event.date)}</span>
+                <div class="event-text">
+                  <span class="event-name">${escapeHtml(event.name)}</span>
+                  <span class="event-context">${escapeHtml(event.context)}</span>
+                  ${event.people ? `<span class="event-people">${escapeHtml(event.people)}</span>` : ''}
+                </div>
+                <span class="event-cat ${getCategoryClass(event.category)}">${escapeHtml(event.category)}</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }
 
   container.innerHTML = html;
   

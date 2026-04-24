@@ -594,3 +594,326 @@
     min-width: auto;
   }
 }
+
+/* ══════════════════ TOP 50 SECTION ══════════════════ */
+.top50-section {
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 3px solid var(--gold);
+  position: relative;
+}
+
+.top50-section .era-header {
+  border-bottom-color: var(--gold);
+}
+
+.top50-section .era-badge {
+  background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.top50-list .event {
+  position: relative;
+}
+
+.top50-rank {
+  position: absolute;
+  left: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.top50-list .top50-event:nth-child(-n+10) .top50-rank {
+  background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+  font-size: 0.85rem;
+}
+
+.top50-list .top50-event:nth-child(n+11):nth-child(-n+25) .top50-rank {
+  background: linear-gradient(135deg, #c0c0c0 0%, #a0a0a0 100%);
+}
+
+.top50-list .top50-event:nth-child(n+26):nth-child(-n+50) .top50-rank {
+  background: linear-gradient(135deg, #cd7f32 0%, #b87333 100%);
+}
+
+@media (max-width: 768px) {
+  .top50-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+  }
+  
+  .top50-rank {
+    left: -30px;
+    width: 24px;
+    height: 24px;
+    font-size: 0.65rem;
+  }
+  
+  .top50-list .top50-event:nth-child(-n+10) .top50-rank {
+    font-size: 0.7rem;
+  }
+}
+
+/* ══════════════════ RESPONSIVE DESIGN - TABLET & MOBILE ══════════════════ */
+
+/* Tablet (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  main {
+    max-width: 900px;
+  }
+  
+  .countries-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+  }
+}
+
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Navigation */
+  .main-nav {
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  
+  .main-nav::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .nav-tab {
+    font-size: 0.75rem;
+    padding: 0.9rem 0.4rem;
+    white-space: nowrap;
+  }
+  
+  /* Header */
+  header {
+    padding: 3rem 1rem 2rem;
+  }
+  
+  header h1 {
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
+    margin-bottom: 1rem;
+  }
+  
+  header p {
+    font-size: 0.9rem;
+  }
+  
+  /* Main content */
+  main {
+    padding: 1rem 1rem 3rem;
+    max-width: 100%;
+  }
+  
+  /* Timeline events */
+  .event-content {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  
+  .event-date {
+    font-size: 0.8rem;
+  }
+  
+  .event-name {
+    font-size: 0.95rem;
+  }
+  
+  .event-context {
+    font-size: 0.8rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .event-cat {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+  }
+  
+  /* Countries grid */
+  .countries-grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+  
+  .country-card {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  
+  .country-flag {
+    font-size: 2rem;
+  }
+  
+  .country-info h3 {
+    font-size: 1rem;
+  }
+  
+  .country-info p {
+    font-size: 0.8rem;
+  }
+  
+  /* Stats */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+  
+  .stat-card {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  
+  .stat-card strong {
+    font-size: 1.5rem;
+  }
+  
+  .stat-card span {
+    font-size: 0.7rem;
+  }
+  
+  /* Search */
+  .search-container input {
+    font-size: 0.9rem;
+    padding: 0.8rem 1rem;
+  }
+}
+
+/* Small mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  .nav-tab {
+    font-size: 0.7rem;
+    padding: 0.8rem 0.3rem;
+  }
+  
+  header {
+    padding: 2rem 0.8rem 1.5rem;
+  }
+  
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  header p {
+    font-size: 0.8rem;
+  }
+  
+  main {
+    padding: 0.8rem 0.8rem 2rem;
+  }
+  
+  .era-badge {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+  }
+  
+  .era-title-block h2 {
+    font-size: 1.3rem;
+  }
+  
+  .era-title-block p {
+    font-size: 0.75rem;
+  }
+  
+  .event {
+    padding: 0.8rem;
+    margin-left: 1.2rem;
+  }
+  
+  .event-dot {
+    width: 8px;
+    height: 8px;
+    left: -1.2rem;
+  }
+  
+  .event-name {
+    font-size: 0.85rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .feature-card {
+    padding: 1.2rem;
+    border-radius: 12px;
+  }
+  
+  .feature-icon {
+    font-size: 2rem;
+  }
+  
+  .feature-card h3 {
+    font-size: 1.1rem;
+  }
+  
+  .feature-card p {
+    font-size: 0.85rem;
+  }
+}
+
+/* Landscape mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  header {
+    padding: 2rem 1rem 1rem;
+  }
+  
+  header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .era-section {
+    margin-bottom: 2rem;
+  }
+  
+  .countries-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+/* High DPI / Retina displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .event-dot::after {
+    transform: scale(0.5);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark mode support (if user prefers dark mode) */
+@media (prefers-color-scheme: dark) {
+  /* This can be enabled if needed in the future */
+  /* Currently the design uses light mode with parchment theme */
+}

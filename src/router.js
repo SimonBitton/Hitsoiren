@@ -21,6 +21,22 @@ export function setView(viewName) {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
+  // Show/hide sidebar toggle button based on view
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  const sidebar = document.getElementById('quickNav');
+  if (sidebarToggle && sidebar) {
+    // Hide sidebar on presentation and stats views
+    const shouldHideSidebar = viewName === 'presentation' || viewName === 'stats';
+    sidebarToggle.style.display = shouldHideSidebar ? 'none' : 'flex';
+    
+    if (shouldHideSidebar) {
+      sidebar.classList.remove('active');
+      sidebarToggle.classList.remove('active');
+      document.querySelector('main')?.classList.remove('sidebar-open');
+      state.sidebarOpen = false;
+    }
+  }
+
   // Build Sidebar based on view (only for timeline and countries)
   if (viewName === 'timeline' || viewName === 'countries') {
     buildSidebarContent();

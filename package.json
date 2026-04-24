@@ -1,0 +1,11 @@
+{
+  "name": "histoiren",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test:e2e": "node tests/run-e2e.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.35.0"
+  }
+}

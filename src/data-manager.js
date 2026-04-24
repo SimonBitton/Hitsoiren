@@ -10,6 +10,13 @@ export async function loadData() {
     state.timelineData = await timelineRes.json();
     state.countriesData = await countriesRes.json();
     
+    // Ensure each timeline event has a unique id for interaction
+    if (state.timelineData && Array.isArray(state.timelineData.events)) {
+      state.timelineData.events.forEach((e, idx) => {
+        if (!e.id) e.id = `evt-${idx}`;
+      });
+    }
+    
     return { 
       timeline: state.timelineData, 
       countries: state.countriesData 

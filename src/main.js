@@ -111,6 +111,16 @@ function showDetailPage(event) {
   } else {
     wikiLink.style.display = 'none';
   }
+
+  // Press / news article link (if the event provides one)
+  const pressLinkEl = document.getElementById('detailPressLink');
+  const possiblePressUrl = event.source?.pressUrl || event.source?.articleUrl || event.source?.url || event.pressUrl || event.articleUrl;
+  if (possiblePressUrl) {
+    pressLinkEl.href = possiblePressUrl;
+    pressLinkEl.style.display = 'inline-flex';
+  } else {
+    pressLinkEl.style.display = 'none';
+  }
   
   // Back button handler
   const backBtn = document.getElementById('detailBackBtn');
@@ -122,6 +132,9 @@ function showDetailPage(event) {
       if (eventEl) {
         eventEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
+    } else if (state.detailSource === 'country' && state.detailCountryId) {
+      // Re-open country modal at previous country
+      window.showCountryDetail(state.detailCountryId);
     }
   };
   
@@ -191,6 +204,8 @@ window.showCountryEventDetail = function(countryId, eventName, eventDate) {
     source: event.source
   };
   
+  // Remember originating country for back navigation
+  state.detailCountryId = countryId;
   state.detailSource = 'country';
   showDetailPage(detailEvent);
 };

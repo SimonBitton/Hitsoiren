@@ -15,7 +15,8 @@
         "category": "Politique",
         "source": {
           "type": "curated",
-          "countryQid": "Q889"
+          "countryQid": "Q889",
+          "pressUrl": "https://example.com/article-invasion-sovietique-afghanistan"
         }
       },
       {
@@ -244,7 +245,8 @@
         "source": {
           "type": "wikidata",
           "countryQid": "Q258",
-          "eventQid": "Q208401"
+          "eventQid": "Q208401",
+          "pressUrl": "https://example.com/article-coupe-monde-2010"
         }
       },
       {

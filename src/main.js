@@ -6,9 +6,29 @@ import { renderTimeline, renderCountries, renderStats } from './ui-renderer.js';
 import { normalizeText } from './utils.js';
 
 async function init() {
+  const statusEl = document.createElement('div');
+  statusEl.id = 'loading-status';
+  statusEl.style.cssText = 'position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.8);color:white;padding:10px 20px;border-radius:30px;font-size:12px;z-index:9999;pointer-events:none;';
+  statusEl.textContent = 'Chargement des données...';
+  document.body.appendChild(statusEl);
+
   // Load data
-  const data = await loadData();
-  if (!data) return;
+  try {
+    const data = await loadData();
+    if (!data || !data.timeline || !data.countries) {
+      throw new Error('Données corrompues ou manquantes');
+    }
+    statusEl.style.display = 'none';
+  } catch (error) {
+    console.error('Initialization error:', error);
+    statusEl.style.background = '#ef4444';
+    statusEl.textContent = 'Erreur de chargement: ' + error.message;
+    statusEl.style.pointerEvents = 'auto';
+    statusEl.style.cursor = 'pointer';
+    statusEl.onclick = () => window.location.reload();
+    return;
+  }
+
 
   // Initialize UI components
   initRouter();
@@ -75,9 +95,9 @@ function showDetailPage(event) {
   document.getElementById('detailDate').textContent = event.date;
   document.getElementById('detailTitle').textContent = event.name;
   
-  // Summary (use context if available, otherwise generic)
-  const summary = event.context || 'Événement historique majeur qui a marqué son époque.';
-  document.getElementById('detailSummary').textContent = summary;
+  // Generate detailed summary (at least 5 lines)
+  const detailedSummary = generateDetailedSummary(event);
+  document.getElementById('detailSummary').textContent = detailedSummary;
   
   // People section
   const peopleSection = document.getElementById('detailPeopleSection');
@@ -150,6 +170,128 @@ function getCategoryClass(category) {
   if (normalized.includes('culture')) return 'cat-culture';
   if (normalized.includes('exploration')) return 'cat-exploration';
   return 'cat-politique';
+}
+
+/**
+ * Generates a detailed summary of at least 5 lines for an event
+ * @param {Object} event - The event object
+ * @returns {string} - A detailed summary text
+ */
+function generateDetailedSummary(event) {
+  const parts = [];
+  
+  // Line 1: Introduction with date and era
+  const era = state.timelineData?.eras.find(e => e.id === event.era);
+  const eraName = era ? era.name.toLowerCase() : 'l\'histoire';
+  parts.push(`Cet événement s'inscrit dans ${eraName}, plus précisément ${event.date}.`);
+  
+  // Line 2: Main event description
+  parts.push(`${event.name}.`);
+  
+  // Line 3: Context elaboration
+  if (event.context) {
+    parts.push(`Contexte : ${event.context}`);
+  }
+  
+  // Line 4: Key figures involvement
+  if (event.people && event.people.trim()) {
+    parts.push(`Personnages clés impliqués : ${event.people}.`);
+  }
+  
+  // Line 5: Historical significance and impact
+  const significance = getHistoricalSignificance(event);
+  parts.push(significance);
+  
+  // Line 6: Additional context about category
+  const categoryContext = getCategoryContext(event);
+  parts.push(categoryContext);
+  
+  // Line 7: Legacy and long-term impact
+  const legacy = getLegacyStatement(event);
+  parts.push(legacy);
+  
+  return parts.join(' ');
+}
+
+/**
+ * Gets historical significance statement based on event properties
+ */
+function getHistoricalSignificance(event) {
+  const category = normalizeText(event.category || '');
+  const name = normalizeText(event.name || '');
+  
+  if (event.major) {
+    return 'Cet événement majeur a profondément transformé le cours de l\'histoire et ses conséquences se font encore ressentir aujourd\'hui.';
+  }
+  
+  if (category.includes('science')) {
+    return 'Cette avancée scientifique a contribué à élargir les connaissances humaines et a ouvert la voie à de nouvelles découvertes.';
+  }
+  
+  if (category.includes('politique')) {
+    return 'Cet événement politique a redéfini les équilibres de pouvoir et influencé l\'organisation des sociétés de l\'époque.';
+  }
+  
+  if (category.includes('culture')) {
+    return 'Cet accomplissement culturel a enrichi le patrimoine artistique et intellectuel de l\'humanité.';
+  }
+  
+  if (category.includes('exploration')) {
+    return 'Cette exploration a repoussé les frontières du monde connu et permis de nouvelles connexions entre civilisations.';
+  }
+  
+  return 'Cet événement a marqué son époque et constitue un jalon important dans la compréhension de cette période historique.';
+}
+
+/**
+ * Gets category-specific context
+ */
+function getCategoryContext(event) {
+  const category = normalizeText(event.category || '');
+  const era = event.era || '';
+  
+  if (era === 'prehist') {
+    return 'À cette époque reculée, les humains développaient progressivement des techniques et des organisations sociales qui allaient poser les fondations des civilisations futures.';
+  }
+  
+  if (era === 'antiquite') {
+    return 'Durant l\'Antiquité, les grandes civilisations établissaient les bases de la philosophie, des sciences, du droit et de l\'organisation politique qui influencent encore notre monde.';
+  }
+  
+  if (era === 'moyen-age') {
+    return 'Au Moyen Âge, entre transformations politiques, avancées techniques et échanges culturels, se construisaient les nations et les identités européennes.';
+  }
+  
+  if (era === 'modernes') {
+    return 'Les Temps Modernes voient l\'émergence de nouvelles conceptions du monde, des révolutions scientifiques et politiques qui façonnent la modernité.';
+  }
+  
+  if (era === 'contemporain') {
+    return 'L\'époque contemporaine est marquée par des transformations accélérées, des conflits mondiaux, des révolutions technologiques et une mondialisation sans précédent.';
+  }
+  
+  return 'Cet événement s\'inscrit dans un contexte historique plus large de transformations sociales, politiques et culturelles.';
+}
+
+/**
+ * Gets legacy statement
+ */
+function getLegacyStatement(event) {
+  const name = event.name || '';
+  
+  if (name.toLowerCase().includes('invention') || name.toLowerCase().includes('découverte')) {
+    return 'Cette innovation a eu des répercussions durables et continue d\'influencer notre vie quotidienne.';
+  }
+  
+  if (name.toLowerCase().includes('bataille') || name.toLowerCase().includes('guerre')) {
+    return 'Les conséquences de ce conflit ont redessiné la carte politique et laissé une empreinte indélébile dans la mémoire collective.';
+  }
+  
+  if (name.toLowerCase().includes('naissance') || name.toLowerCase().includes('mort')) {
+    return 'La vie et l\'œuvre de cette personne ont eu un impact profond sur l\'histoire des idées et des civilisations.';
+  }
+  
+  return 'Son héritage perdure à travers les siècles et continue d\'inspirer les générations futures.';
 }
 
 window.showCountryDetail = function(countryId) {

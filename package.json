@@ -1,9 +1,14 @@
 {
   "name": "histoiren",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "description": "Chronologie Mondiale Premium - Explorez l'histoire du monde à travers une frise chronologique interactive",
   "scripts": {
-    "test:e2e": "node tests/run-e2e.js"
+    "start": "npx serve .",
+    "test:e2e": "node tests/run-e2e.js",
+    "add-events": "node scripts/add-timeline-events.mjs",
+    "add-massive-events": "node scripts/add-massive-events.mjs",
+    "verify-dates": "node scripts/verify-dates-wikidata.mjs"
   },
   "devDependencies": {
     "playwright": "^1.35.0"

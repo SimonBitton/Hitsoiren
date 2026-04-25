@@ -6,29 +6,24 @@ export function setView(viewName) {
   const previousView = state.currentView;
   state.currentView = viewName;
   
-  // Update Tabs UI
   document.querySelectorAll('.nav-tab').forEach(tab => {
     tab.classList.toggle('active', tab.dataset.view === viewName);
   });
   
-  // Update Containers UI
   document.querySelectorAll('.view-container').forEach(container => {
     container.classList.toggle('active', container.id === `view-${viewName}`);
   });
   
-  // Reset scroll to top when switching views
   if (viewName !== previousView) {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
-  // Show/hide sidebar toggle button based on view
+  // Hide sidebar on presentation view
   const sidebarToggle = document.getElementById('sidebarToggle');
   const sidebar = document.getElementById('quickNav');
   if (sidebarToggle && sidebar) {
-    // Hide sidebar on presentation and stats views
-    const shouldHideSidebar = viewName === 'presentation' || viewName === 'stats';
+    const shouldHideSidebar = viewName === 'presentation';
     sidebarToggle.style.display = shouldHideSidebar ? 'none' : 'flex';
-    
     if (shouldHideSidebar) {
       sidebar.classList.remove('active');
       sidebarToggle.classList.remove('active');
@@ -37,20 +32,18 @@ export function setView(viewName) {
     }
   }
 
-  // Build Sidebar based on view (only for timeline and countries)
   if (viewName === 'timeline' || viewName === 'countries') {
     buildSidebarContent();
   }
   
-  // Specific view logic
   if (viewName === 'countries') {
     renderCountries();
-  } else if (viewName === 'stats') {
-    renderStats();
   } else if (viewName === 'timeline') {
     renderTimeline();
+  } else if (viewName === 'presentation') {
+    // Render stats inside the presentation view
+    renderStats();
   }
-  // presentation view is static HTML, no rendering needed
 }
 
 export function initRouter() {
@@ -58,7 +51,6 @@ export function initRouter() {
     tab.addEventListener('click', () => setView(tab.dataset.view));
   });
 
-  // Handle initial view from URL
   const params = new URLSearchParams(window.location.search);
   const view = params.get('view') || 'presentation';
   if (view !== 'detail') {

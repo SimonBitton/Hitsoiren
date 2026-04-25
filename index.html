@@ -19,13 +19,22 @@
   <link rel="stylesheet" href="css/views.css">
 </head>
 <body>
+  <div id="debug-check" style="position:fixed;top:0;left:0;background:red;color:white;z-index:9999;padding:5px;font-size:10px;display:none;">JS Loaded</div>
+  <script>
+    document.getElementById('debug-check').style.display = 'block';
+    console.log('Inline script running');
+  </script>
+  <noscript>
+    <div style="position:fixed;inset:0;background:white;display:flex;align-items:center;justify-content:center;z-index:9999;padding:2rem;text-align:center;">
+      <h1>JavaScript requis</h1>
+      <p>Veuillez activer JavaScript pour utiliser Histoiren.</p>
+    </div>
+  </noscript>
 
-  <!-- Navigation principale -->
   <nav class="main-nav">
     <div class="nav-tab active" data-view="presentation">🏛 Présentation</div>
     <div class="nav-tab" data-view="timeline">📜 Chronologie</div>
     <div class="nav-tab" data-view="countries">🌍 Par Pays</div>
-    <div class="nav-tab" data-view="stats">📊 Statistiques</div>
   </nav>
 
   <!-- Bouton Sidebar -->
@@ -78,6 +87,13 @@
             <p>Trouvez rapidement les événements qui vous intéressent grâce à notre moteur de recherche.</p>
           </div>
         </section>
+
+        <!-- Statistiques intégrées -->
+        <section class="stats-section-title">
+          <h2>📊 Statistiques</h2>
+          <p>Analyse de la base de données historique</p>
+        </section>
+        <div id="presentationStats" class="stats-content"></div>
       </div>
     </div>
 
@@ -114,17 +130,7 @@
       </div>
     </div>
 
-    <!-- Vue Stats -->
-    <div id="view-stats" class="view-container">
-      <header>
-        <h1>Tableau de <span>Statistiques</span></h1>
-        <p>Analyse de la base de données historique.</p>
-      </header>
-      
-      <div id="statsContent" class="stats-content">
-        <!-- Stats injectées ici -->
-      </div>
-    </div>
+    <!-- Vue Stats (supprimée — contenu déplacé dans Présentation) -->
 
     <!-- Detail Page (Hidden by default, handled by logic) -->
     <div id="detailPage" class="detail-page">

@@ -23,9 +23,10 @@ export async function loadData() {
     };
   } catch (error) {
     console.error('Failed to load application data:', error);
-    return null;
+    throw error; // Rethrow to let init() handle it
   }
 }
+
 
 export function getEventById(id) {
   if (!state.timelineData) return null;

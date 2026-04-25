@@ -145,13 +145,13 @@ export function renderCountries() {
 }
 
 export function renderStats() {
-  const container = document.getElementById('statsContent');
+  // Stats are now rendered inside the Présentation view
+  const container = document.getElementById('presentationStats');
   if (!container) return;
 
   const totalEvents = state.timelineData?.events.length || 0;
-  const totalCountries = state.countriesData.length;
+  const totalCountries = state.countriesData?.length || 0;
   
-  // Calculate more stats as requested
   const categories = {};
   state.timelineData?.events.forEach(e => {
     categories[e.category] = (categories[e.category] || 0) + 1;

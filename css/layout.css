@@ -126,20 +126,24 @@ main.sidebar-open {
 /* ══════════════════ QUICK NAV SIDEBAR ══════════════════ */
 .quick-nav {
   position: fixed;
-  left: 0;
-  top: 0;
+  left: 0.9rem;
+  top: 0.9rem;
   width: 280px;
-  height: 100vh;
-  background: var(--surface);
+  height: calc(100vh - 1.8rem);
+  background: rgba(255, 255, 255, 0.86);
   backdrop-filter: var(--glass);
   -webkit-backdrop-filter: var(--glass);
-  border-right: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-right-color: rgba(203, 213, 225, 0.45);
+  border-bottom-color: rgba(203, 213, 225, 0.45);
+  border-radius: 28px;
   z-index: 1000;
-  transform: translateX(-100%);
+  transform: translateX(calc(-100% - 1.4rem));
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.15);
 }
 
 .quick-nav.active {
@@ -147,7 +151,7 @@ main.sidebar-open {
 }
 
 .quick-nav-title {
-  padding: 1.5rem;
+  padding: 1.25rem 1.25rem 1rem;
   border-bottom: 1px solid var(--border);
   font-weight: 700;
   color: var(--ink);
@@ -163,7 +167,8 @@ main.sidebar-open {
 .quick-nav-links {
   display: flex;
   flex-direction: column;
-  padding: 0.5rem 0;
+  gap: 0.3rem;
+  padding: 0.75rem;
 }
 
 .sidebar-divider {
@@ -172,7 +177,7 @@ main.sidebar-open {
 }
 
 .sidebar-section-label {
-  padding: 0.5rem 1.5rem;
+  padding: 0.45rem 0.95rem;
   font-size: 0.75rem;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -275,25 +280,26 @@ main.sidebar-open {
 /* Simple links (non-grouped) */
 .quick-nav-links > a {
   display: block;
-  padding: 0.9rem 1.5rem;
+  padding: 0.78rem 0.95rem;
   color: var(--ink-soft);
   text-decoration: none;
   transition: all 0.2s ease;
-  border-left: 3px solid transparent;
+  border-left: 0;
   font-size: 0.95rem;
+  border-radius: 14px;
 }
 
 .quick-nav-links > a:hover {
-  background: var(--accent-soft);
+  background: rgba(0, 113, 227, 0.12);
   color: var(--accent);
-  border-left-color: var(--accent);
+  transform: translateX(2px);
 }
 
 .quick-nav-links > a.active {
-  background: var(--accent-soft);
+  background: rgba(0, 113, 227, 0.16);
   color: var(--accent);
-  border-left-color: var(--accent);
   font-weight: 600;
+  box-shadow: inset 0 0 0 1px rgba(0, 113, 227, 0.12);
 }
 
 .sidebar-date {
@@ -305,7 +311,7 @@ main.sidebar-open {
 }
 
 .sidebar-letter {
-  padding: 0.45rem 1.5rem;
+  padding: 0.45rem 0.95rem;
   font-size: 0.78rem;
   font-weight: 700;
   color: var(--ink-soft);
@@ -314,7 +320,7 @@ main.sidebar-open {
 
 .sidebar-pill {
   float: right;
-  background: var(--accent-soft);
+  background: rgba(0, 113, 227, 0.14);
   color: var(--accent);
   border-radius: 999px;
   padding: 0.1rem 0.45rem;
@@ -326,17 +332,17 @@ main.sidebar-open {
   position: fixed;
   left: 1.5rem;
   top: 5rem;
-  width: 44px;
-  height: 44px;
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1100;
   cursor: pointer;
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.16);
   transition: all 0.2s ease;
 }
 

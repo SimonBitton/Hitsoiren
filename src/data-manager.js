@@ -6,29 +6,29 @@ export async function loadData() {
       fetch('data/timeline.json'),
       fetch('data/countries.json')
     ]);
-    
+
     state.timelineData = await timelineRes.json();
     state.countriesData = await countriesRes.json();
-    
-    // Ensure each timeline event has a unique id for interaction
+
     if (state.timelineData && Array.isArray(state.timelineData.events)) {
-      state.timelineData.events.forEach((e, idx) => {
-        if (!e.id) e.id = `evt-${idx}`;
+      state.eventById = new Map();
+      state.timelineData.events.forEach((event, idx) => {
+        if (!event.id) event.id = `evt-${idx}`;
+        state.eventById.set(event.id, event);
       });
     }
-    
-    return { 
-      timeline: state.timelineData, 
-      countries: state.countriesData 
+
+    return {
+      timeline: state.timelineData,
+      countries: state.countriesData
     };
   } catch (error) {
     console.error('Failed to load application data:', error);
-    throw error; // Rethrow to let init() handle it
+    throw error;
   }
 }
 
-
 export function getEventById(id) {
-  if (!state.timelineData) return null;
-  return state.timelineData.events.find(e => e.id === id) || null;
+  if (!id || !state.eventById) return null;
+  return state.eventById.get(id) || null;
 }

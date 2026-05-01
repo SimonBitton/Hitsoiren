@@ -181,6 +181,9 @@
   cursor: pointer;
   color: var(--ink-soft);
   line-height: 1;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
 }
 
 .modal-body {
@@ -202,6 +205,11 @@
   border-radius: 8px;
   padding: 1rem;
   margin: 0 -1rem;
+  border: 0;
+  width: calc(100% + 2rem);
+  text-align: left;
+  background: transparent;
+  font-family: inherit;
 }
 
 .country-event:hover {

@@ -5,6 +5,8 @@
   "description": "Chronologie Mondiale Premium - Explorez l'histoire du monde à travers une frise chronologique interactive",
   "scripts": {
     "start": "npx serve .",
+    "build:countries": "node scripts/generate-countries-from-csv.mjs",
+    "import:csv-timeline": "node scripts/import-csv-events.mjs",
     "test:e2e": "node tests/run-e2e.js",
     "add-events": "node scripts/add-timeline-events.mjs",
     "add-massive-events": "node scripts/add-massive-events.mjs",

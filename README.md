@@ -55,6 +55,8 @@ histoiren/
 │   └── views.css          # Styles spécifiques aux vues
 ├── src/
 │   ├── main.js            # Point d'entrée principal
+│   ├── detail-view.js     # Vue détail événement
+│   ├── country-modal.js   # Modal pays + navigation vers détail
 │   ├── router.js          # Gestion de la navigation
 │   ├── state.js           # Gestion de l'état
 │   ├── data-manager.js    # Chargement des données
@@ -66,6 +68,8 @@ histoiren/
 │   └── countries.json     # Données par pays
 ├── scripts/
 │   ├── add-timeline-events.mjs    # Ajout d'événements manuels
+│   ├── generate-countries-from-csv.mjs # Génération countries.json depuis C.csv
+│   ├── import-csv-events.mjs      # Import CSV vers timeline.json
 │   ├── add-massive-events.mjs     # Ajout massif depuis WikiData
 │   └── verify-dates-wikidata.mjs  # Vérification des dates
 └── tests/
@@ -106,6 +110,12 @@ npm run add-massive-events
 
 # Vérifier les dates avec WikiData
 npm run verify-dates
+
+# Générer les événements par pays depuis C.csv
+npm run build:countries
+
+# Importer C.csv vers la timeline globale
+npm run import:csv-timeline
 
 # Lancer les tests end-to-end
 npm run test:e2e

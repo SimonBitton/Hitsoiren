@@ -166,7 +166,114 @@ main.sidebar-open {
   padding: 0.5rem 0;
 }
 
-.quick-nav-links a {
+.sidebar-divider {
+  border-top: 1px solid var(--border);
+  margin: 0.5rem 0;
+}
+
+.sidebar-section-label {
+  padding: 0.5rem 1.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* Event group (collapsible) */
+.event-group {
+  border-bottom: 1px solid var(--border);
+}
+
+.event-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.5rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+  font-size: 0.95rem;
+  font-weight: 600;
+  user-select: none;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font-family: inherit;
+}
+
+.event-group-header:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+.event-group-header.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+.event-group-toggle {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.event-group-header.active .event-group-toggle {
+  transform: rotate(180deg);
+}
+
+.event-group-dates {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--ink-soft);
+  margin-left: 0.5rem;
+}
+
+.event-group-emoji {
+  margin-right: 0.5rem;
+}
+
+.event-group-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.event-group-content.open {
+  max-height: 500px;
+}
+
+.event-group-content a {
+  display: block;
+  padding: 0.7rem 1.5rem 0.7rem 2.5rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+  border-left: 3px solid transparent;
+  line-height: 1.4;
+}
+
+.event-group-content a:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+.event-group-content a.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 500;
+}
+
+/* Simple links (non-grouped) */
+.quick-nav-links > a {
   display: block;
   padding: 0.9rem 1.5rem;
   color: var(--ink-soft);
@@ -176,13 +283,13 @@ main.sidebar-open {
   font-size: 0.95rem;
 }
 
-.quick-nav-links a:hover {
+.quick-nav-links > a:hover {
   background: var(--accent-soft);
   color: var(--accent);
   border-left-color: var(--accent);
 }
 
-.quick-nav-links a.active {
+.quick-nav-links > a.active {
   background: var(--accent-soft);
   color: var(--accent);
   border-left-color: var(--accent);

@@ -34,6 +34,7 @@ function buildTimelineSidebar() {
   return `
     <div class="sidebar-section-label">Epoques</div>
     ${eras.map((era) => `<a href="#${era.id}" data-target="${era.id}" data-type="era">${era.icon} ${era.label}</a>`).join('')}
+    <a href="#top50-section" data-target="top50-section" data-type="top50">🏆 Top 50</a>
   `;
 }
 
@@ -70,7 +71,7 @@ function bindSidebarInteractions(sidebarLinks) {
     if (!type) return;
     event.preventDefault();
 
-    if (type === 'era') {
+    if (type === 'era' || type === 'top50') {
       const targetId = link.dataset.target;
       const target = document.getElementById(targetId);
       if (target) {

@@ -835,7 +835,7 @@
     {
       "era": "antiquite",
       "major": true,
-      "date": "313",
+      "date": "année 313",
       "name": "Édit de Milan — tolérance du christianisme",
       "context": "Constantin légalise le christianisme ; début de la christianisation de l'Empire",
       "people": "Constantin Ier",
@@ -925,7 +925,7 @@
     {
       "era": "moyen-age",
       "major": true,
-      "date": "622",
+      "date": "année 622",
       "name": "Hégire de Mahomet — fondation de l'islam",
       "context": "Départ de La Mecque vers Médine ; an 1 de l'ère hégirien ; naissance de la communauté (Umma)",
       "people": "Mahomet (Muhammad)",
@@ -935,7 +935,7 @@
     {
       "era": "moyen-age",
       "major": true,
-      "date": "632–750",
+      "date": "de 632 à 750",
       "name": "Conquêtes arabes — de la Perse à l'Espagne",
       "context": "En un siècle, l'islam couvre un territoire plus vaste que l'Empire romain à son apogée",
       "people": "Abu Bakr, Omar Ier, Othman, Ali",
@@ -1005,7 +1005,7 @@
     {
       "era": "moyen-age",
       "major": true,
-      "date": "1054",
+      "date": "année 1054",
       "name": "Grand Schisme d'Orient — Catholiques vs Orthodoxes",
       "context": "Excommunications mutuelles de Rome et Constantinople ; rupture encore non résolue",
       "people": "Pape Léon IX, Patriarche Michel Cérulaire",
@@ -1035,7 +1035,7 @@
     {
       "era": "moyen-age",
       "major": true,
-      "date": "1095–1099",
+      "date": "de 1095 à 1099",
       "name": "Première Croisade — prise de Jérusalem",
       "context": "Appel d'Urbain II à Clermont ; 100 000 croisés ; Jérusalem prise le 15 juillet 1099",
       "people": "Godefroy de Bouillon, pape Urbain II",
@@ -1065,7 +1065,7 @@
     {
       "era": "moyen-age",
       "major": true,
-      "date": "1215",
+      "date": "année 1215",
       "name": "Magna Carta — premiers droits écrits limitant le roi d'Angleterre",
       "context": "63 articles ; habeas corpus en germe ; matrice du constitutionnalisme britannique et américain",
       "people": "Roi Jean sans Terre, barons anglais",
@@ -1095,7 +1095,7 @@
     {
       "era": "moyen-age",
       "major": true,
-      "date": "1206–1227",
+      "date": "de 1206 à 1227",
       "name": "Conquêtes de Gengis Khan — Empire mongol",
       "context": "Plus grand empire terrestre continu de l'histoire ; de la Chine à la Hongrie",
       "people": "Gengis Khan (Temüjin)",
@@ -1145,7 +1145,7 @@
     {
       "era": "moyen-age",
       "major": true,
-      "date": "1347–1353",
+      "date": "de 1347 à 1353",
       "name": "Pandémie de Peste noire",
       "context": "Yersinia pestis via Caffa (Crimée) ; 25–50 millions de morts en Europe ; ⅓ à ½ de la population",
       "people": "",
@@ -1435,7 +1435,7 @@
     {
       "era": "modernes",
       "major": true,
-      "date": "1543",
+      "date": "année 1543",
       "name": "Copernic — De Revolutionibus : système héliocentrique",
       "context": "La Terre tourne autour du Soleil ; rupture cosmologique après 1 400 ans de ptolémée",
       "people": "Nicolas Copernic",
@@ -1485,7 +1485,7 @@
     {
       "era": "modernes",
       "major": true,
-      "date": "1687",
+      "date": "année 1687",
       "name": "Newton — Principia Mathematica",
       "context": "Lois du mouvement + gravitation universelle ; mécanique classique valide pendant 3 siècles",
       "people": "Isaac Newton",
@@ -1505,7 +1505,7 @@
     {
       "era": "modernes",
       "major": true,
-      "date": "1661–1715",
+      "date": "de 1661 à 1715",
       "name": "Règne de Louis XIV — apogée de l'absolutisme français",
       "context": "Versailles, mercantilisme (Colbert), guerres de succession ; \"L'État c'est moi\"",
       "people": "Louis XIV, Colbert, Vauban",
@@ -1795,7 +1795,7 @@
     {
       "era": "contemporain",
       "major": true,
-      "date": "1814–1860",
+      "date": "de 1814 à 1860",
       "name": "Révolution industrielle — Angleterre puis Europe",
       "context": "Charbon, acier, chemin de fer, textile ; urbanisation massive ; capitalisme industriel",
       "people": "George Stephenson, Brunel, Arkwright",
@@ -1815,7 +1815,7 @@
     {
       "era": "contemporain",
       "major": true,
-      "date": "1848",
+      "date": "année 1848",
       "name": "Printemps des peuples & Manifeste communiste",
       "context": "Révolutions en France, Autriche, Allemagne, Italie ; Marx et Engels publient le Manifeste",
       "people": "Karl Marx, Friedrich Engels, Louis-Napoléon",
@@ -1835,7 +1835,7 @@
     {
       "era": "contemporain",
       "major": true,
-      "date": "1859",
+      "date": "année 1859",
       "name": "Darwin — L'Origine des espèces",
       "context": "Sélection naturelle ; évolution des espèces ; révolution dans la biologie et la pensée humaine",
       "people": "Charles Darwin",
@@ -1955,7 +1955,7 @@
     {
       "era": "contemporain",
       "major": true,
-      "date": "1905",
+      "date": "année 1905",
       "name": "Einstein — annus mirabilis : relativité restreinte + E=mc²",
       "context": "4 articles révolutionnaires en une seule année ; physique quantique et nucléaire en germe",
       "people": "Albert Einstein",
@@ -2185,7 +2185,7 @@
     {
       "era": "contemporain",
       "major": true,
-      "date": "1953",
+      "date": "année 1953",
       "name": "Watson, Crick & Franklin — structure de l'ADN (double hélice)",
       "context": "Publiée dans Nature le 25 avril ; révolution de la biologie moléculaire",
       "people": "James Watson, Francis Crick, Rosalind Franklin",
@@ -2465,7 +2465,7 @@
     {
       "era": "contemporain",
       "major": true,
-      "date": "2010–2012",
+      "date": "de 2010 à 2012",
       "name": "Printemps arabes — vague de révolutions au Maghreb et Moyen-Orient",
       "context": "Tunisie, Égypte, Libye, Syrie ; espoir démocratique souvent déçu",
       "people": "",

@@ -296,6 +296,32 @@ main.sidebar-open {
   font-weight: 600;
 }
 
+.sidebar-date {
+  display: inline-block;
+  min-width: 8.2rem;
+  color: var(--gold);
+  font-weight: 700;
+  margin-right: 0.35rem;
+}
+
+.sidebar-letter {
+  padding: 0.45rem 1.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  opacity: 0.85;
+}
+
+.sidebar-pill {
+  float: right;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
 .sidebar-toggle {
   position: fixed;
   left: 1.5rem;

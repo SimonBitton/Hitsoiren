@@ -526,6 +526,64 @@
   gap: 1.5rem;
 }
 
+.design-system-panel {
+  margin-top: 3rem;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.design-system-panel h2 {
+  font-size: 1.75rem;
+  color: var(--ink);
+  margin-bottom: 0.7rem;
+}
+
+.design-system-intro {
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.design-system-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.ds-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem;
+  background: var(--parchment);
+}
+
+.ds-card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+  color: var(--ink);
+}
+
+.ds-card ul {
+  margin: 0;
+  padding-left: 1rem;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.swatch {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 999px;
+  display: inline-block;
+  margin-right: 0.45rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  vertical-align: middle;
+}
+
 .feature-card {
   background: white;
   padding: 2rem;
@@ -576,6 +634,12 @@
   .features-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  .design-system-panel {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border-radius: 16px;
   }
   
   .feature-card {

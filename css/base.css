@@ -11,11 +11,11 @@ html {
 body {
   background-color: var(--parchment);
   color: var(--ink);
-  font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   min-height: 100vh;
   background-image: 
-    radial-gradient(circle at 0% 0%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 100% 0%, rgba(0, 113, 227, 0.05) 0%, transparent 50%);
+    radial-gradient(circle at 0% 0%, rgba(43, 75, 238, 0.07) 0%, transparent 50%),
+    radial-gradient(circle at 100% 0%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
   overflow-x: hidden;
 }
 

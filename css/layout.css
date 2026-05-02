@@ -67,7 +67,7 @@ header h1 {
 
 header h1 span {
   display: inline-block;
-  background: linear-gradient(135deg, #0071e3 0%, #67b8ff 55%, #7c3aed 100%);
+  background: linear-gradient(135deg, #2b4bee 0%, #5f76f4 55%, #7c3aed 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

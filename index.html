@@ -9,7 +9,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- CSS -->
   <link rel="stylesheet" href="css/variables.css">
@@ -19,11 +19,6 @@
   <link rel="stylesheet" href="css/views.css">
 </head>
 <body>
-  <div id="debug-check" style="position:fixed;top:0;left:0;background:red;color:white;z-index:9999;padding:5px;font-size:10px;display:none;">JS Loaded</div>
-  <script>
-    document.getElementById('debug-check').style.display = 'block';
-    console.log('Inline script running');
-  </script>
   <noscript>
     <div style="position:fixed;inset:0;background:white;display:flex;align-items:center;justify-content:center;z-index:9999;padding:2rem;text-align:center;">
       <h1>JavaScript requis</h1>
@@ -85,6 +80,45 @@
             <div class="feature-icon">🔍</div>
             <h3>Recherche avancée</h3>
             <p>Trouvez rapidement les événements qui vous intéressent grâce à notre moteur de recherche.</p>
+          </div>
+        </section>
+
+        <section class="design-system-panel">
+          <h2>🎨 Design System Ovyn (v1.0)</h2>
+          <p class="design-system-intro">
+            Données intégrées depuis le document de référence: tokens, typographie et standards UI à appliquer.
+          </p>
+          <div class="design-system-grid">
+            <article class="ds-card">
+              <h3>Couleurs principales</h3>
+              <ul>
+                <li><span class="swatch" style="background:#2b4bee;"></span> Primary: #2b4bee</li>
+                <li><span class="swatch" style="background:#203bc4;"></span> Primary Hover: #203bc4</li>
+                <li><span class="swatch" style="background:#10b981;"></span> Success: #10b981</li>
+                <li><span class="swatch" style="background:#f59e0b;"></span> Warning: #f59e0b</li>
+                <li><span class="swatch" style="background:#ef4444;"></span> Destructive: #ef4444</li>
+              </ul>
+            </article>
+            <article class="ds-card">
+              <h3>Typographie & tailles</h3>
+              <ul>
+                <li>Police: Inter (sans)</li>
+                <li>Body: 16px (moyen)</li>
+                <li>H1: 3xl/4xl, semibold</li>
+                <li>H2: 2xl, semibold</li>
+                <li>Caption: xs, slate-500</li>
+              </ul>
+            </article>
+            <article class="ds-card">
+              <h3>Standards UI</h3>
+              <ul>
+                <li>Contrôles: <code>rounded-xl</code></li>
+                <li>Cartes: <code>rounded-2xl border-slate-200 bg-white shadow-sm</code></li>
+                <li>Inputs: hauteur 48px, bordure slate-200</li>
+                <li>Focus: ring primaire cohérent</li>
+                <li>États: success/warning/destructive sémantiques</li>
+              </ul>
+            </article>
           </div>
         </section>
 

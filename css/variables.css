@@ -1,26 +1,114 @@
+/* ══════════════════════════════════════════════════
+   DESIGN TOKENS — Ovyn Design System v1.0
+   Source de vérité unique pour Histoiren
+══════════════════════════════════════════════════ */
+
 :root {
-  --ink: #111218;
-  --ink-soft: #616889;
-  --parchment: #f6f6f8;
-  --gold: #f59e0b;
-  --gold-dark: #d97706;
-  --accent: #2b4bee;
-  --accent-strong: #203bc4;
-  --accent-soft: rgba(43, 75, 238, 0.1);
-  --rust: #ef4444;
-  --olive: #10b981;
-  --slate: #334155;
-  --cream: rgba(255, 255, 255, 0.8);
-  --border: #e5e7eb;
-  --text-muted: #94a3b8;
-  --prehist: #64748b;
-  --antiquite: #7c3aed;
-  --moyen-age: #2563eb;
-  --modernes: #059669;
-  --contemporain: #1e293b;
-  --surface: rgba(255, 255, 255, 0.86);
-  --surface-strong: rgba(255, 255, 255, 0.96);
-  --shadow: 0 20px 40px rgba(17, 18, 24, 0.08);
-  --shadow-soft: 0 8px 20px rgba(17, 18, 24, 0.05);
-  --glass: blur(12px) saturate(160%);
+  /* ── Couleurs sémantiques ── */
+  --color-background:        #f6f6f8;
+  --color-foreground:        #111218;
+  --color-card:              #ffffff;
+  --color-card-foreground:   #111218;
+  --color-popover:           #ffffff;
+  --color-popover-foreground:#111218;
+
+  --color-primary:           #2b4bee;
+  --color-primary-foreground:#ffffff;
+  --color-primary-hover:     #203bc4;
+
+  --color-secondary:         #f1f5f9;
+  --color-secondary-foreground:#111218;
+
+  --color-muted:             #f1f5f9;
+  --color-muted-foreground:  #616889;
+
+  --color-accent:            #2b4bee;
+  --color-accent-foreground: #ffffff;
+
+  --color-destructive:       #ef4444;
+  --color-success:           #10b981;
+  --color-warning:           #f59e0b;
+
+  --color-border:            #e5e7eb;
+  --color-input:             #e5e7eb;
+  --color-ring:              #2b4bee;
+
+  --color-text-primary:      #111218;
+  --color-text-secondary:    #616889;
+  --color-text-muted:        #94a3b8;
+
+  /* ── Aliases courts (compatibilité interne) ── */
+  --ink:          var(--color-text-primary);
+  --ink-soft:     var(--color-text-secondary);
+  --parchment:    var(--color-background);
+  --border:       var(--color-border);
+  --text-muted:   var(--color-text-muted);
+  --accent:       var(--color-primary);
+  --accent-strong:var(--color-primary-hover);
+  --accent-soft:  rgba(43, 75, 238, 0.10);
+  --gold:         var(--color-warning);
+  --gold-dark:    #d97706;
+  --rust:         var(--color-destructive);
+  --olive:        var(--color-success);
+  --surface:      rgba(255, 255, 255, 0.86);
+  --surface-strong:rgba(255, 255, 255, 0.96);
+
+  /* ── Tokens de forme ── */
+  --radius-sm:    6px;
+  --radius-md:    8px;
+  --radius-lg:    12px;
+  --radius-xl:    16px;
+  --radius-2xl:   20px;
+  --radius-3xl:   24px;
+  --sidebar-width:256px;
+
+  /* ── Typographie ── */
+  --font-sans:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono:    "SF Mono", SFMono-Regular, ui-monospace, Menlo, monospace;
+
+  /* ── Ombres ── */
+  --shadow-sm:    0 1px 3px rgba(17, 18, 24, 0.06), 0 1px 2px rgba(17, 18, 24, 0.04);
+  --shadow:       0 4px 16px rgba(17, 18, 24, 0.08), 0 2px 6px rgba(17, 18, 24, 0.05);
+  --shadow-lg:    0 10px 30px rgba(17, 18, 24, 0.10), 0 4px 12px rgba(17, 18, 24, 0.06);
+  --shadow-xl:    0 20px 40px rgba(17, 18, 24, 0.12), 0 8px 20px rgba(17, 18, 24, 0.07);
+  --shadow-soft:  var(--shadow-sm);
+  --shadow-primary: 0 4px 16px rgba(43, 75, 238, 0.25);
+
+  /* ── Motion ── */
+  --transition-colors: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+  --transition-all:    all 0.2s ease;
+  --glass:        blur(12px) saturate(160%);
+
+  /* ── Couleurs d'ères (timeline) ── */
+  --era-prehist:      #64748b;
+  --era-antiquite:    #7c3aed;
+  --era-moyen-age:    #2563eb;
+  --era-modernes:     #059669;
+  --era-contemporain: #1e293b;
+}
+
+/* ── Dark mode ── */
+html.dark {
+  --color-background:         #0f0f12;
+  --color-foreground:         #f4f4f5;
+  --color-card:               #1a1a1f;
+  --color-card-foreground:    #f4f4f5;
+  --color-popover:            #1a1a1f;
+  --color-popover-foreground: #f4f4f5;
+  --color-secondary:          #27272a;
+  --color-secondary-foreground:#f4f4f5;
+  --color-muted:              #27272a;
+  --color-muted-foreground:   #a1a1aa;
+  --color-border:             #27272a;
+  --color-input:              #27272a;
+  --color-text-primary:       #f4f4f5;
+  --color-text-secondary:     #a1a1aa;
+  --color-text-muted:         #71717a;
+
+  --ink:       var(--color-text-primary);
+  --ink-soft:  var(--color-text-secondary);
+  --parchment: var(--color-background);
+  --border:    var(--color-border);
+  --surface:   rgba(26, 26, 31, 0.86);
+  --surface-strong: rgba(26, 26, 31, 0.96);
 }

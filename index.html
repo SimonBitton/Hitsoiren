@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Histoiren — Chronologie Mondiale Premium</title>
+  <title>Histoiren — Chronologie Mondiale</title>
   <meta name="description" content="Explorez l'histoire du monde à travers une frise chronologique interactive et détaillée.">
-  
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <!-- CSS -->
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
@@ -20,176 +20,200 @@
 </head>
 <body>
   <noscript>
-    <div style="position:fixed;inset:0;background:white;display:flex;align-items:center;justify-content:center;z-index:9999;padding:2rem;text-align:center;">
-      <h1>JavaScript requis</h1>
-      <p>Veuillez activer JavaScript pour utiliser Histoiren.</p>
+    <div style="position:fixed;inset:0;background:#f6f6f8;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:2rem;text-align:center;gap:1rem;">
+      <h1 style="font-family:Inter,sans-serif;font-size:1.5rem;color:#111218;">JavaScript requis</h1>
+      <p style="font-family:Inter,sans-serif;color:#616889;">Veuillez activer JavaScript pour utiliser Histoiren.</p>
     </div>
   </noscript>
 
-  <nav class="main-nav">
-    <div class="nav-tab active" data-view="presentation">🏛 Présentation</div>
-    <div class="nav-tab" data-view="timeline">📜 Chronologie</div>
-    <div class="nav-tab" data-view="countries">🌍 Par Pays</div>
+  <!-- Navigation principale -->
+  <nav class="main-nav" role="navigation" aria-label="Navigation principale">
+    <div class="nav-tab active" data-view="presentation" role="tab" aria-selected="true">🏛 Présentation</div>
+    <div class="nav-tab" data-view="timeline" role="tab" aria-selected="false">📜 Chronologie</div>
+    <div class="nav-tab" data-view="countries" role="tab" aria-selected="false">🌍 Par Pays</div>
   </nav>
 
-  <!-- Bouton Sidebar -->
-  <button id="sidebarToggle" class="sidebar-toggle" aria-label="Menu de navigation">
-    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
+  <!-- Bouton toggle sidebar -->
+  <button id="sidebarToggle" class="sidebar-toggle" aria-label="Ouvrir le menu de navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
+    </svg>
   </button>
 
   <!-- Sidebar -->
-  <aside class="quick-nav" id="quickNav">
+  <aside class="quick-nav" id="quickNav" aria-label="Navigation rapide">
     <div class="quick-nav-title">Accès rapide</div>
     <div class="quick-nav-links" id="quickNavLinks">
-      <!-- Links will be populated by JavaScript -->
+      <!-- Contenu injecté par sidebar.js -->
     </div>
   </aside>
 
-  <main>
-    <!-- Vue Présentation -->
-    <div id="view-presentation" class="view-container active">
+  <main id="main-content">
+
+    <!-- ── Vue Présentation ── -->
+    <div id="view-presentation" class="view-container active" role="main">
       <header>
         <div class="ornament">Histoiren</div>
         <h1><span>Bienvenue</span> sur Histoiren</h1>
         <p>Votre portail vers l'histoire mondiale</p>
       </header>
-      
+
       <div class="presentation-content">
-        <section class="intro-card">
-          <h2>📜 À propos d'Histoiren</h2>
+
+        <section class="intro-card" aria-labelledby="about-title">
+          <h2 id="about-title">📜 À propos d'Histoiren</h2>
           <p>Histoiren est une chronologie interactive qui vous permet d'explorer les événements majeurs de l'histoire mondiale, de la préhistoire à nos jours. Découvrez les moments clés qui ont façonné notre civilisation.</p>
         </section>
-        
-        <section class="features-grid">
+
+        <section class="features-grid" aria-label="Fonctionnalités">
           <div class="feature-card">
-            <div class="feature-icon">📜</div>
+            <div class="feature-icon" aria-hidden="true">📜</div>
             <h3>Chronologie complète</h3>
             <p>Parcourez les événements historiques organisés par époques, de la préhistoire à l'ère contemporaine.</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">🌍</div>
+            <div class="feature-icon" aria-hidden="true">🌍</div>
             <h3>Histoire par pays</h3>
             <p>Explorez l'histoire nation par nation avec des événements spécifiques à chaque pays.</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">📊</div>
+            <div class="feature-icon" aria-hidden="true">📊</div>
             <h3>Statistiques</h3>
             <p>Analysez la répartition des événements par catégorie, époque et thématique.</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">🔍</div>
+            <div class="feature-icon" aria-hidden="true">🔍</div>
             <h3>Recherche avancée</h3>
             <p>Trouvez rapidement les événements qui vous intéressent grâce à notre moteur de recherche.</p>
           </div>
         </section>
 
-        <!-- Statistiques intégrées -->
-        <section class="stats-section-title">
-          <h2>📊 Statistiques</h2>
+        <section class="stats-section-title" aria-labelledby="stats-title">
+          <h2 id="stats-title">📊 Statistiques</h2>
           <p>Analyse de la base de données historique</p>
         </section>
-        <div id="presentationStats" class="stats-content"></div>
+        <div id="presentationStats" class="stats-content" aria-live="polite"></div>
+
       </div>
     </div>
 
-    <!-- Vue Timeline -->
-    <div id="view-timeline" class="view-container">
+    <!-- ── Vue Timeline ── -->
+    <div id="view-timeline" class="view-container" role="main">
       <header>
         <div class="ornament">Histoiren</div>
         <h1><span>Chronologie</span> Mondiale</h1>
         <p>Un voyage à travers les millénaires, de l'aube de l'humanité à l'ère numérique.</p>
-        
-        <div class="search-container" style="margin-top: 3rem;">
-          <input type="text" id="searchInput" placeholder="Rechercher un événement, une date, un personnage...">
+
+        <div class="search-container" style="margin-top: 2.5rem;">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input
+            type="search"
+            id="searchInput"
+            placeholder="Rechercher un événement, une date, un personnage…"
+            aria-label="Rechercher dans la chronologie"
+            autocomplete="off"
+          >
         </div>
       </header>
-      
-      <div id="timelineContent">
-        <!-- Les sections d'époques seront injectées ici par ui-renderer.js -->
+
+      <div id="timelineContent" aria-live="polite">
+        <!-- Sections d'époques injectées par ui-renderer.js -->
       </div>
     </div>
 
-    <!-- Vue Pays -->
-    <div id="view-countries" class="view-container">
+    <!-- ── Vue Pays ── -->
+    <div id="view-countries" class="view-container" role="main">
       <header>
         <h1>L'Histoire <span>par Pays</span></h1>
         <p>Explorez les événements marquants nation par nation.</p>
-        
-        <div class="search-container" style="margin-top: 3rem;">
-          <input type="text" id="countrySearchInput" placeholder="Rechercher un pays...">
+
+        <div class="search-container" style="margin-top: 2.5rem;">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input
+            type="search"
+            id="countrySearchInput"
+            placeholder="Rechercher un pays…"
+            aria-label="Rechercher un pays"
+            autocomplete="off"
+          >
         </div>
       </header>
-      
-      <div id="countriesGrid" class="countries-grid">
-        <!-- Grille de pays injectée ici -->
+
+      <div id="countriesGrid" class="countries-grid" aria-live="polite">
+        <!-- Grille de pays injectée par ui-renderer.js -->
       </div>
     </div>
 
-    <!-- Vue Stats (supprimée — contenu déplacé dans Présentation) -->
-
-    <!-- Detail Page (Hidden by default, handled by logic) -->
-    <div id="detailPage" class="detail-page">
+    <!-- ── Page de détail ── -->
+    <div id="detailPage" class="detail-page" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
       <div class="detail-shell">
+
         <div class="detail-header">
-          <button id="detailBackBtn" class="detail-back-btn">
-            <svg viewBox="0 0 24 24" width="20" height="20">
+          <button id="detailBackBtn" class="detail-back-btn" aria-label="Retour">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
               <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             Retour
           </button>
-          <div class="detail-badge" id="detailBadge"></div>
+          <div class="detail-badge" id="detailBadge" aria-hidden="true"></div>
         </div>
-        
+
         <div class="detail-content">
           <div class="detail-meta-top">
             <span id="detailCategory" class="detail-category"></span>
             <span id="detailDate" class="detail-date-large"></span>
           </div>
-          
+
           <h1 id="detailTitle" class="detail-title"></h1>
-          
+
           <div class="detail-body">
             <div class="detail-section">
               <h3>📝 Résumé</h3>
               <p id="detailSummary" class="detail-summary"></p>
             </div>
-            
+
             <div class="detail-section" id="detailPeopleSection" style="display: none;">
               <h3>👤 Personnages clés</h3>
               <p id="detailPeople" class="detail-people"></p>
             </div>
-            
+
             <div class="detail-section" id="detailContextSection" style="display: none;">
               <h3>🔍 Contexte historique</h3>
               <p id="detailContext" class="detail-context-text"></p>
             </div>
-            
+
             <div class="detail-actions">
               <a id="detailSearchLink" href="#" target="_blank" rel="noopener noreferrer" class="detail-action-btn primary">
-                <svg viewBox="0 0 24 24" width="20" height="20">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                   <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 Rechercher sur Google
               </a>
               <a id="detailWikipediaLink" href="#" target="_blank" rel="noopener noreferrer" class="detail-action-btn secondary" style="display: none;">
-                <svg viewBox="0 0 24 24" width="20" height="20">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/>
                   <path d="M11 7h2v2h-2zm0 4h2v6h-2z" fill="currentColor"/>
                 </svg>
                 Article Wikipédia
               </a>
               <a id="detailPressLink" href="#" target="_blank" rel="noopener noreferrer" class="detail-action-btn tertiary" style="display: none;">
-                <svg viewBox="0 0 24 24" width="20" height="20">
-                  <path d="M3 5h18v14H3z" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M3 7h18M7 11h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                  <path d="M3 5h18v14H3z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M3 9h18M7 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
                 Article de presse
               </a>
             </div>
           </div>
         </div>
+
       </div>
     </div>
+
   </main>
 
   <footer>

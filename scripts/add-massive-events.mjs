@@ -26,7 +26,7 @@ const HEADERS = {
 const ERA_DEFINITIONS = {
   prehist: { start: -3300000, end: -3200, name: 'Préhistoire' },
   antiquite: { start: -3200, end: 476, name: 'Antiquité' },
-  moyen-age: { start: 476, end: 1492, name: 'Moyen Âge' },
+  'moyen-age': { start: 476, end: 1492, name: 'Moyen Âge' },
   modernes: { start: 1492, end: 1789, name: 'Temps Modernes' },
   contemporain: { start: 1789, end: 2026, name: 'Époque Contemporaine' }
 };

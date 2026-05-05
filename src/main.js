@@ -34,6 +34,31 @@ function bindSearch() {
       renderCountries();
     });
   }
+
+  // Raccourcis clavier pour l'accès rapide
+  document.addEventListener('keydown', (event) => {
+    // Ctrl+K ou Cmd+K pour focus sur la recherche
+    if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+      event.preventDefault();
+      const activeView = document.querySelector('.view-container.active');
+      if (activeView.id === 'view-timeline' && searchInput) {
+        searchInput.focus();
+        searchInput.select();
+      } else if (activeView.id === 'view-countries' && countrySearchInput) {
+        countrySearchInput.focus();
+        countrySearchInput.select();
+      }
+    }
+
+    // Échap pour effacer la recherche
+    if (event.key === 'Escape') {
+      if (document.activeElement === searchInput || document.activeElement === countrySearchInput) {
+        document.activeElement.value = '';
+        document.activeElement.dispatchEvent(new Event('input'));
+        document.activeElement.blur();
+      }
+    }
+  });
 }
 
 async function init() {

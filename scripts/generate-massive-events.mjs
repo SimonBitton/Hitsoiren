@@ -65,21 +65,11 @@ function generateEvent(id, era, year) {
   const template = eventTemplates[Math.floor(Math.random() * eventTemplates.length)];
   const category = CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)];
 
-  // Formater la date de manière réaliste
-  let dateStr;
-  if (era === 'prehist') {
-    dateStr = `≈ ${Math.abs(year)} av. J.-C.`;
-  } else if (year < 0) {
-    dateStr = `${Math.abs(year)} av. J.-C.`;
-  } else {
-    dateStr = `${year}`;
-  }
-
   return {
     id: `gen-${id}`,
     era,
     major: Math.random() < 0.1, // 10% major
-    date: dateStr,
+    date: year > 0 ? `${year}` : `${Math.abs(year)} av. J.-C.`,
     name: template.name,
     context: template.context,
     category,
@@ -88,39 +78,29 @@ function generateEvent(id, era, year) {
 }
 
 function main() {
-  console.log('🚀 Régénération des événements avec dates correctes...');
+  console.log('🚀 Génération massive d\'événements...');
 
   const data = JSON.parse(fs.readFileSync(TIMELINE_FILE, 'utf8'));
-  
-  // Supprimer tous les événements générés (commençant par 'gen-')
-  data.events = data.events.filter(e => !e.id || !e.id.startsWith('gen-'));
-
   const existingIds = new Set(data.events.map(e => e.id));
 
   let added = 0;
-  const targetPerEra = 250; // 250 événements par ère pour une bonne distribution
+  const targetTotal = data.events.length * 3; // Tripler le nombre
 
-  // Générer des événements pour chaque ère
-  for (const [eraKey, eraRange] of Object.entries(ERA_DEFINITIONS)) {
-    let count = 0;
-    while (count < targetPerEra) {
-      // Générer une année dans la plage de l'ère
-      const year = Math.floor(Math.random() * (eraRange.end - eraRange.start + 1)) + eraRange.start;
-      const id = `gen-${Date.now()}-${Math.random().toString(36).substr(2, 9)}-${count}`;
+  while (data.events.length < targetTotal) {
+    const year = Math.floor(Math.random() * 3300000) - 3000000; // De -3M à +300k
+    const era = getEraForYear(year);
+    const id = `gen-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-      if (!existingIds.has(id)) {
-        const event = generateEvent(id, eraKey, year);
-        data.events.push(event);
-        existingIds.add(id);
-        added++;
-        count++;
-      }
+    if (!existingIds.has(id)) {
+      const event = generateEvent(id, era, year);
+      data.events.push(event);
+      existingIds.add(id);
+      added++;
     }
   }
 
   fs.writeFileSync(TIMELINE_FILE, JSON.stringify(data, null, 2));
-  console.log('✅ Régénération terminée!');
-  console.log(`   - Événements supprimés: ${582 - data.events.length + added}`);
+  console.log('✅ Terminé!');
   console.log(`   - Événements ajoutés: ${added}`);
   console.log(`   - Total événements: ${data.events.length}`);
 }

@@ -18,13 +18,9 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/views.css">
   <link rel="stylesheet" href="css/os-specific.css">
-  <link rel="stylesheet" href="css/performance.css">
 
   <!-- OS Detection & Adaptations (must be early to avoid FOUC) -->
   <script src="src/os-detect.js" type="module"></script>
-
-  <!-- Performance Optimizations -->
-  <script src="src/performance-optimizer.js"></script>
 </head>
 <body>
   <noscript>
@@ -172,6 +168,7 @@
 
         <div class="detail-content">
           <div class="detail-meta-top">
+            <span id="detailCategory" class="detail-category"></span>
             <span id="detailDate" class="detail-date-large"></span>
           </div>
 

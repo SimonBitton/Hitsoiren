@@ -379,7 +379,15 @@
   flex-wrap: wrap;
 }
 
-/* Badge catégorie supprimé */
+/* Badge catégorie */
+.detail-category {
+  padding: 0.3rem 0.875rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
 
 .detail-date-large {
   font-size: 1rem;

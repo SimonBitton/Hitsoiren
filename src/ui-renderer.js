@@ -116,8 +116,17 @@ export function renderTimeline() {
     `;
   }
 
-  container.innerHTML = html;
-  bindTimelineClicks(container);
+  // Utiliser requestAnimationFrame pour éviter les forces-repaints
+  if (window.requestAnimationFrame) {
+    requestAnimationFrame(() => {
+      container.innerHTML = html;
+      bindTimelineClicks(container);
+    });
+  } else {
+    // Fallback pour les vieux navigateurs
+    container.innerHTML = html;
+    bindTimelineClicks(container);
+  }
 }
 
 export function renderCountries() {

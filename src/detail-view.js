@@ -1,15 +1,6 @@
 import { state } from './state.js';
 import { normalizeText } from './utils.js';
 
-function getCategoryClass(category) {
-  const normalized = normalizeText(category);
-  if (normalized.includes('politique')) return 'cat-politique';
-  if (normalized.includes('science')) return 'cat-science';
-  if (normalized.includes('culture')) return 'cat-culture';
-  if (normalized.includes('exploration')) return 'cat-exploration';
-  return 'cat-politique';
-}
-
 function getHistoricalSignificance(event) {
   const category = normalizeText(event.category || '');
 
@@ -104,8 +95,6 @@ export function showDetailPage(event) {
   const badge = era ? era.icon : '📜';
 
   document.getElementById('detailBadge').textContent = badge;
-  document.getElementById('detailCategory').textContent = event.category;
-  document.getElementById('detailCategory').className = `detail-category ${getCategoryClass(event.category)}`;
   document.getElementById('detailDate').textContent = event.date;
   document.getElementById('detailTitle').textContent = event.name;
   document.getElementById('detailSummary').textContent = generateDetailedSummary(event);

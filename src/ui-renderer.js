@@ -1,5 +1,5 @@
 import { state, eraConfigs } from './state.js';
-import { escapeHtml, estimateYearFromText, getCategoryClass, normalizeText } from './utils.js';
+import { escapeHtml, estimateYearFromText, normalizeText } from './utils.js';
 
 function groupEventsByEra(events, search) {
   const grouped = new Map();
@@ -63,7 +63,6 @@ export function renderTimeline() {
                   <span class="event-context">${escapeHtml(event.context)}</span>
                   ${event.people ? `<span class="event-people">${escapeHtml(event.people)}</span>` : ''}
                 </div>
-                <span class="event-cat ${getCategoryClass(event.category)}">${escapeHtml(event.category)}</span>
               </div>
             </div>
           `).join('')}
@@ -107,7 +106,6 @@ export function renderTimeline() {
                   <span class="event-context">${escapeHtml(event.context)}</span>
                   ${event.people ? `<span class="event-people">${escapeHtml(event.people)}</span>` : ''}
                 </div>
-                <span class="event-cat ${getCategoryClass(event.category)}">${escapeHtml(event.category)}</span>
               </div>
             </div>
           `).join('')}
@@ -161,11 +159,6 @@ export function renderStats() {
   const totalEvents = state.timelineData?.events.length || 0;
   const totalCountries = state.countriesData?.length || 0;
 
-  const categories = {};
-  state.timelineData?.events.forEach((event) => {
-    categories[event.category] = (categories[event.category] || 0) + 1;
-  });
-
   const eraStats = {};
   state.timelineData?.events.forEach((event) => {
     eraStats[event.era] = (eraStats[event.era] || 0) + 1;
@@ -175,19 +168,7 @@ export function renderStats() {
     <div class="stats-grid">
       <div class="stat-card"><strong>${totalEvents}</strong><span>Evenements chronologiques</span></div>
       <div class="stat-card"><strong>${totalCountries}</strong><span>Pays documentes</span></div>
-      <div class="stat-card"><strong>${Object.keys(categories).length}</strong><span>Categories thematiques</span></div>
       <div class="stat-card"><strong>${state.timelineData?.eras.length || 0}</strong><span>Grandes Epoques</span></div>
-    </div>
-    <div class="stats-extra">
-      <h3>Repartition par categorie</h3>
-      <div class="stats-grid" style="margin-top: 1rem;">
-        ${Object.entries(categories).map(([category, count]) => `
-          <div class="stat-card" style="padding: 1rem;">
-            <strong style="font-size: 1.5rem;">${count}</strong>
-            <span style="font-size: 0.7rem;">${category}</span>
-          </div>
-        `).join('')}
-      </div>
     </div>
     <div class="stats-extra" style="margin-top: 2rem;">
       <h3>Evenements par epoque</h3>

@@ -28,11 +28,3 @@ export function escapeHtml(value) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 }
-
-export function getCategoryClass(category) {
-  const normalized = normalizeText(category);
-  if (normalized.includes('science')) return 'cat-science';
-  if (normalized.includes('culture')) return 'cat-culture';
-  if (normalized.includes('exploration')) return 'cat-exploration';
-  return 'cat-politique';
-}

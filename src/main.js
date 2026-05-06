@@ -5,6 +5,7 @@ import { toggleSidebar, buildSidebarContent } from './sidebar.js';
 import { renderTimeline, renderCountries } from './ui-renderer.js';
 import { showDetailPage } from './detail-view.js';
 import { showCountryDetail, closeCountryModal } from './country-modal.js';
+import { getKeyModifier, isMac } from './os-detect.js';
 
 function cleanupDebugBadges() {
   const ids = ['js-loaded', 'jsLoaded', 'js-status', 'debug-status'];
@@ -59,6 +60,15 @@ function bindSearch() {
       }
     }
   });
+
+  // Afficher le modificateur de clavier correct dans les placeholders si nécessaire
+  const modifier = getKeyModifier();
+  if (searchInput) {
+    const placeholder = searchInput.placeholder;
+    if (!placeholder.includes('Ctrl') && !placeholder.includes('Cmd')) {
+      searchInput.title = `Appuyez sur ${modifier}+K pour rechercher rapidement`;
+    }
+  }
 }
 
 async function init() {

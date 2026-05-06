@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OS Detection System — Exemple d'intégration</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+      padding: 2rem;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    .os-info {
+      background: #f5f5f5;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      font-family: "Courier New", monospace;
+    }
+
+    .os-name {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 0.5rem;
+    }
+
+    .os-details {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .features {
+      margin: 2rem 0;
+    }
+
+    .feature {
+      padding: 1rem;
+      margin: 0.5rem 0;
+      background: #f9f9f9;
+      border-left: 4px solid #667eea;
+      border-radius: 4px;
+    }
+
+    .feature.active {
+      background: #e8eef7;
+      border-left-color: #10b981;
+    }
+
+    .feature-title {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .feature-desc {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.3rem;
+    }
+
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 2rem 0;
+      padding: 1rem;
+      background: #f5f5f5;
+      border-radius: 8px;
+    }
+
+    .emoji-item {
+      text-align: center;
+      font-size: 2rem;
+    }
+
+    .code-example {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      font-family: "Courier New", monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      line-height: 1.4;
+    }
+
+    .code-example code {
+      display: block;
+      white-space: pre;
+    }
+
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin: 1rem 0;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #764ba2;
+    }
+
+    .status {
+      padding: 1rem;
+      border-radius: 6px;
+      margin: 1rem 0;
+      font-weight: 600;
+    }
+
+    .status.success {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status.warning {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .os-specific-message {
+      padding: 1rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      margin: 1rem 0;
+    }
+
+    .mac-only {
+      display: none;
+      color: #065f46;
+      background: #d1fae5;
+      padding: 0.75rem;
+      border-radius: 4px;
+    }
+
+    .windows-only {
+      display: none;
+      color: #b45309;
+      background: #fef3c7;
+      padding: 0.75rem;
+      border-radius: 4px;
+    }
+
+    .linux-only {
+      display: none;
+      color: #1e40af;
+      background: #dbeafe;
+      padding: 0.75rem;
+      border-radius: 4px;
+    }
+
+    html[data-os="mac"] .mac-only {
+      display: block;
+    }
+
+    html[data-os="windows"] .windows-only {
+      display: block;
+    }
+
+    html[data-os="linux"] .linux-only {
+      display: block;
+    }
+
+    /* Adaptations typographiques */
+    html[data-os="mac"] body {
+      --font-sans: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: var(--font-sans);
+    }
+
+    html[data-os="windows"] body {
+      --font-sans: "Segoe UI", "Helvetica Neue", sans-serif;
+      font-family: var(--font-sans);
+      letter-spacing: 0.3px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Le script de détection doit être dans le <head> pour éviter le FOUC -->
+  <script type="module">
+    /**
+     * Inline version de os-detect.js pour cet exemple standalone
+     */
+    function detectOS() {
+      const ua = navigator.userAgent.toLowerCase();
+      const platform = navigator.platform.toLowerCase();
+
+      if (/(mac|iphone|ipad|ipod)/.test(platform) || /macintosh/.test(ua)) {
+        return 'mac';
+      }
+
+      if (/win/.test(platform) || /windows/.test(ua)) {
+        return 'windows';
+      }
+
+      if (/linux/.test(platform) || /linux/.test(ua)) {
+        return 'linux';
+      }
+
+      return 'unknown';
+    }
+
+    function applyOSAdaptations() {
+      const detectedOS = detectOS();
+      document.documentElement.dataset.os = detectedOS;
+      document.body.classList.add(`os-${detectedOS}`);
+      window.currentOS = detectedOS;
+
+      console.log(`🖥️ OS Détecté: ${detectedOS}`);
+
+      // Charger Twemoji sur Windows
+      if (detectedOS === 'windows') {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/twemoji@14/dist/twemoji.min.js';
+        script.async = true;
+        script.onload = () => {
+          if (window.twemoji) {
+            twemoji.parse(document.body, { folder: 'svg', ext: '.svg' });
+          }
+        };
+        document.head.appendChild(script);
+      }
+
+      // Mettre à jour l'UI
+      updateUI(detectedOS);
+    }
+
+    function updateUI(os) {
+      const osNameEl = document.getElementById('os-name');
+      const osDetailsEl = document.getElementById('os-details');
+      const statusEl = document.getElementById('status-info');
+
+      const osInfo = {
+        mac: {
+          name: '🍎 macOS',
+          details: `Détecté via: navigator.platform contient 'mac' ou userAgent contient 'macintosh'`,
+          status: '✅ Native rendering (excellent support des emojis)'
+        },
+        windows: {
+          name: '🪟 Windows',
+          details: `Détecté via: navigator.platform contient 'win' ou userAgent contient 'windows'`,
+          status: '✅ Twemoji automatiquement chargé pour cohérence'
+        },
+        linux: {
+          name: '🐧 Linux',
+          details: `Détecté via: navigator.platform contient 'linux' ou userAgent contient 'linux'`,
+          status: '✅ Rendering native (dépend de la distribution)'
+        },
+        unknown: {
+          name: '❓ Inconnu',
+          details: 'Impossible de déterminer l\'OS',
+          status: '⚠️ Styles par défaut appliqués'
+        }
+      };
+
+      const info = osInfo[os];
+      osNameEl.textContent = info.name;
+      osDetailsEl.textContent = info.details;
+      statusEl.textContent = info.status;
+      statusEl.classList.add(os === 'unknown' ? 'warning' : 'success');
+    }
+
+    // Exécuter la détection
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyOSAdaptations);
+    } else {
+      applyOSAdaptations();
+    }
+
+    // Exposer pour interaction
+    window.detectOS = detectOS;
+    window.applyOSAdaptations = applyOSAdaptations;
+  </script>
+
+  <div class="container">
+    <h1>🖥️ OS Detection System</h1>
+    
+    <div class="os-info">
+      <div class="os-name" id="os-name">Détection...</div>
+      <div class="os-details" id="os-details">Chargement...</div>
+    </div>
+
+    <div class="status success" id="status-info"></div>
+
+    <div class="mac-only os-specific-message">
+      ✨ Vous êtes sur macOS — Interface optimisée pour l'écosystème Apple
+    </div>
+
+    <div class="windows-only os-specific-message">
+      🪟 Vous êtes sur Windows — Emojis adaptés via Twemoji, fonts Segoe UI
+    </div>
+
+    <div class="linux-only os-specific-message">
+      🐧 Vous êtes sur Linux — Support optimisé pour les systèmes Linux
+    </div>
+
+    <h2>🎨 Exemples d'emojis</h2>
+    <div class="emoji-grid">
+      <div class="emoji-item">🎉</div>
+      <div class="emoji-item">🚀</div>
+      <div class="emoji-item">💻</div>
+      <div class="emoji-item">🎯</div>
+      <div class="emoji-item">🌟</div>
+      <div class="emoji-item">🔥</div>
+      <div class="emoji-item">💡</div>
+      <div class="emoji-item">✨</div>
+    </div>
+
+    <h2>✨ Fonctionnalités activées</h2>
+    <div class="features">
+      <div class="feature active">
+        <div class="feature-title">🔍 Détection d'OS</div>
+        <div class="feature-desc">Automatique au chargement de la page</div>
+      </div>
+      <div class="feature active">
+        <div class="feature-title">📝 Adaptation des polices</div>
+        <div class="feature-desc">San Francisco (macOS), Segoe UI (Windows), Ubuntu (Linux)</div>
+      </div>
+      <div class="feature active">
+        <div class="feature-title">🎨 Emojis optimisés</div>
+        <div class="feature-desc">Twemoji sur Windows, native sur macOS/Linux</div>
+      </div>
+      <div class="feature active">
+        <div class="feature-title">⌨️ Raccourcis clavier</div>
+        <div class="feature-desc">Adapté à chaque OS (Cmd vs Ctrl)</div>
+      </div>
+    </div>
+
+    <h2>💻 Code d'intégration</h2>
+    <div class="code-example">
+      <code>&lt;!-- Dans le &lt;head&gt; --&gt;
+&lt;script src="src/os-detect.js" type="module"&gt;&lt;/script&gt;
+
+&lt;!-- CSS adapté --&gt;
+&lt;link rel="stylesheet" href="css/os-specific.css"&gt;
+
+&lt;!-- Dans le HTML --&gt;
+&lt;div class="mac-only"&gt;Visible uniquement sur macOS&lt;/div&gt;
+&lt;div class="windows-only"&gt;Visible uniquement sur Windows&lt;/div&gt;</code>
+    </div>
+
+    <button onclick="alert('OS détecté: ' + window.detectOS())">
+      Vérifier l'OS
+    </button>
+
+    <h2>📖 Documentation</h2>
+    <p>Pour plus d'informations, consultez <strong>OS-DETECTION.md</strong> dans le projet.</p>
+  </div>
+</body>
+</html>

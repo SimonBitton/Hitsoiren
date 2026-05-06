@@ -1,0 +1,303 @@
+/* ══════════════════════════════════════════════════
+   OS-SPECIFIC ADAPTATIONS — Rendu cohérent multiplateforme
+══════════════════════════════════════════════════ */
+
+/* ──────────────────────────────────────────────────
+   macOS — Optimisations pour l'écosystème Apple
+──────────────────────────────────────────────────── */
+
+html[data-os="mac"],
+body.os-mac {
+  /* San Francisco : police native Apple */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  
+  /* Pondération légèrement réduite pour le rendering subpixel d'Apple */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
+
+html[data-os="mac"] body,
+body.os-mac {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar personnalisée pour macOS (overlay) */
+html[data-os="mac"] ::-webkit-scrollbar,
+body.os-mac ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+html[data-os="mac"] ::-webkit-scrollbar-track,
+body.os-mac ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html[data-os="mac"] ::-webkit-scrollbar-thumb,
+body.os-mac ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+html[data-os="mac"] ::-webkit-scrollbar-thumb:hover,
+body.os-mac ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+  background-clip: padding-box;
+}
+
+/* Emojis sur macOS — Native rendering (généralement excellent) */
+html[data-os="mac"] .emoji,
+body.os-mac .emoji {
+  /* Pas de modification nécessaire, Apple gère très bien les emojis */
+}
+
+/* ──────────────────────────────────────────────────
+   Windows — Optimisations pour l'écosystème Windows
+──────────────────────────────────────────────────── */
+
+html[data-os="windows"],
+body.os-windows {
+  /* Segoe UI : police native Windows avec excellentes métriques */
+  --font-sans: "Segoe UI", "Helvetica Neue", Roboto, sans-serif;
+  
+  /* Pondération légèrement augmentée pour compenser le sous-pixels rendering */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
+
+html[data-os="windows"] body,
+body.os-windows {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: subpixel-antialiased;
+  /* Ajustement pour Windows ClearType rendering */
+}
+
+/* Espacement adapté pour Windows (plus généreux) */
+html[data-os="windows"] body,
+body.os-windows {
+  letter-spacing: 0.25px;
+  line-height: 1.6;
+}
+
+/* Scrollbar personnalisée pour Windows (visible) */
+html[data-os="windows"] ::-webkit-scrollbar,
+body.os-windows ::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+html[data-os="windows"] ::-webkit-scrollbar-track,
+body.os-windows ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+html[data-os="windows"] ::-webkit-scrollbar-track,
+body.os-windows::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+html[data-os="windows"] ::-webkit-scrollbar-thumb,
+body.os-windows ::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 7px;
+}
+
+html[data-os="windows"] ::-webkit-scrollbar-thumb:hover,
+body.os-windows ::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Emojis sur Windows — via Twemoji (automatiquement activé dans os-detect.js) */
+html[data-os="windows"] img.emoji,
+body.os-windows img.emoji {
+  /* Twemoji fournit des images en SVG, adapter si nécessaire */
+  height: 1em;
+  width: 1em;
+  margin: 0 0.05em 0 0.1em;
+  vertical-align: -0.1em;
+}
+
+/* ──────────────────────────────────────────────────
+   Linux — Adaptations génériques
+──────────────────────────────────────────────────── */
+
+html[data-os="linux"],
+body.os-linux {
+  /* System fonts de Linux : excellente lisibilité */
+  --font-sans: "Ubuntu", "Roboto", "Noto Sans", sans-serif;
+}
+
+html[data-os="linux"] body,
+body.os-linux {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar pour Linux */
+html[data-os="linux"] ::-webkit-scrollbar,
+body.os-linux ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+html[data-os="linux"] ::-webkit-scrollbar-track,
+body.os-linux ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html[data-os="linux"] ::-webkit-scrollbar-thumb,
+body.os-linux ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+/* ──────────────────────────────────────────────────
+   Adaptations typographiques par OS
+──────────────────────────────────────────────────── */
+
+/* Titres — ajustement de poids selon OS */
+html[data-os="windows"] h1,
+html[data-os="windows"] h2,
+html[data-os="windows"] h3,
+body.os-windows h1,
+body.os-windows h2,
+body.os-windows h3 {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+html[data-os="mac"] h1,
+html[data-os="mac"] h2,
+html[data-os="mac"] h3,
+body.os-mac h1,
+body.os-mac h2,
+body.os-mac h3 {
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* Texte du corps — amélioration de la lisibilité */
+html[data-os="windows"] body,
+body.os-windows {
+  /* Optimisation ClearType Windows */
+  text-rendering: optimizeLegibility;
+}
+
+html[data-os="mac"] body,
+body.os-mac {
+  /* Laisser le rendu naturel des polices Apple */
+  text-rendering: geometricPrecision;
+}
+
+/* ──────────────────────────────────────────────────
+   Dark Mode — Ajustements supplémentaires par OS
+──────────────────────────────────────────────────── */
+
+html.dark[data-os="windows"],
+html.dark body.os-windows {
+  /* Augmenter légèrement la luminosité sur Windows en dark mode */
+  --color-background: #111113;
+}
+
+html.dark[data-os="mac"],
+html.dark body.os-mac {
+  /* Garder les teintes natives d'Apple */
+  --color-background: #0f0f12;
+}
+
+/* ──────────────────────────────────────────────────
+   Icônes & Emojis — Cohérence visuelle
+──────────────────────────────────────────────────── */
+
+/* Classe utilitaire pour les emojis (optionnel) */
+.emoji {
+  display: inline;
+}
+
+/* Sur Windows, Twemoji parse automatiquement */
+html[data-os="windows"] .emoji,
+body.os-windows .emoji {
+  /* Twemoji gère automatiquement la conversion */
+}
+
+/* ──────────────────────────────────────────────────
+   Boutons & Interactivité
+──────────────────────────────────────────────────── */
+
+/* Hover state plus marqué sur Windows */
+html[data-os="windows"] button:hover,
+html[data-os="windows"] a:active,
+body.os-windows button:hover,
+body.os-windows a:active {
+  opacity: 0.85;
+}
+
+/* Transitions subtiles sur macOS */
+html[data-os="mac"] button,
+html[data-os="mac"] a,
+body.os-mac button,
+body.os-mac a {
+  transition: var(--transition-all);
+}
+
+/* ──────────────────────────────────────────────────
+   Utils : Cacher/Afficher selon l'OS
+──────────────────────────────────────────────────── */
+
+/* Éléments visibles uniquement sur macOS */
+.mac-only {
+  display: none;
+}
+
+html[data-os="mac"] .mac-only,
+body.os-mac .mac-only {
+  display: block;
+}
+
+/* Éléments visibles uniquement sur Windows */
+.windows-only {
+  display: none;
+}
+
+html[data-os="windows"] .windows-only,
+body.os-windows .windows-only {
+  display: block;
+}
+
+/* Éléments visibles uniquement sur Linux */
+.linux-only {
+  display: none;
+}
+
+html[data-os="linux"] .linux-only,
+body.os-linux .linux-only {
+  display: block;
+}
+
+/* ──────────────────────────────────────────────────
+   Fallback pour navigateurs ne supportant pas data-* sur html
+──────────────────────────────────────────────────── */
+
+/* Assurer la priorité de la classe sur body */
+body.os-mac {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+}
+
+body.os-windows {
+  --font-sans: "Segoe UI", "Helvetica Neue", Roboto, sans-serif;
+}
+
+body.os-linux {
+  --font-sans: "Ubuntu", "Roboto", "Noto Sans", sans-serif;
+}

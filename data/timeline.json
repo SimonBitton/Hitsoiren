@@ -5849,5 +5849,466 @@
       "category": "Culture",
       "catSlug": "culture"
     }
+,
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "390 av. J.-C.",
+      "name": "Sac de Rome par les Gaulois",
+      "context": "Les Sénons de Brennus pillent Rome ; les oies du Capitole sauvent la ville",
+      "people": "Brennus",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "146 av. J.-C.",
+      "name": "Destruction de Carthage par Rome",
+      "context": "Fin de la Troisième Guerre Punique ; Carthage rasée et salée",
+      "people": "Scipion Émilien",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "133 av. J.-C.",
+      "name": "Réformes de Tiberius Gracchus",
+      "context": "Loi agraire redistribuant les terres ; assassiné par les sénateurs",
+      "people": "Tiberius Gracchus",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "63 av. J.-C.",
+      "name": "Conjuration de Catilina",
+      "context": "Tentative de coup d'État déjouée par Cicéron ; exécution des conjurés",
+      "people": "Catilina, Cicéron",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "31 av. J.-C.",
+      "name": "Bataille d'Actium — fin de la République romaine",
+      "context": "Octave bat Antoine et Cléopâtre ; début de l'Empire romain",
+      "people": "Octave, Marc Antoine, Cléopâtre",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "9 ap. J.-C.",
+      "name": "Bataille de Teutoburg — défaite romaine",
+      "context": "Ambush des Germains ; fin de l'expansion romaine en Germanie",
+      "people": "Arminius, Publius Quintilius Varus",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "18 juillet 64 ap. J.-C.",
+      "name": "Incendie de Rome sous Néron",
+      "context": "6 jours de feu ; reconstruction urbaine ; persécution des chrétiens",
+      "people": "Néron",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "24 août 79 ap. J.-C.",
+      "name": "Éruption du Vésuve — destruction de Pompéi",
+      "context": "Nuée ardente ; préservation des villes sous la cendre",
+      "people": "Pline l'Ancien (témoin)",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "212 ap. J.-C.",
+      "name": "Édit de Caracalla — citoyenneté romaine universelle",
+      "context": "Tous les hommes libres de l'Empire deviennent citoyens romains",
+      "people": "Caracalla",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": false,
+      "date": "313 ap. J.-C.",
+      "name": "Édit de Milan — tolérance chrétienne",
+      "context": "Constantin et Licinius légalisent le christianisme",
+      "people": "Constantin le Grand, Licinius",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "11 mai 330 ap. J.-C.",
+      "name": "Fondation de Constantinople",
+      "context": "Nouvelle capitale romaine ; Byzance devient Constantinople",
+      "people": "Constantin le Grand",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "antiquite",
+      "major": true,
+      "date": "24 août 410 ap. J.-C.",
+      "name": "Sac de Rome par Alaric et les Wisigoths",
+      "context": "Première prise de Rome depuis 800 ans ; fin symbolique de l'Empire",
+      "people": "Alaric Ier",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "16 juillet 622",
+      "name": "Hégire — migration de Mahomet à Médine",
+      "context": "Début du calendrier musulman ; fondation de la communauté islamique",
+      "people": "Mahomet",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "711",
+      "name": "Conquête musulmane de l'Espagne",
+      "context": "Début de l'occupation islamique de la péninsule ibérique",
+      "people": "Tariq ibn Ziyad",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "25 octobre 732",
+      "name": "Bataille de Poitiers — Charles Martel arrête les Arabes",
+      "context": "Victoire franque ; fin de l'expansion islamique en Europe occidentale",
+      "people": "Charles Martel, Abd al-Rahman",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "25 décembre 800",
+      "name": "Charlemagne couronné empereur d'Occident",
+      "context": "Renaissance de l'Empire romain d'Occident ; sacre par le pape Léon III",
+      "people": "Charlemagne, pape Léon III",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "14 octobre 1066",
+      "name": "Bataille d'Hastings — conquête normande de l'Angleterre",
+      "context": "Guillaume le Conquérant bat Harold ; fin de l'ère anglo-saxonne",
+      "people": "Guillaume le Conquérant, Harold Godwinson",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "1096–1099",
+      "name": "Première Croisade",
+      "context": "Prise de Jérusalem ; fondation des États latins d'Orient",
+      "people": "Pierre l'Ermite, Godefroy de Bouillon",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "15 juin 1215",
+      "name": "Magna Carta signée à Runnymede",
+      "context": "Limitation du pouvoir royal ; base du droit constitutionnel anglais",
+      "people": "Jean sans Terre",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "moyen-age",
+      "major": false,
+      "date": "1347",
+      "name": "Arrivée de la Peste Noire en Europe",
+      "context": "Épidémie bubonique ; 30-60% de la population décimée",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "29 mai 1453",
+      "name": "Chute de Constantinople — fin de l'Empire byzantin",
+      "context": "Mehmet II prend la ville ; fin du Moyen Âge en Orient",
+      "people": "Mehmet II, Constantin XI",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "12 octobre 1492",
+      "name": "Christophe Colomb atteint les Amériques",
+      "context": "Découverte du Nouveau Monde ; début de la colonisation européenne",
+      "people": "Christophe Colomb",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "31 octobre 1517",
+      "name": "Luther affiche ses 95 thèses à Wittenberg",
+      "context": "Début de la Réforme protestante ; scission de l'Église chrétienne",
+      "people": "Martin Luther",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "1588",
+      "name": "Défaite de l'Invincible Armada espagnole",
+      "context": "Victoire anglaise ; déclin de la puissance espagnole",
+      "people": "Francis Drake, Philippe II",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "14 mai 1607",
+      "name": "Fondation de Jamestown — première colonie anglaise en Amérique",
+      "context": "Début de la colonisation britannique en Virginie",
+      "people": "",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "23 mai 1618",
+      "name": "Défenestration de Prague — début de la Guerre de Trente Ans",
+      "context": "Protestants jettent des catholiques par la fenêtre ; guerre européenne",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "24 octobre 1648",
+      "name": "Traités de Westphalie — fin de la Guerre de Trente Ans",
+      "context": "Reconnaissance de l'indépendance des Provinces-Unies et de la Suisse",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": false,
+      "date": "5 juillet 1687",
+      "name": "Publication des Principia de Newton",
+      "context": "Lois de la gravitation et du mouvement ; fondements de la physique moderne",
+      "people": "Isaac Newton",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "4 juillet 1776",
+      "name": "Déclaration d'Indépendance des États-Unis",
+      "context": "Séparation des Treize Colonies de la Grande-Bretagne",
+      "people": "Thomas Jefferson, Benjamin Franklin",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "14 juillet 1789",
+      "name": "Prise de la Bastille — Révolution française",
+      "context": "Début de la Révolution ; symbole de la tyrannie renversée",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "18 juin 1815",
+      "name": "Bataille de Waterloo — défaite de Napoléon",
+      "context": "Fin des guerres napoléoniennes ; exil à Sainte-Hélène",
+      "people": "Napoléon Bonaparte, Wellington, Blücher",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "1848",
+      "name": "Révolutions de 1848 en Europe",
+      "context": "Vagues de soulèvements libéraux et nationalistes",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "12 avril 1861",
+      "name": "Début de la Guerre de Sécession américaine",
+      "context": "Bombardement de Fort Sumter ; division Nord-Sud",
+      "people": "Abraham Lincoln, Jefferson Davis",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "18 janvier 1871",
+      "name": "Proclamation de l'Empire allemand",
+      "context": "Unification allemande à Versailles ; Guillaume Ier empereur",
+      "people": "Otto von Bismarck, Guillaume Ier",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "28 juillet 1914",
+      "name": "Début de la Première Guerre mondiale",
+      "context": "Assassinat de l'archiduc François-Ferdinand ; 16 millions de morts",
+      "people": "François-Ferdinand, Gavrilo Princip",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "7 novembre 1917",
+      "name": "Révolution d'Octobre — bolcheviks au pouvoir",
+      "context": "Lénine prend le pouvoir ; début de l'URSS",
+      "people": "Vladimir Lénine, Léon Trotsky",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "29 octobre 1929",
+      "name": "Krach de Wall Street — Grande Dépression",
+      "context": "Début de la crise économique mondiale",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "6 août 1945",
+      "name": "Bombe atomique sur Hiroshima",
+      "context": "Première utilisation militaire de l'arme nucléaire",
+      "people": "Harry Truman",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "14 mai 1948",
+      "name": "Création de l'État d'Israël",
+      "context": "Fin du mandat britannique ; guerre israélo-arabe",
+      "people": "David Ben Gourion",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "4 octobre 1957",
+      "name": "Lancement de Spoutnik — début de la course à l'espace",
+      "context": "Premier satellite artificiel ; choc pour les États-Unis",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "22 novembre 1963",
+      "name": "Assassinat de John F. Kennedy",
+      "context": "Président américain tué à Dallas ; Lee Harvey Oswald",
+      "people": "John F. Kennedy",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "20 juillet 1969",
+      "name": "Alunissage d'Apollo 11 — premiers pas sur la Lune",
+      "context": "Neil Armstrong et Buzz Aldrin ; victoire américaine dans la course à l'espace",
+      "people": "Neil Armstrong, Buzz Aldrin",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "9 novembre 1989",
+      "name": "Chute du Mur de Berlin",
+      "context": "Fin de la division de l'Allemagne ; début de la réunification",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "11 septembre 2001",
+      "name": "Attentats du 11-Septembre",
+      "context": "Attaques terroristes aux États-Unis ; 3 000 morts",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "2008",
+      "name": "Crise financière mondiale",
+      "context": "Effondrement des subprimes ; récession globale",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "mars 2020",
+      "name": "Pandémie de COVID-19",
+      "context": "Virus SARS-CoV-2 ; confinement mondial ; millions de morts",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    }
   ]
 }

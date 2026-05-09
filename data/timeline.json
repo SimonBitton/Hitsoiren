@@ -5848,8 +5848,7 @@
       "context": "Édification d'un temple ou d'un palais remarquable",
       "category": "Culture",
       "catSlug": "culture"
-    }
-,
+    },
     {
       "era": "antiquite",
       "major": false,
@@ -6309,6 +6308,315 @@
       "people": "",
       "category": "Science",
       "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "15 avril 1912",
+      "name": "Naufrage du Titanic",
+      "context": "Le paquebot britannique coule lors de son voyage inaugural après avoir heurté un iceberg, faisant plus de 1 500 victimes.",
+      "people": "",
+      "category": "Société",
+      "catSlug": "societe",
+      "id": "evt-contemporain-1778314856871-880"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "28 juin 1914",
+      "name": "Attentat de Sarajevo",
+      "context": "Assassinat de l'archiduc François-Ferdinand, élément déclencheur de la Première Guerre mondiale.",
+      "people": "Gavrilo Princip, François-Ferdinand",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-contemporain-1778314856871-924"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "6 août 1945",
+      "name": "Bombardement atomique d'Hiroshima",
+      "context": "Premier usage d'une arme nucléaire en temps de guerre, larguée par les États-Unis sur le Japon.",
+      "people": "Harry S. Truman",
+      "category": "Science",
+      "catSlug": "science",
+      "id": "evt-contemporain-1778314856872-185"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "2 septembre 1945",
+      "name": "Capitulation du Japon",
+      "context": "Fin officielle de la Seconde Guerre mondiale, signée sur le cuirassé USS Missouri.",
+      "people": "Douglas MacArthur, Hirohito",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-contemporain-1778314856872-636"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "12 avril 1961",
+      "name": "Premier homme dans l'espace",
+      "context": "Le cosmonaute soviétique Youri Gagarine effectue un vol orbital autour de la Terre.",
+      "people": "Youri Gagarine",
+      "category": "Science",
+      "catSlug": "science",
+      "id": "evt-contemporain-1778314856872-737"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "28 août 1963",
+      "name": "Discours \"I Have a Dream\"",
+      "context": "Martin Luther King Jr. prononce son célèbre discours lors de la Marche sur Washington pour l'emploi et la liberté.",
+      "people": "Martin Luther King Jr.",
+      "category": "Société",
+      "catSlug": "societe",
+      "id": "evt-contemporain-1778314856872-821"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "4 avril 1968",
+      "name": "Assassinat de Martin Luther King",
+      "context": "Le leader du mouvement des droits civiques est assassiné à Memphis.",
+      "people": "Martin Luther King Jr.",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-contemporain-1778314856872-283"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "26 avril 1986",
+      "name": "Catastrophe de Tchernobyl",
+      "context": "Accident nucléaire majeur dans la centrale Lénine en Ukraine soviétique.",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science",
+      "id": "evt-contemporain-1778314856872-185"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "11 février 1990",
+      "name": "Libération de Nelson Mandela",
+      "context": "Après 27 ans de prison, le leader anti-apartheid est libéré.",
+      "people": "Nelson Mandela, Frederik de Klerk",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-contemporain-1778314856872-370"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "12 octobre 1492",
+      "name": "Découverte de l'Amérique",
+      "context": "L'expédition de Christophe Colomb atteint les Bahamas, ouvrant le continent aux Européens.",
+      "people": "Christophe Colomb",
+      "category": "Exploration",
+      "catSlug": "exploration",
+      "id": "evt-modernes-1778314856872-708"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "31 octobre 1517",
+      "name": "Les 95 thèses de Martin Luther",
+      "point": true,
+      "context": "Affichage des thèses à Wittenberg, déclenchant la Réforme protestante.",
+      "people": "Martin Luther",
+      "category": "Culture",
+      "catSlug": "culture",
+      "id": "evt-modernes-1778314856872-20"
+    },
+    {
+      "era": "modernes",
+      "major": true,
+      "date": "14 mai 1610",
+      "name": "Assassinat d'Henri IV",
+      "context": "Le roi de France est poignardé par François Ravaillac à Paris.",
+      "people": "Henri IV, Ravaillac",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-modernes-1778314856872-474"
+    },
+    {
+      "era": "moyen-age",
+      "major": true,
+      "date": "25 décembre 800",
+      "name": "Sacre de Charlemagne",
+      "context": "Couronnement de Charlemagne comme Empereur d'Occident par le pape Léon III à Rome.",
+      "people": "Charlemagne, Léon III",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-moyen-age-1778314856872-959"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "15 août 1769",
+      "name": "Naissance de Napoléon Bonaparte",
+      "context": "Naissance à Ajaccio, Corse, un an après l'achat de l'île par la France.",
+      "people": "Napoléon Bonaparte",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-contemporain-1778314895750-844"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "3 septembre 1783",
+      "name": "Traité de Paris",
+      "context": "Fin de la guerre d'indépendance des États-Unis, la Grande-Bretagne reconnaît leur indépendance.",
+      "people": "Benjamin Franklin",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-contemporain-1778314895750-712"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "4 août 1789",
+      "name": "Abolition des privilèges",
+      "context": "L'Assemblée nationale constituante abolit le système féodal en France.",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-contemporain-1778314895750-575"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "27 juillet 1794",
+      "name": "Chute de Robespierre (9 Thermidor)",
+      "context": "Fin de la Terreur pendant la Révolution française avec l'arrestation de Maximilien de Robespierre.",
+      "people": "Robespierre",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-contemporain-1778314895750-46"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "9 novembre 1799",
+      "name": "Coup d'État du 18 Brumaire",
+      "context": "Napoléon Bonaparte renverse le Directoire et établit le Consulat.",
+      "people": "Napoléon Bonaparte",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-contemporain-1778314895750-241"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "24 février 1848",
+      "name": "Proclamation de la Deuxième République",
+      "context": "Fin de la Monarchie de Juillet après une révolution populaire à Paris.",
+      "people": "Alphonse de Lamartine",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-contemporain-1778314895750-951"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "2 décembre 1851",
+      "name": "Coup d'État de Louis-Napoléon Bonaparte",
+      "context": "Le président de la République dissout l'Assemblée nationale, ouvrant la voie au Second Empire.",
+      "people": "Napoléon III",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-contemporain-1778314895750-475"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "4 septembre 1870",
+      "name": "Proclamation de la Troisième République",
+      "context": "Fin du Second Empire français après la capture de Napoléon III à Sedan par les Prussiens.",
+      "people": "Léon Gambetta",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-contemporain-1778314895750-142"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "14 décembre 1911",
+      "name": "Amundsen atteint le pôle Sud",
+      "context": "L'expédition norvégienne est la première à atteindre le pôle Sud géographique.",
+      "people": "Roald Amundsen",
+      "category": "Exploration",
+      "catSlug": "exploration",
+      "id": "evt-contemporain-1778314895750-308"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "15 août 1914",
+      "name": "Ouverture du canal de Panama",
+      "context": "Inauguration du canal reliant l'océan Pacifique et l'océan Atlantique.",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science",
+      "id": "evt-contemporain-1778314895750-626"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "26 juin 1945",
+      "name": "Signature de la Charte de l'ONU",
+      "context": "Fondation de l'Organisation des Nations Unies à San Francisco pour préserver la paix mondiale.",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-contemporain-1778314895750-140"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "4 avril 1949",
+      "name": "Création de l'OTAN",
+      "context": "Signature du Traité de l'Atlantique Nord par 12 pays occidentaux au début de la Guerre froide.",
+      "people": "",
+      "category": "Politique",
+      "catSlug": "politique",
+      "id": "evt-contemporain-1778314895750-477"
+    },
+    {
+      "era": "contemporain",
+      "major": false,
+      "date": "12 août 1981",
+      "name": "Sortie du premier PC IBM",
+      "context": "Lancement de l'IBM PC, qui popularise l'ordinateur personnel.",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science",
+      "id": "evt-contemporain-1778314895750-836"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "20 novembre 1989",
+      "name": "Convention relative aux droits de l'enfant",
+      "context": "Adoption par l'Assemblée générale de l'ONU d'un traité international pour la protection des enfants.",
+      "people": "",
+      "category": "Société",
+      "catSlug": "societe",
+      "id": "evt-contemporain-1778314895750-593"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "1 janvier 2002",
+      "name": "Mise en circulation de l'Euro",
+      "context": "Les billets et pièces en euros sont introduits dans 12 pays de l'Union européenne.",
+      "people": "",
+      "category": "Économie",
+      "catSlug": "economie",
+      "id": "evt-contemporain-1778314895750-744"
     }
   ]
 }

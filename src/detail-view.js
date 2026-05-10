@@ -14,64 +14,64 @@ function getHistoricalSignificance(event) {
   const category = normalizeText(event.category || '');
 
   if (event.major) {
-    return "Cet evenement majeur a profondement transforme le cours de l'histoire et ses consequences se font encore ressentir aujourd'hui.";
+    return "Cet événement majeur a profondément transformé le cours de l'histoire et ses conséquences se font encore ressentir aujourd'hui.";
   }
 
   if (category.includes('science')) {
-    return 'Cette avancee scientifique a contribue a elargir les connaissances humaines et a ouvert la voie a de nouvelles decouvertes.';
+    return 'Cette avancée scientifique a contribué à élargir les connaissances humaines et a ouvert la voie à de nouvelles découvertes.';
   }
 
   if (category.includes('politique')) {
-    return "Cet evenement politique a redefine les equilibres de pouvoir et influence l'organisation des societes de l'epoque.";
+    return "Cet événement politique a redéfini les équilibres de pouvoir et influence l'organisation des sociétés de l'époque.";
   }
 
   if (category.includes('culture')) {
-    return "Cet accomplissement culturel a enrichi le patrimoine artistique et intellectuel de l'humanite.";
+    return "Cet accomplissement culturel a enrichi le patrimoine artistique et intellectuel de l'humanité.";
   }
 
   if (category.includes('exploration')) {
-    return 'Cette exploration a repousse les frontieres du monde connu et permis de nouvelles connexions entre civilisations.';
+    return 'Cette exploration a repoussé les frontières du monde connu et permis de nouvelles connexions entre civilisations.';
   }
 
-  return "Cet evenement a marque son epoque et constitue un jalon important dans la comprehension de cette periode historique.";
+  return "Cet événement a marqué son époque et constitue un jalon important dans la compréhension de cette période historique.";
 }
 
 function getCategoryContext(event) {
   const era = event.era || '';
 
   if (era === 'prehist') {
-    return 'A cette epoque reculee, les humains developpaient progressivement des techniques et des organisations sociales qui allaient poser les fondations des civilisations futures.';
+    return 'À cette époque reculée, les humains développaient progressivement des techniques et des organisations sociales qui allaient poser les fondations des civilisations futures.';
   }
   if (era === 'antiquite') {
-    return "Durant l'Antiquite, les grandes civilisations etablissaient les bases de la philosophie, des sciences, du droit et de l'organisation politique qui influencent encore notre monde.";
+    return "Durant l'Antiquité, les grandes civilisations établissaient les bases de la philosophie, des sciences, du droit et de l'organisation politique qui influencent encore notre monde.";
   }
   if (era === 'moyen-age') {
-    return "Au Moyen Age, entre transformations politiques, avancees techniques et echanges culturels, se construisaient les nations et les identites europeennes.";
+    return "Au Moyen Âge, entre transformations politiques, avancées techniques et échanges culturels, se construisaient les nations et les identités européennes.";
   }
   if (era === 'modernes') {
-    return "Les Temps Modernes voient l'emergence de nouvelles conceptions du monde, des revolutions scientifiques et politiques qui faconnent la modernite.";
+    return "Les Temps Modernes voient l'émergence de nouvelles conceptions du monde, des révolutions scientifiques et politiques qui façonnent la modernité.";
   }
   if (era === 'contemporain') {
-    return "L'epoque contemporaine est marquee par des transformations accelerees, des conflits mondiaux, des revolutions technologiques et une mondialisation sans precedent.";
+    return "L'époque contemporaine est marquée par des transformations accélérées, des conflits mondiaux, des révolutions technologiques et une mondialisation sans précédent.";
   }
 
-  return "Cet evenement s'inscrit dans un contexte historique plus large de transformations sociales, politiques et culturelles.";
+  return "Cet événement s'inscrit dans un contexte historique plus large de transformations sociales, politiques et culturelles.";
 }
 
 function getLegacyStatement(event) {
   const name = (event.name || '').toLowerCase();
 
   if (name.includes('invention') || name.includes('decouverte') || name.includes('découverte')) {
-    return "Cette innovation a eu des repercussions durables et continue d'influencer notre vie quotidienne.";
+    return "Cette innovation a eu des répercussions durables et continue d'influencer notre vie quotidienne.";
   }
   if (name.includes('bataille') || name.includes('guerre')) {
-    return 'Les consequences de ce conflit ont redessine la carte politique et laisse une empreinte indelebile dans la memoire collective.';
+    return 'Les conséquences de ce conflit ont redessiné la carte politique et laissé une empreinte indélébile dans la mémoire collective.';
   }
   if (name.includes('naissance') || name.includes('mort')) {
-    return "La vie et l'oeuvre de cette personne ont eu un impact profond sur l'histoire des idees et des civilisations.";
+    return "La vie et l'œuvre de cette personne ont eu un impact profond sur l'histoire des idées et des civilisations.";
   }
 
-  return "Son heritage perdure a travers les siecles et continue d'inspirer les generations futures.";
+  return "Son héritage perdure à travers les siècles et continue d'inspirer les générations futures.";
 }
 
 function generateDetailedSummary(event) {
@@ -79,14 +79,14 @@ function generateDetailedSummary(event) {
   const era = state.timelineData?.eras.find((entry) => entry.id === event.era);
   const eraName = era ? era.name.toLowerCase() : "l'histoire";
 
-  parts.push(`Cet evenement s'inscrit dans ${eraName}, plus precisement ${event.date}.`);
+  parts.push(`Cet événement s'inscrit dans ${eraName}, plus précisément ${event.date}.`);
   parts.push(`${event.name}.`);
 
   if (event.context) {
     parts.push(`Contexte : ${event.context}`);
   }
   if (event.people && event.people.trim()) {
-    parts.push(`Personnages cles impliques : ${event.people}.`);
+    parts.push(`Personnages clés impliqués : ${event.people}.`);
   }
 
   parts.push(getHistoricalSignificance(event));

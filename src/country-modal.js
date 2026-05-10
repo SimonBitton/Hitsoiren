@@ -14,7 +14,7 @@ function toDetailEvent(country, event) {
     id: `country-${country.id}-${event.isoDate}`,
     name: event.name,
     date: event.date,
-    context: event.context || `Evenement important dans l'histoire de ${country.name}.`,
+    context: event.context || `Événement important dans l'histoire de ${country.name}.`,
     category: event.category,
     people: '',
     era: 'contemporain',
@@ -53,7 +53,7 @@ export function showCountryDetail(countryId) {
               <div class="event-date">${escapeHtml(event.date)}</div>
               <div class="event-info">
                 <strong>${escapeHtml(event.name)}</strong>
-                <p>${escapeHtml(event.context || 'Cliquez pour plus de details')}</p>
+                <p>${escapeHtml(event.context || 'Cliquez pour plus de détails')}</p>
               </div>
             </button>
           `).join('')}

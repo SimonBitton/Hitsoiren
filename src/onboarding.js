@@ -6,20 +6,20 @@ const STEPS = [
   {
     view: 'timeline',
     selector: '#view-timeline .search-container',
-    title: 'Recherche instantanee',
-    description: 'Tapez une date, un evenement ou un personnage pour filtrer la chronologie en direct.'
+    title: 'Recherche instantanée',
+    description: 'Tapez une date, un événement ou un personnage pour filtrer la chronologie en direct.'
   },
   {
     view: 'timeline',
     selector: '#timelineContent .era-section',
-    title: 'Chronologie structuree',
-    description: 'Parcourez les epoques et ouvrez chaque evenement pour obtenir du contexte detaille.'
+    title: 'Chronologie structurée',
+    description: 'Parcourez les époques et ouvrez chaque événement pour obtenir du contexte détaillé.'
   },
   {
     view: 'countries',
     selector: '#view-countries #countriesGrid',
     title: 'Exploration par pays',
-    description: 'Naviguez pays par pays pour visualiser les evenements historiques nationaux.'
+    description: 'Naviguez pays par pays pour visualiser les événements historiques nationaux.'
   }
 ];
 
@@ -73,8 +73,8 @@ function createOverlay() {
         <img src="favicon-histoiren.png" alt="Logo Histoiren" class="intro-logo" />
       </div>
       <h2 class="intro-title">Bienvenue sur Histoiren</h2>
-      <p class="intro-subtitle">Explorez l'histoire mondiale de facon interactive.</p>
-      <p class="intro-credit" aria-label="Cree par Simon Bitton"></p>
+      <p class="intro-subtitle">Explorez l'histoire mondiale de façon interactive.</p>
+      <p class="intro-credit" aria-label="Créé par Simon Bitton"></p>
     </section>
 
     <div class="onboarding-highlight" aria-hidden="true"></div>
@@ -83,7 +83,7 @@ function createOverlay() {
       <div class="onboarding-progress" role="progressbar" aria-valuemin="1" aria-valuemax="${STEPS.length}" aria-valuenow="1">
         <span class="onboarding-progress-fill"></span>
       </div>
-      <p class="onboarding-step-label">Etape <span data-step-current>1</span> / ${STEPS.length}</p>
+      <p class="onboarding-step-label">Étape <span data-step-current>1</span> / ${STEPS.length}</p>
       <h3 class="onboarding-card-title"></h3>
       <p class="onboarding-card-text"></p>
       <button class="onboarding-next" type="button">Suivant</button>
@@ -212,9 +212,10 @@ export async function maybeStartOnboarding(force = false) {
   });
 
   tryPlayWhoosh();
-  await typeCredit('Cree par Simon Bitton');
+  await typeCredit('Créé par Simon Bitton');
   await wait(1700);
   splash.classList.add('is-hidden');
+  overlay.classList.add('is-guided');
   await wait(220);
   card.classList.add('is-visible');
 

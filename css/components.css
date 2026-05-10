@@ -357,6 +357,11 @@
   animation: onboardingOverlayIn 320ms ease-out;
 }
 
+.onboarding-overlay.is-guided {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
 .onboarding-overlay.is-exiting {
   opacity: 0;
   transition: opacity 420ms ease;

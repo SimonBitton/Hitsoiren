@@ -112,13 +112,13 @@ async function init() {
   const statusEl = document.createElement('div');
   statusEl.id = 'loading-status';
   statusEl.style.cssText = 'position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.8);color:white;padding:10px 20px;border-radius:30px;font-size:12px;z-index:9999;pointer-events:none;';
-  statusEl.textContent = 'Chargement des donnees...';
+  statusEl.textContent = 'Chargement des données...';
   document.body.appendChild(statusEl);
 
   try {
     const data = await loadData();
     if (!data || !data.timeline || !data.countries) {
-      throw new Error('Donnees corrompues ou manquantes');
+      throw new Error('Données corrompues ou manquantes');
     }
     statusEl.style.display = 'none';
   } catch (error) {

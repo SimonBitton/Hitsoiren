@@ -92,7 +92,7 @@ export function renderTimeline() {
           <div class="era-badge">🏆</div>
           <div class="era-title-block">
             <h2>Top 50 des Dates les Plus Importantes</h2>
-            <p>Les evenements qui ont le plus marque l'histoire de l'humanite</p>
+            <p>Les événements qui ont le plus marqué l'histoire de l'humanité</p>
           </div>
         </div>
         <div class="events-list top50-list">
@@ -132,7 +132,7 @@ export function renderCountries() {
       <div class="country-flag">${country.flag}</div>
       <div class="country-info">
         <h3>${country.name}</h3>
-        <p>${country.events.length} Evenements</p>
+        <p>${country.events.length} Événements</p>
       </div>
     </div>
   `).join('');
@@ -164,13 +164,13 @@ export function renderStats() {
 
   container.innerHTML = `
     <div class="stats-grid">
-      <div class="stat-card"><strong>${totalEvents}</strong><span>Evenements chronologiques</span></div>
-      <div class="stat-card"><strong>${totalCountries}</strong><span>Pays documentes</span></div>
-      <div class="stat-card"><strong>${Object.keys(categories).length}</strong><span>Categories thematiques</span></div>
-      <div class="stat-card"><strong>${state.timelineData?.eras.length || 0}</strong><span>Grandes Epoques</span></div>
+      <div class="stat-card"><strong>${totalEvents}</strong><span>Événements chronologiques</span></div>
+      <div class="stat-card"><strong>${totalCountries}</strong><span>Pays documentés</span></div>
+      <div class="stat-card"><strong>${Object.keys(categories).length}</strong><span>Catégories thématiques</span></div>
+      <div class="stat-card"><strong>${state.timelineData?.eras.length || 0}</strong><span>Grandes époques</span></div>
     </div>
     <div class="stats-extra">
-      <h3>Repartition par categorie</h3>
+      <h3>Répartition par catégorie</h3>
       <div class="stats-grid" style="margin-top: 1rem;">
         ${Object.entries(categories).map(([category, count]) => `
           <div class="stat-card" style="padding: 1rem;">
@@ -181,7 +181,7 @@ export function renderStats() {
       </div>
     </div>
     <div class="stats-extra" style="margin-top: 2rem;">
-      <h3>Evenements par epoque</h3>
+      <h3>Événements par époque</h3>
       <div class="stats-grid" style="margin-top: 1rem;">
         ${Object.entries(eraStats).map(([era, count]) => `
           <div class="stat-card" style="padding: 1rem;">

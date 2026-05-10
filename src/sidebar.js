@@ -24,15 +24,15 @@ export function toggleSidebar() {
 
 function buildTimelineSidebar() {
   const eras = [
-    { label: 'Prehistoire', id: 'era-prehist', icon: '🦴' },
-    { label: 'Antiquite', id: 'era-antiquite', icon: '🏛' },
-    { label: 'Moyen Age', id: 'era-moyen-age', icon: '⚔️' },
+    { label: 'Préhistoire', id: 'era-prehist', icon: '🦴' },
+    { label: 'Antiquité', id: 'era-antiquite', icon: '🏛' },
+    { label: 'Moyen Âge', id: 'era-moyen-age', icon: '⚔️' },
     { label: 'Temps modernes', id: 'era-modernes', icon: '🔭' },
     { label: 'Contemporain', id: 'era-contemporain', icon: '⚡' }
   ];
 
   return `
-    <div class="sidebar-section-label">Epoques</div>
+    <div class="sidebar-section-label">Époques</div>
     ${eras.map((era) => `<a href="#${era.id}" data-target="${era.id}" data-type="era">${era.icon} ${era.label}</a>`).join('')}
     <a href="#top50-section" data-target="top50-section" data-type="top50">🏆 Top 50</a>
   `;

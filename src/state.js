@@ -12,9 +12,9 @@ export const state = {
 };
 
 export const eraConfigs = {
-  prehist: { label: 'Prehistoire', icon: '🦴' },
-  antiquite: { label: 'Antiquite', icon: '🏛' },
-  'moyen-age': { label: 'Moyen Age', icon: '⚔️' },
+  prehist: { label: 'Préhistoire', icon: '🦴' },
+  antiquite: { label: 'Antiquité', icon: '🏛' },
+  'moyen-age': { label: 'Moyen Âge', icon: '⚔️' },
   modernes: { label: 'Temps modernes', icon: '🔭' },
   contemporain: { label: 'Epoque contemporaine', icon: '⚡' }
 };

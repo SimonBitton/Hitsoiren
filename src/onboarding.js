@@ -145,6 +145,7 @@ export async function maybeStartOnboarding(force = false) {
   let closed = false;
   const credit = overlay.querySelector('.intro-credit');
   const allowedMouseTargets = '.onboarding-next, .onboarding-skip';
+  let mouseLockMode = null;
 
   const blockMouseDuringOnboarding = (event) => {
     if (closed) return;
@@ -159,21 +160,46 @@ export async function maybeStartOnboarding(force = false) {
     'dblclick',
     'mousedown',
     'mouseup',
-    'mousemove',
     'contextmenu',
     'wheel'
   ];
 
-  document.body.classList.add('onboarding-mouse-locked');
-  blockedMouseEvents.forEach((eventName) => {
-    window.addEventListener(eventName, blockMouseDuringOnboarding, { capture: true, passive: false });
-  });
+  const frozenMouseEvents = [...blockedMouseEvents, 'mousemove'];
 
-  const releaseMouseLock = () => {
-    document.body.classList.remove('onboarding-mouse-locked');
+  const detachMouseLockListeners = () => {
     blockedMouseEvents.forEach((eventName) => {
       window.removeEventListener(eventName, blockMouseDuringOnboarding, { capture: true });
     });
+    frozenMouseEvents.forEach((eventName) => {
+      window.removeEventListener(eventName, blockMouseDuringOnboarding, { capture: true });
+    });
+  };
+
+  const setMouseLockMode = (mode) => {
+    if (mouseLockMode === mode) return;
+    mouseLockMode = mode;
+    detachMouseLockListeners();
+
+    document.body.classList.remove('onboarding-mouse-locked', 'onboarding-mouse-frozen');
+    if (mode === 'none') return;
+
+    const events = mode === 'frozen' ? frozenMouseEvents : blockedMouseEvents;
+    events.forEach((eventName) => {
+      window.addEventListener(eventName, blockMouseDuringOnboarding, { capture: true, passive: false });
+    });
+
+    if (mode === 'frozen') {
+      document.body.classList.add('onboarding-mouse-frozen');
+      return;
+    }
+    document.body.classList.add('onboarding-mouse-locked');
+  };
+
+  // Intro "Bienvenue" : souris figée quelques secondes.
+  setMouseLockMode('frozen');
+
+  const releaseMouseLock = () => {
+    setMouseLockMode('none');
   };
 
   const typeCredit = async (content) => {
@@ -250,6 +276,8 @@ export async function maybeStartOnboarding(force = false) {
   await wait(1700);
   splash.classList.add('is-hidden');
   overlay.classList.add('is-guided');
+  // Étapes guidées : souris non utilisable, mais sans figer son mouvement.
+  setMouseLockMode('locked');
   await wait(220);
   card.classList.add('is-visible');
 

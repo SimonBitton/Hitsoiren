@@ -357,8 +357,8 @@
   animation: onboardingOverlayIn 320ms ease-out;
 }
 
-body.onboarding-mouse-locked,
-body.onboarding-mouse-locked * {
+body.onboarding-mouse-frozen,
+body.onboarding-mouse-frozen * {
   cursor: none !important;
 }
 

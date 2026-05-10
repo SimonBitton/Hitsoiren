@@ -212,7 +212,7 @@ export async function maybeStartOnboarding(force = false) {
   });
 
   tryPlayWhoosh();
-  await typeCredit('Créé par Sacha Bitton');
+  await typeCredit('Créé par Simon Bitton');
   await wait(1700);
   splash.classList.add('is-hidden');
   overlay.classList.add('is-guided');

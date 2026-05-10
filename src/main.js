@@ -132,6 +132,9 @@ async function init() {
   }
 
   cleanupDebugBadges();
+  window.addEventListener('histoiren:start-tutorial', () => {
+    maybeStartOnboarding(true);
+  });
   initRouter();
   bindSearch();
   bindTouchNavigation();
@@ -141,7 +144,6 @@ async function init() {
 
   renderTimeline();
   buildSidebarContent();
-  setView('presentation');
   maybeStartOnboarding();
 }
 

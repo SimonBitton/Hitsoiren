@@ -2,7 +2,22 @@ import { state } from './state.js';
 import { renderTimeline, renderCountries, renderStats } from './ui-renderer.js';
 import { buildSidebarContent } from './sidebar.js';
 
-export function setView(viewName) {
+const VALID_VIEWS = new Set(['presentation', 'timeline', 'countries']);
+
+function getRouteFromHash() {
+  const hash = (window.location.hash || '').replace(/^#\/?/, '');
+  return (hash.split('/')[0] || 'presentation').trim();
+}
+
+function updateHash(viewName) {
+  const targetHash = `#/${viewName}`;
+  if (window.location.hash !== targetHash) {
+    window.location.hash = targetHash;
+  }
+}
+
+export function setView(viewName, options = {}) {
+  const { updateRoute = true } = options;
   const previousView = state.currentView;
   state.currentView = viewName;
   
@@ -44,6 +59,23 @@ export function setView(viewName) {
     // Render stats inside the presentation view
     renderStats();
   }
+
+  if (updateRoute && VALID_VIEWS.has(viewName)) {
+    updateHash(viewName);
+  }
+}
+
+function handleRoute() {
+  const route = getRouteFromHash();
+  if (route === 'tuto') {
+    window.dispatchEvent(new CustomEvent('histoiren:start-tutorial'));
+    return;
+  }
+  if (VALID_VIEWS.has(route)) {
+    setView(route, { updateRoute: false });
+    return;
+  }
+  setView('presentation', { updateRoute: false });
 }
 
 export function initRouter() {
@@ -51,9 +83,6 @@ export function initRouter() {
     tab.addEventListener('click', () => setView(tab.dataset.view));
   });
 
-  const params = new URLSearchParams(window.location.search);
-  const view = params.get('view') || 'presentation';
-  if (view !== 'detail') {
-    setView(view);
-  }
+  window.addEventListener('hashchange', handleRoute);
+  handleRoute();
 }

@@ -120,8 +120,14 @@ function setHighlightRect(highlight, rect) {
   highlight.style.height = `${Math.round(rect.height + 16)}px`;
 }
 
-export async function maybeStartOnboarding() {
-  if (localStorage.getItem(INTRO_SEEN_KEY) === '1') return;
+export function resetOnboardingIntro() {
+  localStorage.removeItem(INTRO_SEEN_KEY);
+}
+
+export async function maybeStartOnboarding(force = false) {
+  if (!force && localStorage.getItem(INTRO_SEEN_KEY) === '1') return;
+  if (document.querySelector('.onboarding-overlay')) return;
+  if (force) resetOnboardingIntro();
 
   const overlay = createOverlay();
   const splash = overlay.querySelector('.intro-splash');

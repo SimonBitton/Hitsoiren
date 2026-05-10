@@ -49,7 +49,6 @@ export function applyOSAdaptations() {
   
   // Logs pour debug
   console.log(`🖥️ OS Détecté: ${detectedOS} (UA: ${navigator.userAgent.substring(0, 50)}...)`);
-  applyThemePreference();
 
   // Adaptations supplémentaires spécifiques à Windows
   if (detectedOS === 'windows') {
@@ -58,22 +57,6 @@ export function applyOSAdaptations() {
   } else if (detectedOS === 'mac') {
     adaptKeyboardShortcuts('mac');
   }
-}
-
-function applyThemePreference() {
-  const storedTheme = localStorage.getItem('histoiren_theme');
-  if (storedTheme === 'dark') {
-    document.documentElement.classList.add('dark');
-    return;
-  }
-  if (storedTheme === 'light') {
-    document.documentElement.classList.remove('dark');
-    return;
-  }
-
-  // Fallback: system preference
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  document.documentElement.classList.toggle('dark', prefersDark);
 }
 
 /**

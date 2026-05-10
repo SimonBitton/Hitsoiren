@@ -6617,6 +6617,106 @@
       "category": "Économie",
       "catSlug": "economie",
       "id": "evt-contemporain-1778314895750-744"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "1989 (15 novembre)",
+      "name": "Lancement de WorldWideWeb, premier navigateur web",
+      "context": "Tim Berners-Lee développe le premier navigateur/éditeur pour naviguer sur le Web naissant.",
+      "people": "Tim Berners-Lee",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "1990 (24 avril)",
+      "name": "Mise en orbite du télescope spatial Hubble",
+      "context": "Début d'une révolution de l'astronomie moderne grâce aux observations hors atmosphère.",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "2012 (4 juillet)",
+      "name": "Annonce de la découverte du boson de Higgs",
+      "context": "Le CERN confirme une particule compatible avec le boson de Higgs, clé du modèle standard.",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "2014 (12 novembre)",
+      "name": "Atterrissage de Philae sur la comète 67P",
+      "context": "Première sonde à se poser sur le noyau d'une comète dans le cadre de la mission Rosetta.",
+      "people": "",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "2019 (15 avril)",
+      "name": "Incendie de la cathédrale Notre-Dame de Paris",
+      "context": "Sinistre majeur du patrimoine mondial, suivi d'un vaste élan international de restauration.",
+      "people": "",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "2021 (18 février)",
+      "name": "Atterrissage du rover Perseverance sur Mars",
+      "context": "Mission de la NASA dans le cratère Jezero pour rechercher des traces d'ancienne vie microbienne.",
+      "people": "",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "2021 (24 décembre)",
+      "name": "Lancement du télescope spatial James Webb",
+      "context": "Nouveau télescope infrarouge destiné à observer les premières galaxies de l'Univers.",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "2022 (12 juillet)",
+      "name": "Publication des premières images scientifiques de James Webb",
+      "context": "Les clichés à haute résolution marquent une nouvelle ère pour l'astrophysique observationnelle.",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "2023 (23 août)",
+      "name": "Chandrayaan-3 alunit près du pôle Sud lunaire",
+      "context": "L'Inde devient le premier pays à réussir un alunissage dans cette région de la Lune.",
+      "people": "",
+      "category": "Exploration",
+      "catSlug": "exploration"
+    },
+    {
+      "era": "contemporain",
+      "major": true,
+      "date": "2024 (8 avril)",
+      "name": "Éclipse solaire totale visible en Amérique du Nord",
+      "context": "Phénomène astronomique majeur observé du Mexique au Canada avec forte mobilisation scientifique et publique.",
+      "people": "",
+      "category": "Science",
+      "catSlug": "science"
     }
   ]
 }

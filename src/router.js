@@ -39,11 +39,11 @@ export function setView(viewName, options = {}) {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
-  // Hide sidebar on presentation view
+  // Hide sidebar on views that do not use quick navigation
   const sidebarToggle = document.getElementById('sidebarToggle');
   const sidebar = document.getElementById('quickNav');
   if (sidebarToggle && sidebar) {
-    const shouldHideSidebar = viewName === 'presentation';
+    const shouldHideSidebar = viewName === 'presentation' || viewName === 'countries';
     sidebarToggle.style.display = shouldHideSidebar ? 'none' : 'flex';
     sidebarToggle.setAttribute('aria-expanded', 'false');
     if (shouldHideSidebar) {

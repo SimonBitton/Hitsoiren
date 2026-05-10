@@ -357,6 +357,11 @@
   animation: onboardingOverlayIn 320ms ease-out;
 }
 
+body.onboarding-mouse-locked,
+body.onboarding-mouse-locked * {
+  cursor: none !important;
+}
+
 .onboarding-overlay.is-guided {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;

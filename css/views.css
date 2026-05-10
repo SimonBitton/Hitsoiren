@@ -102,6 +102,15 @@
   gap: 1.25rem;
 }
 
+.empty-state {
+  grid-column: 1 / -1;
+  background: var(--color-card);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem;
+  color: var(--color-text-secondary);
+}
+
 .country-card {
   background: var(--color-card);
   border: 1px solid var(--color-border);

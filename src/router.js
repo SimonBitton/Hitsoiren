@@ -27,6 +27,8 @@ export function setView(viewName, options = {}) {
   
   document.querySelectorAll('.nav-tab').forEach(tab => {
     tab.classList.toggle('active', tab.dataset.view === viewName);
+    tab.setAttribute('aria-selected', String(tab.dataset.view === viewName));
+    tab.setAttribute('tabindex', tab.dataset.view === viewName ? '0' : '-1');
   });
   
   document.querySelectorAll('.view-container').forEach(container => {
@@ -43,6 +45,7 @@ export function setView(viewName, options = {}) {
   if (sidebarToggle && sidebar) {
     const shouldHideSidebar = viewName === 'presentation';
     sidebarToggle.style.display = shouldHideSidebar ? 'none' : 'flex';
+    sidebarToggle.setAttribute('aria-expanded', 'false');
     if (shouldHideSidebar) {
       sidebar.classList.remove('active');
       sidebarToggle.classList.remove('active');
@@ -87,6 +90,11 @@ function handleRoute() {
 export function initRouter() {
   document.querySelectorAll('.nav-tab').forEach(tab => {
     tab.addEventListener('click', () => setView(tab.dataset.view));
+    tab.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      setView(tab.dataset.view);
+    });
   });
 
   window.addEventListener('popstate', handleRoute);

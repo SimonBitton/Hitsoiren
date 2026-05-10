@@ -5,6 +5,7 @@ import { showDetailPage } from './detail-view.js';
 export function closeCountryModal() {
   const modal = document.getElementById('countryModal');
   if (!modal) return;
+  if (typeof modal._cleanup === 'function') modal._cleanup();
   modal.classList.remove('active');
   setTimeout(() => modal.remove(), 300);
 }
@@ -38,6 +39,7 @@ export function showCountryEventDetail(countryId, eventIndex) {
 export function showCountryDetail(countryId) {
   const country = state.countriesData.find((entry) => entry.id === countryId);
   if (!country) return;
+  closeCountryModal();
 
   const modalHtml = `
     <div id="countryModal" class="country-modal">
@@ -65,6 +67,11 @@ export function showCountryDetail(countryId) {
   document.body.insertAdjacentHTML('beforeend', modalHtml);
   const modal = document.getElementById('countryModal');
 
+  const onKeydown = (event) => {
+    if (event.key === 'Escape') closeCountryModal();
+  };
+  document.addEventListener('keydown', onKeydown);
+
   modal.addEventListener('click', (event) => {
     const actionTarget = event.target.closest('[data-action]');
     if (!actionTarget) {
@@ -85,5 +92,13 @@ export function showCountryDetail(countryId) {
     }
   });
 
-  setTimeout(() => modal.classList.add('active'), 10);
+  modal._cleanup = () => {
+    document.removeEventListener('keydown', onKeydown);
+    modal._cleanup = null;
+  };
+
+  setTimeout(() => {
+    modal.classList.add('active');
+    modal.querySelector('.close-modal')?.focus();
+  }, 10);
 }

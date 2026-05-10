@@ -1,5 +1,5 @@
 import { state } from './state.js';
-import { getCategoryClass, getCategoryLabel, normalizeText } from './utils.js';
+import { getCategoryClass, getCategoryLabel, normalizeText, sanitizeExternalUrl } from './utils.js';
 
 function getHistoricalSignificance(event) {
   const category = normalizeText(event.category || '');
@@ -132,8 +132,9 @@ export function showDetailPage(event) {
 
   const pressLinkEl = document.getElementById('detailPressLink');
   const possiblePressUrl = event.source?.pressUrl || event.source?.articleUrl || event.source?.url || event.pressUrl || event.articleUrl;
-  if (possiblePressUrl) {
-    pressLinkEl.href = possiblePressUrl;
+  const safePressUrl = sanitizeExternalUrl(possiblePressUrl);
+  if (safePressUrl) {
+    pressLinkEl.href = safePressUrl;
     pressLinkEl.style.display = 'inline-flex';
   } else {
     pressLinkEl.style.display = 'none';
@@ -152,6 +153,12 @@ export function showDetailPage(event) {
       window.showCountryDetail(state.detailCountryId);
     }
   };
+
+  const onEscape = (keyboardEvent) => {
+    if (keyboardEvent.key !== 'Escape') return;
+    backBtn.click();
+  };
+  document.addEventListener('keydown', onEscape, { once: true });
 
   detailPage.classList.add('active');
   detailPage.scrollTop = 0;

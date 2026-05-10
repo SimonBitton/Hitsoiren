@@ -1,14 +1,29 @@
 import { state } from './state.js';
 
 export async function loadData() {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), 10000);
   try {
     const [timelineRes, countriesRes] = await Promise.all([
-      fetch('data/timeline.json'),
-      fetch('data/countries.json')
+      fetch('data/timeline.json', { signal: controller.signal }),
+      fetch('data/countries.json', { signal: controller.signal })
     ]);
 
-    state.timelineData = await timelineRes.json();
-    state.countriesData = await countriesRes.json();
+    if (!timelineRes.ok || !countriesRes.ok) {
+      throw new Error(`Erreur HTTP (${timelineRes.status}/${countriesRes.status}) lors du chargement des données.`);
+    }
+
+    const timelineData = await timelineRes.json();
+    const countriesData = await countriesRes.json();
+    if (!timelineData || !Array.isArray(timelineData.events) || !Array.isArray(timelineData.eras)) {
+      throw new Error('Structure invalide pour timeline.json');
+    }
+    if (!Array.isArray(countriesData)) {
+      throw new Error('Structure invalide pour countries.json');
+    }
+
+    state.timelineData = timelineData;
+    state.countriesData = countriesData;
 
     if (state.timelineData && Array.isArray(state.timelineData.events)) {
       state.eventById = new Map();
@@ -23,8 +38,12 @@ export async function loadData() {
       countries: state.countriesData
     };
   } catch (error) {
-    console.error('Failed to load application data:', error);
+    if (error?.name === 'AbortError') {
+      throw new Error('Le chargement des données a expiré. Vérifiez votre connexion puis rechargez la page.');
+    }
     throw error;
+  } finally {
+    window.clearTimeout(timeoutId);
   }
 }
 

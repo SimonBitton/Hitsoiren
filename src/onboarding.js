@@ -144,6 +144,37 @@ export async function maybeStartOnboarding(force = false) {
   let currentStep = 0;
   let closed = false;
   const credit = overlay.querySelector('.intro-credit');
+  const allowedMouseTargets = '.onboarding-next, .onboarding-skip';
+
+  const blockMouseDuringOnboarding = (event) => {
+    if (closed) return;
+    const target = event.target;
+    if (target instanceof Element && target.closest(allowedMouseTargets)) return;
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  const blockedMouseEvents = [
+    'click',
+    'dblclick',
+    'mousedown',
+    'mouseup',
+    'mousemove',
+    'contextmenu',
+    'wheel'
+  ];
+
+  document.body.classList.add('onboarding-mouse-locked');
+  blockedMouseEvents.forEach((eventName) => {
+    window.addEventListener(eventName, blockMouseDuringOnboarding, { capture: true, passive: false });
+  });
+
+  const releaseMouseLock = () => {
+    document.body.classList.remove('onboarding-mouse-locked');
+    blockedMouseEvents.forEach((eventName) => {
+      window.removeEventListener(eventName, blockMouseDuringOnboarding, { capture: true });
+    });
+  };
 
   const typeCredit = async (content) => {
     if (!credit) return;
@@ -159,6 +190,8 @@ export async function maybeStartOnboarding(force = false) {
   const finish = async () => {
     if (closed) return;
     closed = true;
+    window.removeEventListener('resize', handleResize);
+    releaseMouseLock();
     localStorage.setItem(INTRO_SEEN_KEY, '1');
     setView('presentation');
     overlay.classList.add('is-exiting');
@@ -206,10 +239,11 @@ export async function maybeStartOnboarding(force = false) {
     await runStep();
   });
 
-  window.addEventListener('resize', () => {
+  const handleResize = () => {
     if (closed) return;
     runStep();
-  });
+  };
+  window.addEventListener('resize', handleResize);
 
   tryPlayWhoosh();
   await typeCredit('Créé par Simon Bitton');

@@ -100,7 +100,7 @@ body.os-windows ::-webkit-scrollbar-track {
 }
 
 html[data-os="windows"] ::-webkit-scrollbar-track,
-body.os-windows::-webkit-scrollbar-track {
+body.os-windows ::-webkit-scrollbar-track {
   background: var(--color-background);
 }
 

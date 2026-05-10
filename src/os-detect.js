@@ -38,6 +38,7 @@ export function detectOS() {
  * Applique les adaptations du rendu selon l'OS détecté
  */
 export function applyOSAdaptations() {
+  if (document.documentElement.dataset.osApplied === '1') return;
   const detectedOS = detectOS();
   
   // Ajouter la classe CSS au body
@@ -47,8 +48,7 @@ export function applyOSAdaptations() {
   // Storages locale pour accès ultérieur
   window.currentOS = detectedOS;
   
-  // Logs pour debug
-  console.log(`🖥️ OS Détecté: ${detectedOS} (UA: ${navigator.userAgent.substring(0, 50)}...)`);
+  document.documentElement.dataset.osApplied = '1';
 
   // Adaptations supplémentaires spécifiques à Windows
   if (detectedOS === 'windows') {
@@ -64,6 +64,7 @@ export function applyOSAdaptations() {
  * Twemoji : https://github.com/twitter/twemoji
  */
 function loadTwemojiForWindows() {
+  if (window.__twemojiLoaded) return;
   // Charger le script Twemoji depuis CDN
   const script = document.createElement('script');
   script.src = 'https://cdn.jsdelivr.net/npm/twemoji@14/dist/twemoji.min.js';
@@ -84,6 +85,7 @@ function loadTwemojiForWindows() {
           ext: '.svg'
         });
       });
+      window.__twemojiObserver = observer;
       
       observer.observe(document.body, {
         childList: true,
@@ -91,6 +93,7 @@ function loadTwemojiForWindows() {
       });
     }
   };
+  window.__twemojiLoaded = true;
   
   document.head.appendChild(script);
 }

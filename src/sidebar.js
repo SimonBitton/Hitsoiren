@@ -19,6 +19,7 @@ export function toggleSidebar() {
 
   sidebar.classList.toggle('active', state.sidebarOpen);
   sidebarToggle.classList.toggle('active', state.sidebarOpen);
+  sidebarToggle.setAttribute('aria-expanded', String(state.sidebarOpen));
   main.classList.toggle('sidebar-open', state.sidebarOpen);
 }
 

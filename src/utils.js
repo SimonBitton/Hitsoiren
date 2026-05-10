@@ -5,6 +5,14 @@ export function normalizeText(value) {
     .replace(/[\u0300-\u036f]/g, '');
 }
 
+export function debounce(fn, delay = 140) {
+  let timeoutId = null;
+  return (...args) => {
+    window.clearTimeout(timeoutId);
+    timeoutId = window.setTimeout(() => fn(...args), delay);
+  };
+}
+
 export function estimateYearFromText(text) {
   if (!text) return null;
   const clean = text
@@ -48,4 +56,15 @@ export function getCategoryLabel(category) {
   if (normalized === 'science') return 'Science';
   if (normalized === 'culture') return 'Culture';
   return 'Politique';
+}
+
+export function sanitizeExternalUrl(rawValue) {
+  if (!rawValue || typeof rawValue !== 'string') return null;
+  try {
+    const parsed = new URL(rawValue, window.location.origin);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+    return parsed.href;
+  } catch {
+    return null;
+  }
 }

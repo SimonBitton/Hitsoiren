@@ -5,8 +5,9 @@ import { toggleSidebar, buildSidebarContent } from './sidebar.js';
 import { renderTimeline, renderCountries } from './ui-renderer.js';
 import { showDetailPage } from './detail-view.js';
 import { showCountryDetail, closeCountryModal } from './country-modal.js';
-import { getKeyModifier, isMac } from './os-detect.js';
+import { getKeyModifier } from './os-detect.js';
 import { maybeStartOnboarding } from './onboarding.js';
+import { debounce } from './utils.js';
 
 function cleanupDebugBadges() {
   const ids = ['js-loaded', 'jsLoaded', 'js-status', 'debug-status'];
@@ -45,17 +46,19 @@ function bindSearch() {
   window.addEventListener('histoiren:sync-search-inputs', syncSearchInputs);
 
   if (searchInput) {
-    searchInput.addEventListener('input', (event) => {
+    const onTimelineSearch = debounce((event) => {
       state.timelineSearch = event.target.value;
       renderTimeline();
     });
+    searchInput.addEventListener('input', onTimelineSearch);
   }
 
   if (countrySearchInput) {
-    countrySearchInput.addEventListener('input', (event) => {
+    const onCountrySearch = debounce((event) => {
       state.countrySearch = event.target.value;
       renderCountries();
     });
+    countrySearchInput.addEventListener('input', onCountrySearch);
   }
 
   // Raccourcis clavier pour l'accès rapide
@@ -131,25 +134,26 @@ function bindTouchNavigation() {
 }
 
 async function init() {
-  const statusEl = document.createElement('div');
-  statusEl.id = 'loading-status';
-  statusEl.style.cssText = 'position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.8);color:white;padding:10px 20px;border-radius:30px;font-size:12px;z-index:9999;pointer-events:none;';
-  statusEl.textContent = 'Chargement des données...';
-  document.body.appendChild(statusEl);
+  const statusEl = document.getElementById('appStatus');
+  if (statusEl) {
+    statusEl.hidden = false;
+    statusEl.textContent = 'Chargement des données...';
+    statusEl.dataset.state = 'loading';
+  }
 
   try {
     const data = await loadData();
     if (!data || !data.timeline || !data.countries) {
       throw new Error('Données corrompues ou manquantes');
     }
-    statusEl.style.display = 'none';
+    if (statusEl) statusEl.hidden = true;
   } catch (error) {
-    console.error('Initialization error:', error);
-    statusEl.style.background = '#ef4444';
-    statusEl.textContent = `Erreur de chargement: ${error.message}`;
-    statusEl.style.pointerEvents = 'auto';
-    statusEl.style.cursor = 'pointer';
-    statusEl.onclick = () => window.location.reload();
+    if (statusEl) {
+      statusEl.hidden = false;
+      statusEl.dataset.state = 'error';
+      statusEl.textContent = `Erreur de chargement: ${error.message}. Cliquez pour recharger.`;
+      statusEl.onclick = () => window.location.reload();
+    }
     return;
   }
 

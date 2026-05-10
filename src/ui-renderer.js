@@ -127,22 +127,28 @@ export function renderCountries() {
   const search = normalizeText(state.countrySearch);
   const filtered = state.countriesData.filter((country) => normalizeText(country.name).includes(search));
 
+  if (filtered.length === 0) {
+    container.innerHTML = '<p class="empty-state">Aucun pays ne correspond à votre recherche.</p>';
+    container.onclick = null;
+    return;
+  }
+
   container.innerHTML = filtered.map((country) => `
-    <div class="country-card" data-country-id="${country.id}">
+    <button class="country-card" type="button" data-country-id="${country.id}" aria-label="Ouvrir la chronologie de ${escapeHtml(country.name)}">
       <div class="country-flag">${country.flag}</div>
       <div class="country-info">
-        <h3>${country.name}</h3>
+        <h3>${escapeHtml(country.name)}</h3>
         <p>${country.events.length} Événements</p>
       </div>
-    </div>
+    </button>
   `).join('');
 
-  container.querySelectorAll('.country-card').forEach((card) => {
-    card.addEventListener('click', () => {
-      const countryId = card.dataset.countryId;
-      if (countryId && window.showCountryDetail) window.showCountryDetail(countryId);
-    });
-  });
+  container.onclick = (event) => {
+    const card = event.target.closest('.country-card');
+    if (!card) return;
+    const countryId = card.dataset.countryId;
+    if (countryId && window.showCountryDetail) window.showCountryDetail(countryId);
+  };
 }
 
 export function renderStats() {

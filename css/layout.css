@@ -38,6 +38,9 @@
   white-space: nowrap;
   flex-shrink: 0;
   user-select: none;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
 }
 
 .nav-tab:hover {
@@ -47,6 +50,29 @@
 .nav-tab.active {
   color: var(--color-primary);
   border-bottom-color: var(--color-primary);
+}
+
+.search-container-offset {
+  margin-top: 2.5rem;
+}
+
+.app-status {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(17, 18, 24, 0.92);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 12px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.app-status[data-state='error'] {
+  background: #ef4444;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 /* ── Header de vue ── */

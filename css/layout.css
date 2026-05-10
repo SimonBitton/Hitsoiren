@@ -430,3 +430,74 @@ main.sidebar-open {
     max-width: 900px;
   }
 }
+
+/* ══════════════════ RESPONSIVE APP-LIKE ENHANCEMENTS ══════════════════ */
+@media (max-width: 767px) {
+  .main-nav {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1300;
+    justify-content: space-around;
+    gap: 0.3rem;
+    padding: 0.45rem max(0.75rem, env(safe-area-inset-left)) calc(0.45rem + env(safe-area-inset-bottom)) max(0.75rem, env(safe-area-inset-right));
+    background: rgba(255, 255, 255, 0.88);
+    border-top: 1px solid var(--color-border);
+    border-bottom: none;
+    box-shadow: 0 -8px 30px rgba(17, 18, 24, 0.1);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .nav-tab {
+    min-height: 48px;
+    min-width: 92px;
+    justify-content: center;
+    border-radius: 14px;
+    border-bottom: none;
+    padding: 0.7rem 0.45rem;
+    font-size: 0.76rem;
+  }
+
+  .nav-tab.active {
+    background: var(--accent-soft);
+    border-bottom: none;
+  }
+
+  header {
+    padding-top: max(2.2rem, env(safe-area-inset-top));
+  }
+
+  main {
+    max-width: 100%;
+    width: 100%;
+    padding: 1rem 0.875rem calc(5.5rem + env(safe-area-inset-bottom));
+  }
+
+  .sidebar-toggle {
+    top: calc(max(0.75rem, env(safe-area-inset-top)) + 0.35rem);
+    left: 0.75rem;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .quick-nav {
+    top: max(0.5rem, env(safe-area-inset-top));
+    left: 0.5rem;
+    height: calc(100vh - max(1rem, env(safe-area-inset-top)) - max(5.5rem, env(safe-area-inset-bottom)));
+    border-radius: 20px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .main-nav {
+    gap: 1rem;
+  }
+
+  main {
+    padding: 1.5rem 1.2rem 3.2rem;
+  }
+}

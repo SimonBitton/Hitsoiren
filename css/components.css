@@ -438,6 +438,23 @@
   animation: introTextIn 440ms ease 430ms forwards;
 }
 
+.intro-credit {
+  margin: 0.35rem 0 0;
+  min-height: 1.2rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(0.82rem, 0.65vw + 0.72rem, 0.95rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  opacity: 0;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+.intro-credit.is-visible {
+  opacity: 1;
+  transition: opacity 220ms ease;
+}
+
 .onboarding-highlight {
   position: fixed;
   border-radius: 20px;
@@ -561,5 +578,67 @@
   .onboarding-card {
     border-radius: 14px;
     padding: 0.8rem;
+  }
+}
+
+/* Mobile premium tuning */
+@media (max-width: 767px) {
+  .search-container {
+    position: sticky;
+    top: calc(max(0.45rem, env(safe-area-inset-top)) + 0.1rem);
+    z-index: 360;
+    margin: 0 auto 0.9rem;
+    padding: 0.35rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.76);
+    border: 1px solid rgba(229, 231, 235, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .search-container input {
+    height: 44px;
+    border-radius: 11px;
+  }
+
+  .search-container input:focus {
+    transform: scale(1.01);
+  }
+
+  .event {
+    padding: 0.85rem 0.9rem;
+    border-radius: 14px;
+    gap: 0.65rem;
+  }
+
+  .event:active {
+    transform: scale(0.985);
+  }
+
+  .event-date {
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+  }
+
+  .event-name {
+    font-size: 0.91rem;
+    line-height: 1.32;
+  }
+
+  .event-context {
+    font-size: 0.8rem;
+    line-height: 1.45;
+    -webkit-line-clamp: 3;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    min-height: 46px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .search-container {
+    max-width: 100%;
   }
 }

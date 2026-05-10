@@ -74,6 +74,7 @@ function createOverlay() {
       </div>
       <h2 class="intro-title">Bienvenue sur Histoiren</h2>
       <p class="intro-subtitle">Explorez l'histoire mondiale de facon interactive.</p>
+      <p class="intro-credit" aria-label="Cree par Simon Bitton"></p>
     </section>
 
     <div class="onboarding-highlight" aria-hidden="true"></div>
@@ -136,11 +137,24 @@ export async function maybeStartOnboarding() {
 
   let currentStep = 0;
   let closed = false;
+  const credit = overlay.querySelector('.intro-credit');
+
+  const typeCredit = async (content) => {
+    if (!credit) return;
+    credit.textContent = '';
+    credit.classList.add('is-visible');
+    for (let i = 0; i < content.length; i += 1) {
+      credit.textContent += content[i];
+      // Slightly irregular cadence for a more natural feel.
+      await wait(content[i] === ' ' ? 30 : 45);
+    }
+  };
 
   const finish = async () => {
     if (closed) return;
     closed = true;
     localStorage.setItem(INTRO_SEEN_KEY, '1');
+    setView('presentation');
     overlay.classList.add('is-exiting');
     await wait(450);
     overlay.remove();
@@ -192,6 +206,7 @@ export async function maybeStartOnboarding() {
   });
 
   tryPlayWhoosh();
+  await typeCredit('Cree par Simon Bitton');
   await wait(1700);
   splash.classList.add('is-hidden');
   await wait(220);

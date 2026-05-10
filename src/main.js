@@ -72,6 +72,42 @@ function bindSearch() {
   }
 }
 
+function bindTouchNavigation() {
+  const root = document.getElementById('main-content');
+  if (!root) return;
+
+  let startX = 0;
+  let startY = 0;
+  let isTracking = false;
+  const order = ['presentation', 'timeline', 'countries'];
+
+  root.addEventListener('touchstart', (event) => {
+    if (event.touches.length !== 1) return;
+    if (event.target.closest('input, textarea, button, a, .country-modal, .detail-page')) return;
+    startX = event.touches[0].clientX;
+    startY = event.touches[0].clientY;
+    isTracking = true;
+  }, { passive: true });
+
+  root.addEventListener('touchend', (event) => {
+    if (!isTracking || event.changedTouches.length !== 1) return;
+    isTracking = false;
+
+    const deltaX = event.changedTouches[0].clientX - startX;
+    const deltaY = event.changedTouches[0].clientY - startY;
+    if (Math.abs(deltaY) > 40 || Math.abs(deltaX) < 70) return;
+
+    const currentIndex = order.indexOf(state.currentView);
+    if (currentIndex === -1) return;
+
+    if (deltaX < 0 && currentIndex < order.length - 1) {
+      setView(order[currentIndex + 1]);
+    } else if (deltaX > 0 && currentIndex > 0) {
+      setView(order[currentIndex - 1]);
+    }
+  }, { passive: true });
+}
+
 async function init() {
   const statusEl = document.createElement('div');
   statusEl.id = 'loading-status';
@@ -98,6 +134,7 @@ async function init() {
   cleanupDebugBadges();
   initRouter();
   bindSearch();
+  bindTouchNavigation();
 
   const sidebarToggle = document.getElementById('sidebarToggle');
   if (sidebarToggle) sidebarToggle.addEventListener('click', toggleSidebar);

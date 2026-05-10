@@ -74,7 +74,7 @@ function createOverlay() {
       </div>
       <h2 class="intro-title">Bienvenue sur Histoiren</h2>
       <p class="intro-subtitle">Explorez l'histoire mondiale de façon interactive.</p>
-      <p class="intro-credit" aria-label="Créé par Simon Bitton"></p>
+      <p class="intro-credit" aria-label="Créé par Sacha Bitton"></p>
     </section>
 
     <div class="onboarding-highlight" aria-hidden="true"></div>

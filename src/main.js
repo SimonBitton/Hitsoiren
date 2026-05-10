@@ -6,6 +6,7 @@ import { renderTimeline, renderCountries } from './ui-renderer.js';
 import { showDetailPage } from './detail-view.js';
 import { showCountryDetail, closeCountryModal } from './country-modal.js';
 import { getKeyModifier, isMac } from './os-detect.js';
+import { maybeStartOnboarding } from './onboarding.js';
 
 function cleanupDebugBadges() {
   const ids = ['js-loaded', 'jsLoaded', 'js-status', 'debug-status'];
@@ -104,6 +105,7 @@ async function init() {
   renderTimeline();
   buildSidebarContent();
   setView('presentation');
+  maybeStartOnboarding();
 }
 
 window.showDetail = function showDetail(id, source = 'timeline') {

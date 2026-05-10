@@ -5,12 +5,12 @@ import { buildSidebarContent } from './sidebar.js';
 const VALID_VIEWS = new Set(['presentation', 'timeline', 'countries']);
 
 function getRouteFromHash() {
-  const hash = (window.location.hash || '').replace(/^#\/?/, '');
-  return (hash.split('/')[0] || 'presentation').trim();
+  const hash = (window.location.hash || '').replace(/^#\/?/, '').trim();
+  return hash || 'presentation';
 }
 
 function updateHash(viewName) {
-  const targetHash = `#/${viewName}`;
+  const targetHash = `#${viewName}`;
   if (window.location.hash !== targetHash) {
     window.location.hash = targetHash;
   }

@@ -17,15 +17,29 @@ function cleanupDebugBadges() {
     return el.children.length === 0 && el.textContent?.trim() === 'JS Loaded';
   });
   exactBadge?.remove();
+
+  // Defensive cleanup for accidental text badges.
+  const strayBadge = Array.from(document.querySelectorAll('body *')).find((el) => {
+    return el.children.length === 0 && el.textContent?.trim() === '$c';
+  });
+  strayBadge?.remove();
 }
 
 function bindSearch() {
   const searchInput = document.getElementById('searchInput');
   const countrySearchInput = document.getElementById('countrySearchInput');
 
+  const syncSearchInputs = (value) => {
+    if (searchInput && searchInput.value !== value) searchInput.value = value;
+    if (countrySearchInput && countrySearchInput.value !== value) countrySearchInput.value = value;
+  };
+
+  syncSearchInputs(state.search || '');
+
   if (searchInput) {
     searchInput.addEventListener('input', (event) => {
       state.search = event.target.value;
+      syncSearchInputs(state.search);
       renderTimeline();
     });
   }
@@ -33,6 +47,7 @@ function bindSearch() {
   if (countrySearchInput) {
     countrySearchInput.addEventListener('input', (event) => {
       state.search = event.target.value;
+      syncSearchInputs(state.search);
       renderCountries();
     });
   }
@@ -58,6 +73,7 @@ function bindSearch() {
         document.activeElement.value = '';
         document.activeElement.dispatchEvent(new Event('input'));
         document.activeElement.blur();
+        syncSearchInputs('');
       }
     }
   });

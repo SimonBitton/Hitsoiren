@@ -30,9 +30,22 @@ export function escapeHtml(value) {
 }
 
 export function getCategoryClass(category) {
-  const normalized = normalizeText(category);
-  if (normalized.includes('science')) return 'cat-science';
-  if (normalized.includes('culture')) return 'cat-culture';
-  if (normalized.includes('exploration')) return 'cat-exploration';
+  const normalizedLabel = normalizeCategory(category);
+  if (normalizedLabel === 'science') return 'cat-science';
+  if (normalizedLabel === 'culture') return 'cat-culture';
   return 'cat-politique';
+}
+
+export function normalizeCategory(category) {
+  const normalized = normalizeText(category);
+  if (normalized.includes('science')) return 'science';
+  if (normalized.includes('culture') || normalized.includes('exploration')) return 'culture';
+  return 'politique';
+}
+
+export function getCategoryLabel(category) {
+  const normalized = normalizeCategory(category);
+  if (normalized === 'science') return 'Science';
+  if (normalized === 'culture') return 'Culture';
+  return 'Politique';
 }

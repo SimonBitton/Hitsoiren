@@ -4,15 +4,19 @@ import { buildSidebarContent } from './sidebar.js';
 
 const VALID_VIEWS = new Set(['presentation', 'timeline', 'countries']);
 
-function getRouteFromHash() {
+function getRouteFromLocation() {
+  const cleanPath = (window.location.pathname || '/').replace(/^\/+|\/+$/g, '');
+  const pathRoute = cleanPath.split('/')[0];
+  if (pathRoute) return pathRoute;
+
   const hash = (window.location.hash || '').replace(/^#\/?/, '').trim();
   return hash || 'presentation';
 }
 
-function updateHash(viewName) {
-  const targetHash = `#${viewName}`;
-  if (window.location.hash !== targetHash) {
-    window.location.hash = targetHash;
+function updatePath(viewName) {
+  const targetPath = `/${viewName}`;
+  if (window.location.pathname !== targetPath) {
+    window.history.pushState({}, '', targetPath);
   }
 }
 
@@ -61,12 +65,14 @@ export function setView(viewName, options = {}) {
   }
 
   if (updateRoute && VALID_VIEWS.has(viewName)) {
-    updateHash(viewName);
+    updatePath(viewName);
   }
+
+  window.dispatchEvent(new Event('histoiren:sync-search-inputs'));
 }
 
 function handleRoute() {
-  const route = getRouteFromHash();
+  const route = getRouteFromLocation();
   if (route === 'tuto') {
     window.dispatchEvent(new CustomEvent('histoiren:start-tutorial'));
     return;
@@ -83,6 +89,7 @@ export function initRouter() {
     tab.addEventListener('click', () => setView(tab.dataset.view));
   });
 
+  window.addEventListener('popstate', handleRoute);
   window.addEventListener('hashchange', handleRoute);
   handleRoute();
 }

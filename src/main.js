@@ -19,35 +19,41 @@ function cleanupDebugBadges() {
   exactBadge?.remove();
 
   // Defensive cleanup for accidental text badges.
-  const strayBadge = Array.from(document.querySelectorAll('body *')).find((el) => {
-    return el.children.length === 0 && el.textContent?.trim() === '$c';
-  });
-  strayBadge?.remove();
+  const removeStrayBadges = () => {
+    const stray = Array.from(document.querySelectorAll('body *')).filter((el) => {
+      if (el.children.length !== 0) return false;
+      const text = el.textContent?.trim();
+      return text === '$c' || text === 'JS Loaded';
+    });
+    stray.forEach((el) => el.remove());
+  };
+  removeStrayBadges();
+  setTimeout(removeStrayBadges, 250);
 }
 
 function bindSearch() {
   const searchInput = document.getElementById('searchInput');
   const countrySearchInput = document.getElementById('countrySearchInput');
 
-  const syncSearchInputs = (value) => {
-    if (searchInput && searchInput.value !== value) searchInput.value = value;
-    if (countrySearchInput && countrySearchInput.value !== value) countrySearchInput.value = value;
+  const syncSearchInputs = () => {
+    if (searchInput && searchInput.value !== state.timelineSearch) searchInput.value = state.timelineSearch;
+    if (countrySearchInput && countrySearchInput.value !== state.countrySearch) countrySearchInput.value = state.countrySearch;
   };
 
-  syncSearchInputs(state.search || '');
+  syncSearchInputs();
+
+  window.addEventListener('histoiren:sync-search-inputs', syncSearchInputs);
 
   if (searchInput) {
     searchInput.addEventListener('input', (event) => {
-      state.search = event.target.value;
-      syncSearchInputs(state.search);
+      state.timelineSearch = event.target.value;
       renderTimeline();
     });
   }
 
   if (countrySearchInput) {
     countrySearchInput.addEventListener('input', (event) => {
-      state.search = event.target.value;
-      syncSearchInputs(state.search);
+      state.countrySearch = event.target.value;
       renderCountries();
     });
   }
@@ -73,7 +79,7 @@ function bindSearch() {
         document.activeElement.value = '';
         document.activeElement.dispatchEvent(new Event('input'));
         document.activeElement.blur();
-        syncSearchInputs('');
+        syncSearchInputs();
       }
     }
   });

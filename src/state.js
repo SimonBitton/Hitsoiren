@@ -1,7 +1,8 @@
 export const state = {
   era: 'all',
   type: 'all',
-  search: '',
+  timelineSearch: '',
+  countrySearch: '',
   currentView: 'timeline',
   timelineData: null,
   countriesData: [],

@@ -1,5 +1,5 @@
 import { state, eraConfigs } from './state.js';
-import { escapeHtml, estimateYearFromText, getCategoryClass, normalizeText } from './utils.js';
+import { escapeHtml, estimateYearFromText, getCategoryClass, getCategoryLabel, normalizeText } from './utils.js';
 
 function groupEventsByEra(events, search) {
   const grouped = new Map();
@@ -36,7 +36,7 @@ export function renderTimeline() {
   const container = document.getElementById('timelineContent');
   if (!container || !state.timelineData) return;
 
-  const search = normalizeText(state.search);
+  const search = normalizeText(state.timelineSearch);
   const groupedByEra = groupEventsByEra(state.timelineData.events, search);
 
   let html = state.timelineData.eras.map((era) => {
@@ -63,7 +63,7 @@ export function renderTimeline() {
                   <span class="event-context">${escapeHtml(event.context)}</span>
                   ${event.people ? `<span class="event-people">${escapeHtml(event.people)}</span>` : ''}
                 </div>
-                <span class="event-cat ${getCategoryClass(event.category)}">${escapeHtml(event.category)}</span>
+                <span class="event-cat ${getCategoryClass(event.category)}">${escapeHtml(getCategoryLabel(event.category))}</span>
               </div>
             </div>
           `).join('')}
@@ -107,7 +107,7 @@ export function renderTimeline() {
                   <span class="event-context">${escapeHtml(event.context)}</span>
                   ${event.people ? `<span class="event-people">${escapeHtml(event.people)}</span>` : ''}
                 </div>
-                <span class="event-cat ${getCategoryClass(event.category)}">${escapeHtml(event.category)}</span>
+                <span class="event-cat ${getCategoryClass(event.category)}">${escapeHtml(getCategoryLabel(event.category))}</span>
               </div>
             </div>
           `).join('')}
@@ -124,7 +124,7 @@ export function renderCountries() {
   const container = document.getElementById('countriesGrid');
   if (!container || !state.countriesData) return;
 
-  const search = normalizeText(state.search);
+  const search = normalizeText(state.countrySearch);
   const filtered = state.countriesData.filter((country) => normalizeText(country.name).includes(search));
 
   container.innerHTML = filtered.map((country) => `
@@ -154,7 +154,8 @@ export function renderStats() {
 
   const categories = {};
   state.timelineData?.events.forEach((event) => {
-    categories[event.category] = (categories[event.category] || 0) + 1;
+    const mapped = getCategoryLabel(event.category);
+    categories[mapped] = (categories[mapped] || 0) + 1;
   });
 
   const eraStats = {};

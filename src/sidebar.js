@@ -33,18 +33,13 @@ function buildTimelineSidebar() {
   ];
 
   return `
-    <div class="sidebar-section-label">Vues</div>
-    <a href="#" data-type="view" data-view="presentation">🏛 Présentation</a>
-    <a href="#" data-type="view" data-view="timeline">📜 Chronologie</a>
-    <a href="#" data-type="view" data-view="countries">🌍 Par Pays</a>
+    <div class="sidebar-section-label">Époques</div>
+    ${eras.map((era) => `<a href="#${era.id}" data-target="${era.id}" data-type="era">${era.icon} ${era.label}</a>`).join('')}
+    <a href="#top50-section" data-target="top50-section" data-type="top50">🏆 Top 50</a>
 
     <div class="sidebar-section-label">Raccourcis</div>
     <a href="#view-timeline" data-target="view-timeline" data-type="section">🔎 Recherche</a>
     <a href="#view-timeline" data-target="view-timeline" data-type="section">⬆️ Haut de page</a>
-
-    <div class="sidebar-section-label">Époques</div>
-    ${eras.map((era) => `<a href="#${era.id}" data-target="${era.id}" data-type="era">${era.icon} ${era.label}</a>`).join('')}
-    <a href="#top50-section" data-target="top50-section" data-type="top50">🏆 Top 50</a>
   `;
 }
 
@@ -55,11 +50,6 @@ function buildCountriesSidebar() {
   const letters = Array.from(new Set(sorted.map((country) => country.name.charAt(0).toUpperCase())));
 
   let html = `
-    <div class="sidebar-section-label">Vues</div>
-    <a href="#" data-type="view" data-view="presentation">🏛 Présentation</a>
-    <a href="#" data-type="view" data-view="timeline">📜 Chronologie</a>
-    <a href="#" data-type="view" data-view="countries">🌍 Par Pays</a>
-
     <div class="sidebar-section-label">Raccourcis</div>
     <a href="#view-countries" data-target="view-countries" data-type="section">🔎 Recherche</a>
     <a href="#view-countries" data-target="view-countries" data-type="section">⬆️ Haut de page</a>

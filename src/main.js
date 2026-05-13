@@ -162,6 +162,10 @@ async function init() {
     maybeStartOnboarding(true);
   });
   initRouter();
+  window.addEventListener('histoiren:set-view', (event) => {
+    const targetView = event.detail?.view;
+    if (targetView) setView(targetView);
+  });
   bindSearch();
   bindTouchNavigation();
 

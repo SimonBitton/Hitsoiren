@@ -33,6 +33,15 @@ function buildTimelineSidebar() {
   ];
 
   return `
+    <div class="sidebar-section-label">Vues</div>
+    <a href="#" data-type="view" data-view="presentation">🏛 Présentation</a>
+    <a href="#" data-type="view" data-view="timeline">📜 Chronologie</a>
+    <a href="#" data-type="view" data-view="countries">🌍 Par Pays</a>
+
+    <div class="sidebar-section-label">Raccourcis</div>
+    <a href="#view-timeline" data-target="view-timeline" data-type="section">🔎 Recherche</a>
+    <a href="#view-timeline" data-target="view-timeline" data-type="section">⬆️ Haut de page</a>
+
     <div class="sidebar-section-label">Époques</div>
     ${eras.map((era) => `<a href="#${era.id}" data-target="${era.id}" data-type="era">${era.icon} ${era.label}</a>`).join('')}
     <a href="#top50-section" data-target="top50-section" data-type="top50">🏆 Top 50</a>
@@ -43,7 +52,23 @@ function buildCountriesSidebar() {
   const sorted = [...state.countriesData].sort((left, right) => left.name.localeCompare(right.name, 'fr'));
 
   let currentLetter = '';
-  let html = '<div class="sidebar-section-label">Pays</div>';
+  const letters = Array.from(new Set(sorted.map((country) => country.name.charAt(0).toUpperCase())));
+
+  let html = `
+    <div class="sidebar-section-label">Vues</div>
+    <a href="#" data-type="view" data-view="presentation">🏛 Présentation</a>
+    <a href="#" data-type="view" data-view="timeline">📜 Chronologie</a>
+    <a href="#" data-type="view" data-view="countries">🌍 Par Pays</a>
+
+    <div class="sidebar-section-label">Raccourcis</div>
+    <a href="#view-countries" data-target="view-countries" data-type="section">🔎 Recherche</a>
+    <a href="#view-countries" data-target="view-countries" data-type="section">⬆️ Haut de page</a>
+
+    <div class="sidebar-section-label">Lettres</div>
+    ${letters.map((letter) => `<a href="#" data-type="letter" data-letter="${letter}">${letter}</a>`).join('')}
+
+    <div class="sidebar-section-label">Pays</div>
+  `;
 
   sorted.forEach((country) => {
     const firstLetter = country.name.charAt(0).toUpperCase();
@@ -72,6 +97,28 @@ function bindSidebarInteractions(sidebarLinks) {
     if (!type) return;
     event.preventDefault();
 
+    if (type === 'view') {
+      window.dispatchEvent(new CustomEvent('histoiren:set-view', { detail: { view: link.dataset.view } }));
+      if (window.innerWidth < 1024 && state.sidebarOpen) toggleSidebar();
+      return;
+    }
+
+    if (type === 'section') {
+      const targetId = link.dataset.target;
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (targetId === 'view-timeline') {
+          document.getElementById('searchInput')?.focus();
+        }
+        if (targetId === 'view-countries') {
+          document.getElementById('countrySearchInput')?.focus();
+        }
+      }
+      if (window.innerWidth < 1024 && state.sidebarOpen) toggleSidebar();
+      return;
+    }
+
     if (type === 'era' || type === 'top50') {
       const targetId = link.dataset.target;
       const target = document.getElementById(targetId);
@@ -83,6 +130,17 @@ function bindSidebarInteractions(sidebarLinks) {
 
     if (type === 'country' && window.showCountryDetail) {
       window.showCountryDetail(link.dataset.countryId);
+      setActiveLink('');
+      link.classList.add('active');
+    }
+
+    if (type === 'letter') {
+      const letter = link.dataset.letter;
+      const allCountryLinks = Array.from(sidebarLinks.querySelectorAll('a[data-type="country"]'));
+      const firstMatch = allCountryLinks.find((entry) => entry.textContent.trim().charAt(0).toUpperCase() === letter);
+      if (firstMatch) {
+        firstMatch.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
       setActiveLink('');
       link.classList.add('active');
     }

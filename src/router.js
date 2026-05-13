@@ -43,7 +43,7 @@ export function setView(viewName, options = {}) {
   const sidebarToggle = document.getElementById('sidebarToggle');
   const sidebar = document.getElementById('quickNav');
   if (sidebarToggle && sidebar) {
-    const shouldHideSidebar = viewName === 'presentation' || viewName === 'countries';
+    const shouldHideSidebar = viewName === 'presentation';
     sidebarToggle.style.display = shouldHideSidebar ? 'none' : 'flex';
     sidebarToggle.setAttribute('aria-expanded', 'false');
     if (shouldHideSidebar) {

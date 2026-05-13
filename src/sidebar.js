@@ -161,13 +161,23 @@ function watchTimelineSections() {
 
 export function buildSidebarContent() {
   const sidebarLinks = document.getElementById('quickNavLinks');
+  const quickNav = document.getElementById('quickNav');
+  const sidebarToggle = document.getElementById('sidebarToggle');
   if (!sidebarLinks) return;
 
   if (state.currentView === 'timeline') {
+    if (quickNav) quickNav.style.display = '';
+    if (sidebarToggle) sidebarToggle.style.display = '';
     sidebarLinks.innerHTML = buildTimelineSidebar();
   } else if (state.currentView === 'countries') {
-    sidebarLinks.innerHTML = buildCountriesSidebar();
+    sidebarLinks.innerHTML = '';
+    if (quickNav) quickNav.style.display = 'none';
+    if (sidebarToggle) sidebarToggle.style.display = 'none';
+    state.sidebarOpen = false;
+    document.querySelector('main')?.classList.remove('sidebar-open');
   } else {
+    if (quickNav) quickNav.style.display = '';
+    if (sidebarToggle) sidebarToggle.style.display = '';
     sidebarLinks.innerHTML = '';
   }
 

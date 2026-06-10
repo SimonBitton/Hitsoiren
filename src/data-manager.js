@@ -1,4 +1,5 @@
 import { state } from './state.js';
+import { mergeTimelineEvents } from './utils.js';
 
 export async function loadData() {
   const controller = new AbortController();
@@ -22,7 +23,10 @@ export async function loadData() {
       throw new Error('Structure invalide pour countries.json');
     }
 
-    state.timelineData = timelineData;
+    state.timelineData = {
+      ...timelineData,
+      events: mergeTimelineEvents(timelineData.events)
+    };
     state.countriesData = countriesData;
 
     if (state.timelineData && Array.isArray(state.timelineData.events)) {

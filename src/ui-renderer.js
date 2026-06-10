@@ -1,5 +1,5 @@
 import { state, eraConfigs } from './state.js';
-import { escapeHtml, estimateYearFromText, getCategoryClass, getCategoryLabel, normalizeText } from './utils.js';
+import { compareHistoricalDates, escapeHtml, getCategoryClass, getCategoryLabel, normalizeText } from './utils.js';
 
 function groupEventsByEra(events, search) {
   const grouped = new Map();
@@ -12,12 +12,7 @@ function groupEventsByEra(events, search) {
   }
   for (const [, eraEvents] of grouped) {
     eraEvents.sort((left, right) => {
-      const leftYear = estimateYearFromText(left.date);
-      const rightYear = estimateYearFromText(right.date);
-      if (leftYear == null && rightYear == null) return 0;
-      if (leftYear == null) return 1;
-      if (rightYear == null) return -1;
-      return leftYear - rightYear;
+      return compareHistoricalDates(left.date, right.date);
     });
   }
   return grouped;

@@ -5,6 +5,163 @@ export function normalizeText(value) {
     .replace(/[\u0300-\u036f]/g, '');
 }
 
+const MONTH_NAMES = [
+  'janvier',
+  'fevrier',
+  'mars',
+  'avril',
+  'mai',
+  'juin',
+  'juillet',
+  'aout',
+  'septembre',
+  'octobre',
+  'novembre',
+  'decembre'
+];
+
+export function parseHistoricalDate(text) {
+  if (!text) return null;
+
+  const clean = normalizeText(text)
+    .replace(/≈|vers|ca\.?|env\.?/g, ' ')
+    .replace(/[–—]/g, '-')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  const digits = [...clean.matchAll(/\d+/g)].map((match) => ({
+    value: parseInt(match[0], 10),
+    index: match.index ?? 0
+  })).filter((match) => !Number.isNaN(match.value));
+
+  if (digits.length === 0) return null;
+
+  const hasMonth = MONTH_NAMES.some((month) => clean.includes(month));
+  const hasBce = clean.includes('av. j.-c');
+  const hasCe = clean.includes('ap. j.-c');
+  const hasRangeHint = /\b(de|du|des|a|à|entre)\b/.test(clean) || clean.includes('-');
+  const hasYearKeyword = clean.includes('annee');
+
+  let yearIndex = digits.length - 1;
+  if (digits.length > 1 && !hasMonth && !hasBce && !hasCe && (hasRangeHint || hasYearKeyword)) {
+    yearIndex = 0;
+  }
+
+  let year = digits[yearIndex].value;
+  if (hasBce) {
+    year *= -1;
+  }
+
+  const monthIndex = hasMonth
+    ? MONTH_NAMES.findIndex((month) => clean.includes(month))
+    : -1;
+
+  let day = null;
+  let specificity = 1;
+
+  if (monthIndex >= 0) {
+    specificity = 2;
+    const monthMarker = MONTH_NAMES[monthIndex];
+    const monthPosition = clean.indexOf(monthMarker);
+    const candidateDay = digits.find((match) => match.index < monthPosition && match.value >= 1 && match.value <= 31);
+    if (candidateDay) {
+      day = candidateDay.value;
+      specificity = 3;
+    }
+  } else if (digits.length > 1) {
+    specificity = 2;
+  }
+
+  return {
+    year,
+    month: monthIndex >= 0 ? monthIndex + 1 : null,
+    day,
+    specificity
+  };
+}
+
+export function compareHistoricalDates(left, right) {
+  const leftParsed = parseHistoricalDate(left);
+  const rightParsed = parseHistoricalDate(right);
+
+  if (!leftParsed && !rightParsed) return 0;
+  if (!leftParsed) return 1;
+  if (!rightParsed) return -1;
+
+  if (leftParsed.year !== rightParsed.year) {
+    return leftParsed.year - rightParsed.year;
+  }
+
+  const leftMonth = leftParsed.month ?? 0;
+  const rightMonth = rightParsed.month ?? 0;
+  if (leftMonth !== rightMonth) {
+    return leftMonth - rightMonth;
+  }
+
+  const leftDay = leftParsed.day ?? 0;
+  const rightDay = rightParsed.day ?? 0;
+  if (leftDay !== rightDay) {
+    return leftDay - rightDay;
+  }
+
+  return rightParsed.specificity - leftParsed.specificity;
+}
+
+export function mergeTimelineEvents(events) {
+  const grouped = new Map();
+
+  for (const event of events) {
+    const key = [
+      normalizeText(event.name).replace(/\s+/g, ' ').trim(),
+      normalizeText(event.era).replace(/\s+/g, ' ').trim(),
+      normalizeText(event.category).replace(/\s+/g, ' ').trim()
+    ].join('::');
+
+    if (!grouped.has(key)) {
+      grouped.set(key, []);
+    }
+
+    grouped.get(key).push(event);
+  }
+
+  const mergedEvents = [];
+
+  for (const group of grouped.values()) {
+    if (group.length === 1) {
+      mergedEvents.push(group[0]);
+      continue;
+    }
+
+    const canonical = [...group].sort((left, right) => {
+      const leftParsed = parseHistoricalDate(left.date);
+      const rightParsed = parseHistoricalDate(right.date);
+
+      if (!leftParsed && !rightParsed) return 0;
+      if (!leftParsed) return 1;
+      if (!rightParsed) return -1;
+      if (leftParsed.year !== rightParsed.year) {
+        return leftParsed.year - rightParsed.year;
+      }
+      if (leftParsed.specificity !== rightParsed.specificity) {
+        return rightParsed.specificity - leftParsed.specificity;
+      }
+      return compareHistoricalDates(left.date, right.date);
+    })[0];
+
+    const contexts = [...new Set(group.map((event) => (event.context || '').trim()).filter(Boolean))];
+    const people = [...new Set(group.map((event) => (event.people || '').trim()).filter(Boolean))];
+
+    mergedEvents.push({
+      ...canonical,
+      major: group.some((event) => Boolean(event.major)),
+      context: contexts.sort((left, right) => right.length - left.length)[0] || canonical.context || '',
+      people: people.join(', ')
+    });
+  }
+
+  return mergedEvents.sort((left, right) => compareHistoricalDates(left.date, right.date));
+}
+
 export function debounce(fn, delay = 140) {
   let timeoutId = null;
   return (...args) => {

@@ -1,5 +1,4 @@
 import { state } from './state.js';
-import { worldRegions } from './world-map-data.js';
 
 let timelineObserver = null;
 
@@ -79,22 +78,6 @@ function buildCountriesSidebar() {
   return html;
 }
 
-function buildWorldMapSidebar() {
-  return `
-    <div class="sidebar-section-label">Régions</div>
-    ${worldRegions.map((region) => `
-      <a href="#world-region-${region.id}" class="${state.worldMapRegion === region.id ? 'active' : ''}" data-target="world-region-${region.id}" data-type="region" data-region-id="${region.id}">
-        ${region.icon} ${region.label}
-        <span class="sidebar-pill">${region.events.length}</span>
-      </a>
-    `).join('')}
-
-    <div class="sidebar-section-label">Raccourcis</div>
-    <a href="#view-world-map" data-target="view-world-map" data-type="section">🗺 Carte</a>
-    <a href="#view-world-map" data-target="view-world-map" data-type="section">⬆️ Haut de page</a>
-  `;
-}
-
 function bindSidebarInteractions(sidebarLinks) {
   sidebarLinks.onclick = (event) => {
     const link = event.target.closest('a');
@@ -139,14 +122,6 @@ function bindSidebarInteractions(sidebarLinks) {
       window.showCountryDetail(link.dataset.countryId);
       setActiveLink('');
       link.classList.add('active');
-    }
-
-    if (type === 'region') {
-      const regionId = link.dataset.regionId;
-      if (regionId && typeof window.selectWorldMapRegion === 'function') {
-        window.selectWorldMapRegion(regionId);
-        setActiveLink(`world-region-${regionId}`);
-      }
     }
 
     if (type === 'letter') {
@@ -200,10 +175,6 @@ export function buildSidebarContent() {
     if (sidebarToggle) sidebarToggle.style.display = 'none';
     state.sidebarOpen = false;
     document.querySelector('main')?.classList.remove('sidebar-open');
-  } else if (state.currentView === 'world-map') {
-    if (quickNav) quickNav.style.display = '';
-    if (sidebarToggle) sidebarToggle.style.display = '';
-    sidebarLinks.innerHTML = buildWorldMapSidebar();
   } else {
     if (quickNav) quickNav.style.display = '';
     if (sidebarToggle) sidebarToggle.style.display = '';

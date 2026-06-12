@@ -1,11 +1,10 @@
 import { state } from './state.js';
 import { setLastView } from './app-state.js';
 import { renderTimeline, renderCountries, renderStats } from './ui-renderer.js';
-import { renderWorldMap } from './world-map-react.js';
 import { buildSidebarContent } from './sidebar.js';
 import { renderLearn } from './quiz.js';
 
-const VALID_VIEWS = new Set(['presentation', 'timeline', 'countries', 'world-map', 'apprendre']);
+const VALID_VIEWS = new Set(['presentation', 'timeline', 'countries', 'apprendre']);
 
 function getRouteFromLocation() {
   const cleanPath = (window.location.pathname || '/').replace(/^\/+|\/+$/g, '');
@@ -57,16 +56,14 @@ export function setView(viewName, options = {}) {
     }
   }
 
-  if (viewName === 'timeline' || viewName === 'countries' || viewName === 'world-map') {
+  if (viewName === 'timeline' || viewName === 'countries') {
     buildSidebarContent();
   }
-  
+
   if (viewName === 'countries') {
     renderCountries();
   } else if (viewName === 'timeline') {
     renderTimeline();
-  } else if (viewName === 'world-map') {
-    renderWorldMap();
   } else if (viewName === 'presentation') {
     // Render stats inside the presentation view
     renderStats();
@@ -87,11 +84,16 @@ export function setView(viewName, options = {}) {
 
 function handleRoute() {
   const route = getRouteFromLocation();
+  if (route === 'tuto') {
+    window.dispatchEvent(new CustomEvent('histoiren:start-tutorial'));
+    return;
+  }
   if (VALID_VIEWS.has(route)) {
     setView(route, { updateRoute: false });
     return;
   }
-  setView(state.currentView || 'presentation', { updateRoute: false });
+  const fallback = VALID_VIEWS.has(state.currentView) ? state.currentView : 'presentation';
+  setView(fallback, { updateRoute: false });
 }
 
 export function initRouter() {

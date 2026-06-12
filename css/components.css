@@ -658,48 +658,6 @@ body.onboarding-mouse-frozen * {
   .btn-secondary {
     min-height: 46px;
   }
-
-  .world-map-card,
-  .world-map-panel-card {
-    border-radius: 18px;
-    padding: 1rem;
-  }
-
-  .world-map-card-header,
-  .world-map-panel-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .world-map-canvas {
-    min-height: 360px;
-  }
-
-  .world-hotspot-label {
-    font-size: 0.68rem;
-  }
-
-  .world-region-chips {
-    gap: 0.55rem;
-  }
-
-  .world-region-chip {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .world-map-metrics {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .world-region-event {
-    grid-template-columns: 1fr;
-    gap: 0.45rem;
-  }
-
-  .world-region-list {
-    max-height: none;
-  }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {

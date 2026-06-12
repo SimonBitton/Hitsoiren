@@ -3,7 +3,6 @@ import { loadData, getEventById } from './data-manager.js';
 import { initRouter, setView } from './router.js';
 import { toggleSidebar, buildSidebarContent } from './sidebar.js';
 import { renderTimeline, renderCountries } from './ui-renderer.js';
-import { renderWorldMap, selectWorldMapRegion } from './world-map-react.js';
 import { showDetailPage } from './detail-view.js';
 import { showCountryDetail, closeCountryModal } from './country-modal.js';
 import { getKeyModifier } from './os-detect.js';
@@ -108,7 +107,7 @@ function bindTouchNavigation() {
   let startX = 0;
   let startY = 0;
   let isTracking = false;
-  const order = ['presentation', 'timeline', 'world-map', 'countries', 'apprendre'];
+  const order = ['presentation', 'timeline', 'countries', 'apprendre'];
 
   root.addEventListener('touchstart', (event) => {
     if (event.touches.length !== 1) return;
@@ -195,9 +194,5 @@ window.showDetail = function showDetail(id, source = 'timeline') {
 
 window.showCountryDetail = showCountryDetail;
 window.closeCountryModal = closeCountryModal;
-window.selectWorldMapRegion = function selectWorldMapRegionAndRefresh(regionId) {
-  selectWorldMapRegion(regionId);
-  buildSidebarContent();
-};
 
 init();

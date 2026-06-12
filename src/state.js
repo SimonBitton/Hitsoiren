@@ -9,7 +9,6 @@ export const state = {
   timelineEra: 'all',
   timelineTheme: 'all',
   countrySearch: '',
-  worldMapRegion: 'ameriques',
   countryContinent: 'all',
   currentView: persistedAppState.lastView || 'presentation',
   timelineData: null,

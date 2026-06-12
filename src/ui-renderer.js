@@ -1,6 +1,8 @@
 import { state, eraConfigs } from './state.js';
 import { compareHistoricalDates, escapeHtml, getCategoryClass, getCategoryLabel, normalizeText, eventMatchesSearch, THEME_DEFINITIONS } from './utils.js';
 import { renderFriseBand } from './frise.js';
+import { renderWorldMap } from './worldmap.js';
+import { getContinentOf, getContinentMeta } from './continents.js';
 
 function passesFilters(event, search) {
   if (state.timelineEra !== 'all' && event.era !== state.timelineEra) return false;
@@ -206,8 +208,14 @@ export function renderCountries() {
   const container = document.getElementById('countriesGrid');
   if (!container || !state.countriesData) return;
 
+  renderWorldMap(document.getElementById('worldMapContainer'));
+  renderContinentBanner();
+
   const search = normalizeText(state.countrySearch);
-  const filtered = state.countriesData.filter((country) => normalizeText(country.name).includes(search));
+  const filtered = state.countriesData.filter((country) => {
+    if (state.countryContinent !== 'all' && getContinentOf(country.name) !== state.countryContinent) return false;
+    return normalizeText(country.name).includes(search);
+  });
 
   if (filtered.length === 0) {
     container.innerHTML = '<p class="empty-state">Aucun pays ne correspond à votre recherche.</p>';
@@ -231,6 +239,27 @@ export function renderCountries() {
     const countryId = card.dataset.countryId;
     if (countryId && window.showCountryDetail) window.showCountryDetail(countryId);
   };
+}
+
+function renderContinentBanner() {
+  const banner = document.getElementById('continentBanner');
+  if (!banner) return;
+  if (state.countryContinent === 'all') {
+    banner.hidden = true;
+    banner.innerHTML = '';
+    return;
+  }
+  const meta = getContinentMeta(state.countryContinent);
+  const count = state.countriesData.filter((c) => getContinentOf(c.name) === state.countryContinent).length;
+  banner.hidden = false;
+  banner.innerHTML = `
+    <span class="continent-banner-label">${meta?.emoji || '🌍'} ${escapeHtml(meta?.label || '')} · ${count} pays</span>
+    <button class="continent-banner-reset" type="button" data-continent-reset>✕ Voir tous les pays</button>
+  `;
+  banner.querySelector('[data-continent-reset]')?.addEventListener('click', () => {
+    state.countryContinent = 'all';
+    renderCountries();
+  });
 }
 
 export function renderStats() {

@@ -170,6 +170,7 @@ async function init() {
     const targetView = event.detail?.view;
     if (targetView) setView(targetView);
   });
+  window.addEventListener('histoiren:countries-refresh', () => renderCountries());
   bindSearch();
   bindTouchNavigation();
 

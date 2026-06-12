@@ -5,6 +5,7 @@ export const state = {
   timelineEra: 'all',
   timelineTheme: 'all',
   countrySearch: '',
+  countryContinent: 'all',
   currentView: 'timeline',
   timelineData: null,
   countriesData: [],

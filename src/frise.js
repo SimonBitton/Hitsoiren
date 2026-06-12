@@ -1,23 +1,17 @@
 import { state } from './state.js';
-import { escapeHtml, getCategoryClass } from './utils.js';
+import { escapeHtml, getCategoryClass, getCategoryLabel } from './utils.js';
 
 /* ══════════════════════════════════════════════════
    FRISE INTERACTIVE — bande chronologique zoomable
    Échelle signée-logarithmique pour faire cohabiter
    la préhistoire (millions d'années) et l'ère moderne.
+   Les événements marquants portent une étiquette ;
+   le zoom en révèle de plus en plus.
 ══════════════════════════════════════════════════ */
 
 const friseState = {
   zoom: 1,
   events: []
-};
-
-const ERA_COLORS = {
-  prehist: 'var(--era-prehist)',
-  antiquite: 'var(--era-antiquite)',
-  'moyen-age': 'var(--era-moyen-age)',
-  modernes: 'var(--era-modernes)',
-  contemporain: 'var(--era-contemporain)'
 };
 
 function signedLog(year) {
@@ -30,12 +24,17 @@ function formatYear(year) {
   return year < 0 ? `${pretty} av. J.-C.` : pretty;
 }
 
+function shorten(text, max = 26) {
+  if (!text) return '';
+  return text.length > max ? `${text.slice(0, max - 1).trim()}…` : text;
+}
+
 export function renderFriseBand(slot, events) {
   if (!slot) return;
   const dated = (events || []).filter((event) => Number.isFinite(event._year));
-  friseState.events = dated;
+  friseState.events = dated.slice().sort((a, b) => a._year - b._year);
 
-  if (dated.length < 2) {
+  if (friseState.events.length < 2) {
     slot.innerHTML = '';
     return;
   }
@@ -43,16 +42,20 @@ export function renderFriseBand(slot, events) {
   slot.innerHTML = `
     <section class="frise" aria-label="Frise chronologique interactive">
       <div class="frise-header">
-        <div class="frise-title">🕰️ Frise interactive <span class="frise-hint">— glissez pour parcourir, boutons (ou Ctrl+molette) pour zoomer</span></div>
+        <div class="frise-title">🕰️ Frise interactive
+          <span class="frise-hint">glissez pour parcourir · zoomez pour révéler plus d'événements</span>
+        </div>
         <div class="frise-controls">
           <button class="frise-btn" data-frise="out" type="button" aria-label="Dézoomer">−</button>
-          <button class="frise-btn" data-frise="reset" type="button" aria-label="Réinitialiser le zoom">⟲</button>
+          <span class="frise-zoom-label" id="friseZoomLabel">×1</span>
           <button class="frise-btn" data-frise="in" type="button" aria-label="Zoomer">+</button>
+          <button class="frise-btn frise-btn-reset" data-frise="reset" type="button" aria-label="Réinitialiser">⟲</button>
         </div>
       </div>
       <div class="frise-viewport" id="friseViewport">
         <div class="frise-track" id="friseTrack"></div>
       </div>
+      <div class="frise-tooltip" id="friseTooltip" hidden></div>
     </section>
   `;
 
@@ -65,90 +68,153 @@ function drawTrack() {
   const viewport = document.getElementById('friseViewport');
   if (!track || !viewport) return;
 
-  const years = friseState.events.map((event) => event._year);
-  const slMin = signedLog(Math.min(...years));
-  const slMax = signedLog(Math.max(...years));
+  const events = friseState.events;
+  const years = events.map((event) => event._year);
+  const minYear = Math.min(...years);
+  const maxYear = Math.max(...years);
+  const slMin = signedLog(minYear);
+  const slMax = signedLog(maxYear);
   const span = slMax - slMin || 1;
 
   const baseWidth = Math.max(viewport.clientWidth || 800, 720);
   const trackWidth = Math.round(baseWidth * friseState.zoom);
   track.style.width = `${trackWidth}px`;
 
-  const posOf = (year) => ((signedLog(year) - slMin) / span) * (trackWidth - 40) + 20;
+  const pad = 36;
+  const posOf = (year) => ((signedLog(year) - slMin) / span) * (trackWidth - pad * 2) + pad;
 
-  // Repères d'années (axe)
+  const label = document.getElementById('friseZoomLabel');
+  if (label) label.textContent = `×${friseState.zoom.toFixed(1).replace('.0', '')}`;
+
+  // ── Rubans d'époques (fond) ──
   const eras = state.timelineData?.eras || [];
-  const eraBands = eras.map((era) => {
-    const eraYears = friseState.events.filter((e) => e.era === era.id).map((e) => e._year);
-    if (eraYears.length === 0) return '';
+  const eraRibbons = eras.map((era) => {
+    const eraEvents = events.filter((e) => e.era === era.id);
+    if (eraEvents.length === 0) return '';
+    const eraYears = eraEvents.map((e) => e._year);
     const start = posOf(Math.min(...eraYears));
     const end = posOf(Math.max(...eraYears));
-    return `<div class="frise-era-band" style="left:${start}px;width:${Math.max(end - start, 2)}px;background:${ERA_COLORS[era.id] || 'var(--color-primary)'}"></div>`;
+    const width = Math.max(end - start, 6);
+    const showLabel = width > 70;
+    return `
+      <div class="frise-ribbon era-${era.id}" style="left:${start}px;width:${width}px">
+        ${showLabel ? `<span class="frise-ribbon-label">${escapeHtml(era.icon || '')} ${escapeHtml(era.name)}</span>` : ''}
+      </div>`;
   }).join('');
 
-  const ticks = [];
-  const tickValues = [-3000000, -100000, -3000, -500, 1, 500, 1000, 1500, 1800, 1900, 2000];
-  tickValues.forEach((value) => {
-    if (value < Math.min(...years) || value > Math.max(...years)) return;
-    const left = posOf(value);
-    ticks.push(`<div class="frise-tick" style="left:${left}px"><span>${formatYear(value)}</span></div>`);
-  });
+  // ── Graduations ──
+  const tickValues = [-3000000, -100000, -10000, -3000, -1000, -500, 0, 500, 1000, 1500, 1800, 1900, 2000];
+  const ticks = tickValues
+    .filter((value) => value >= minYear && value <= maxYear)
+    .map((value) => `<div class="frise-tick" style="left:${posOf(value)}px"><span>${formatYear(value)}</span></div>`)
+    .join('');
 
-  const dots = friseState.events.map((event) => {
+  // ── Événements : étiquettes pour les majeurs (anti-collision), points pour les autres ──
+  let lastAbove = -Infinity;
+  let lastBelow = -Infinity;
+  const minGap = 132;
+
+  const markers = events.map((event, index) => {
     const left = posOf(event._year);
-    return `<button class="frise-dot ${event.major ? 'major' : ''} ${getCategoryClass(event.category)}" type="button"
-      style="left:${left}px" data-id="${event.id}"
-      title="${escapeHtml(event.date)} — ${escapeHtml(event.name)}"
-      aria-label="${escapeHtml(event.date)} — ${escapeHtml(event.name)}"></button>`;
+    const catClass = getCategoryClass(event.category);
+
+    let labeled = false;
+    let side = '';
+    if (event.major) {
+      if (left - lastAbove >= minGap) { labeled = true; side = 'above'; lastAbove = left; }
+      else if (left - lastBelow >= minGap) { labeled = true; side = 'below'; lastBelow = left; }
+    }
+
+    const labelHtml = labeled
+      ? `<span class="frise-flag frise-flag-${side}">
+           <span class="frise-flag-year">${escapeHtml(formatYear(event._year))}</span>
+           <span class="frise-flag-name">${escapeHtml(shorten(event.name))}</span>
+         </span>`
+      : '';
+
+    return `
+      <button class="frise-event ${event.major ? 'major' : ''} ${labeled ? `labeled ${side}` : ''} ${catClass}"
+        type="button" style="left:${left}px" data-id="${escapeHtml(event.id)}" data-index="${index}"
+        aria-label="${escapeHtml(formatYear(event._year))} — ${escapeHtml(event.name)}">
+        <span class="frise-event-dot"></span>
+        ${labelHtml}
+      </button>`;
   }).join('');
 
   track.innerHTML = `
+    <div class="frise-ribbons">${eraRibbons}</div>
     <div class="frise-axis"></div>
-    ${eraBands}
-    ${ticks.join('')}
-    ${dots}
+    <div class="frise-ticks">${ticks}</div>
+    ${markers}
   `;
 }
 
 function setZoom(next) {
-  friseState.zoom = Math.min(12, Math.max(1, next));
+  friseState.zoom = Math.min(16, Math.max(1, next));
   drawTrack();
 }
 
 function bindFrise(slot) {
   const viewport = slot.querySelector('#friseViewport');
   const track = slot.querySelector('#friseTrack');
+  const tooltip = slot.querySelector('#friseTooltip');
 
-  slot.querySelector('[data-frise="in"]')?.addEventListener('click', () => zoomAroundCenter(viewport, 1.5));
-  slot.querySelector('[data-frise="out"]')?.addEventListener('click', () => zoomAroundCenter(viewport, 1 / 1.5));
+  slot.querySelector('[data-frise="in"]')?.addEventListener('click', () => zoomAroundCenter(viewport, 1.6));
+  slot.querySelector('[data-frise="out"]')?.addEventListener('click', () => zoomAroundCenter(viewport, 1 / 1.6));
   slot.querySelector('[data-frise="reset"]')?.addEventListener('click', () => {
     setZoom(1);
     if (viewport) viewport.scrollLeft = 0;
   });
 
-  // Clic sur un point → fiche détail
+  // Clic sur un événement → fiche détail
   track?.addEventListener('click', (event) => {
-    const dot = event.target.closest('.frise-dot');
-    if (dot && window.showDetail) window.showDetail(dot.dataset.id);
+    const marker = event.target.closest('.frise-event');
+    if (marker && !justDragged && window.showDetail) window.showDetail(marker.dataset.id);
   });
 
-  // Zoom à la molette avec Ctrl/Cmd (sinon on laisse défiler la page).
+  // Tooltip au survol
+  const showTooltip = (marker) => {
+    if (!tooltip) return;
+    const evt = friseState.events[Number(marker.dataset.index)];
+    if (!evt) return;
+    tooltip.innerHTML = `
+      <span class="frise-tooltip-date">${escapeHtml(formatYear(evt._year))}</span>
+      <span class="frise-tooltip-name">${escapeHtml(evt.name)}</span>
+      <span class="frise-tooltip-cat ${getCategoryClass(evt.category)}">${escapeHtml(getCategoryLabel(evt.category))}</span>`;
+    tooltip.hidden = false;
+    const friseRect = tooltip.parentElement.getBoundingClientRect();
+    const mRect = marker.getBoundingClientRect();
+    let x = mRect.left - friseRect.left - tooltip.offsetWidth / 2;
+    x = Math.max(8, Math.min(x, friseRect.width - tooltip.offsetWidth - 8));
+    tooltip.style.left = `${x}px`;
+  };
+  track?.addEventListener('pointerover', (event) => {
+    const marker = event.target.closest('.frise-event');
+    if (marker) showTooltip(marker);
+  });
+  track?.addEventListener('pointerout', (event) => {
+    if (event.target.closest('.frise-event') && tooltip) tooltip.hidden = true;
+  });
+
+  // Zoom à la molette avec Ctrl/Cmd (sinon on laisse défiler la page)
   viewport?.addEventListener('wheel', (event) => {
     if (!event.ctrlKey && !event.metaKey) return;
     event.preventDefault();
     const rect = viewport.getBoundingClientRect();
     const anchor = (viewport.scrollLeft + (event.clientX - rect.left)) / (track.offsetWidth || 1);
-    setZoom(friseState.zoom * (event.deltaY < 0 ? 1.15 : 1 / 1.15));
+    setZoom(friseState.zoom * (event.deltaY < 0 ? 1.18 : 1 / 1.18));
     viewport.scrollLeft = anchor * track.offsetWidth - (event.clientX - rect.left);
   }, { passive: false });
 
   // Glisser pour déplacer
   let dragging = false;
+  let moved = false;
   let startX = 0;
   let startScroll = 0;
   viewport?.addEventListener('pointerdown', (event) => {
-    if (event.target.closest('.frise-dot')) return;
+    if (event.target.closest('.frise-event')) return;
     dragging = true;
+    moved = false;
     startX = event.clientX;
     startScroll = viewport.scrollLeft;
     viewport.classList.add('grabbing');
@@ -156,16 +222,24 @@ function bindFrise(slot) {
   });
   viewport?.addEventListener('pointermove', (event) => {
     if (!dragging) return;
+    if (Math.abs(event.clientX - startX) > 4) moved = true;
     viewport.scrollLeft = startScroll - (event.clientX - startX);
   });
-  const endDrag = () => { dragging = false; viewport?.classList.remove('grabbing'); };
+  const endDrag = () => {
+    dragging = false;
+    justDragged = moved;
+    setTimeout(() => { justDragged = false; }, 0);
+    viewport?.classList.remove('grabbing');
+  };
   viewport?.addEventListener('pointerup', endDrag);
   viewport?.addEventListener('pointercancel', endDrag);
 }
 
+let justDragged = false;
+
 function zoomAroundCenter(viewport, factor) {
   if (!viewport) { setZoom(friseState.zoom * factor); return; }
-  const track = viewport.querySelector('#friseTrack') || document.getElementById('friseTrack');
+  const track = document.getElementById('friseTrack');
   const center = (viewport.scrollLeft + viewport.clientWidth / 2) / (track?.offsetWidth || 1);
   setZoom(friseState.zoom * factor);
   if (track) viewport.scrollLeft = center * track.offsetWidth - viewport.clientWidth / 2;

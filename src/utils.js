@@ -215,6 +215,60 @@ export function getCategoryLabel(category) {
   return 'Politique';
 }
 
+/* ══════════════════════════════════════════════════
+   THÈMES — Classification fine pour filtres avancés
+══════════════════════════════════════════════════ */
+
+export const THEME_DEFINITIONS = [
+  { key: 'guerre', label: 'Guerres', icon: '⚔️' },
+  { key: 'invention', label: 'Inventions', icon: '🔬' },
+  { key: 'personnage', label: 'Personnages', icon: '👑' },
+  { key: 'religion', label: 'Religion', icon: '⛪' },
+  { key: 'art', label: 'Art & Culture', icon: '🎨' },
+  { key: 'exploration', label: 'Exploration', icon: '🧭' },
+  { key: 'politique', label: 'Politique', icon: '🏛️' }
+];
+
+const THEME_PATTERNS = {
+  guerre: /guerre|bataille|conflit|siege|invasion|croisade|conquete|revolte|insurrection|massacre|attentat|offensive|debarquement|armistice|capitulation/,
+  invention: /invention|decouverte|brevet|machine|moteur|telescope|imprimerie|vaccin|ordinateur|internet|electricite|telephone|automobile|avion|fusee|theorie|formule|microscope|antibiotique|adn|atome/,
+  personnage: /naissance|mort|deces|regne|couronnement|sacre|empereur|imperatrice|\broi\b|reine|pharaon|pape|president|philosophe|peintre|ecrivain|savant|general|chancelier|dictateur/,
+  religion: /religion|eglise|temple|cathedrale|christianisme|chretien|islam|musulman|bouddhisme|judaisme|reforme|concile|\bpape\b|prophete|bible|coran|croisade|protestant|catholique/,
+  art: /peinture|sculpture|roman|poeme|symphonie|opera|cinema|theatre|litterature|renaissance artistique|cathedrale|architecture|musee|fresque|chef-d.oeuvre/,
+  exploration: /exploration|voyage|expedition|circumnavigation|colonisation|conquistador|nouveau monde|cap de|route maritime|antarctique|everest|lune|espace|mars/
+};
+
+export function detectEventThemes(event) {
+  const text = normalizeText(`${event.name || ''} ${event.context || ''} ${event.people || ''}`);
+  const themes = new Set();
+
+  for (const [key, pattern] of Object.entries(THEME_PATTERNS)) {
+    if (pattern.test(text)) themes.add(key);
+  }
+
+  const cat = normalizeText(event.category || '');
+  if (cat.includes('science')) themes.add('invention');
+  if (cat.includes('culture')) themes.add('art');
+  if (cat.includes('exploration')) themes.add('exploration');
+  if (cat.includes('politique')) themes.add('politique');
+
+  return [...themes];
+}
+
+/* Recherche multi-champ : nom, contexte, personnages, date, catégorie, thème */
+export function eventMatchesSearch(event, normalizedSearch) {
+  if (!normalizedSearch) return true;
+  const haystack = normalizeText([
+    event.name,
+    event.context,
+    event.people,
+    event.date,
+    getCategoryLabel(event.category),
+    (event._themes || []).join(' ')
+  ].filter(Boolean).join(' '));
+  return haystack.includes(normalizedSearch);
+}
+
 export function sanitizeExternalUrl(rawValue) {
   if (!rawValue || typeof rawValue !== 'string') return null;
   try {

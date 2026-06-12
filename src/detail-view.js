@@ -1,5 +1,8 @@
 import { state } from './state.js';
-import { getCategoryClass, getCategoryLabel, normalizeText, sanitizeExternalUrl } from './utils.js';
+import { getCategoryClass, getCategoryLabel, normalizeText, sanitizeExternalUrl, escapeHtml } from './utils.js';
+import { findRelatedEvents } from './related.js';
+import { fetchWikiInfo } from './wiki.js';
+import { detectEventThemes, parseHistoricalDate } from './utils.js';
 
 function getHistoricalSignificance(event) {
   const category = normalizeText(event.category || '');
@@ -87,9 +90,111 @@ function generateDetailedSummary(event) {
   return parts.join(' ');
 }
 
+function generateCauses(event) {
+  const themes = event._themes || [];
+  if (themes.includes('guerre')) {
+    return "Tensions politiques, rivalités territoriales et déséquilibres de pouvoir ont préparé le terrain de cet affrontement, souvent après une longue montée des hostilités.";
+  }
+  if (themes.includes('invention') || normalizeText(event.category).includes('science')) {
+    return "Cette avancée découle de l'accumulation de savoirs antérieurs, de la curiosité de chercheurs et d'un besoin pratique ou théorique de l'époque.";
+  }
+  if (themes.includes('religion')) {
+    return "Des transformations spirituelles, sociales et parfois politiques ont nourri ce mouvement, en réponse aux attentes et aux questionnements de la société.";
+  }
+  if (themes.includes('exploration')) {
+    return "La recherche de nouvelles routes, de richesses ou de connaissances, soutenue par des progrès techniques, a motivé cette entreprise.";
+  }
+  return "Cet événement résulte d'un enchaînement de circonstances sociales, politiques et économiques propres à son époque.";
+}
+
+function generateConsequences(event) {
+  const themes = event._themes || [];
+  if (themes.includes('guerre')) {
+    return "Le conflit a redessiné les frontières, bouleversé les sociétés concernées et laissé des traces durables dans les mémoires et les équilibres géopolitiques.";
+  }
+  if (themes.includes('invention') || normalizeText(event.category).includes('science')) {
+    return "Cette découverte a ouvert la voie à de nouvelles applications et transformé, parfois en profondeur, la vie quotidienne et la pensée scientifique.";
+  }
+  if (themes.includes('religion')) {
+    return "Elle a influencé les croyances, les institutions et la culture de nombreuses générations bien au-delà de son point de départ.";
+  }
+  if (themes.includes('exploration')) {
+    return "De nouveaux contacts entre peuples, échanges commerciaux et bouleversements culturels en ont découlé, pour le meilleur comme pour le pire.";
+  }
+  return "Ses effets se sont prolongés dans le temps et ont contribué à façonner la suite de l'histoire.";
+}
+
+function renderRelatedEvents(event) {
+  const section = document.getElementById('detailRelatedSection');
+  const container = document.getElementById('detailRelated');
+  if (!section || !container) return;
+
+  const related = findRelatedEvents(event, 4);
+  if (related.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+
+  container.innerHTML = related.map((rel) => `
+    <button class="related-event" type="button" data-id="${escapeHtml(rel.id)}">
+      <span class="related-date">${escapeHtml(rel.date)}</span>
+      <span class="related-name">${escapeHtml(rel.name)}</span>
+      <span class="related-cat ${getCategoryClass(rel.category)}">${escapeHtml(getCategoryLabel(rel.category))}</span>
+    </button>
+  `).join('');
+
+  container.onclick = (clickEvent) => {
+    const btn = clickEvent.target.closest('.related-event');
+    if (btn && window.showDetail) window.showDetail(btn.dataset.id);
+  };
+  section.style.display = 'block';
+}
+
+let wikiRequestToken = 0;
+function loadWikiEnrichment(event) {
+  const figure = document.getElementById('detailFigure');
+  const image = document.getElementById('detailImage');
+  const caption = document.getElementById('detailImageCaption');
+  const wikiSection = document.getElementById('detailWikiSection');
+  const wikiExtract = document.getElementById('detailWikiExtract');
+
+  // Réinitialise pendant le chargement
+  if (figure) figure.style.display = 'none';
+  if (wikiSection) wikiSection.style.display = 'none';
+
+  const token = ++wikiRequestToken;
+  fetchWikiInfo(event.name).then((info) => {
+    if (token !== wikiRequestToken || !info) return; // une fiche plus récente est ouverte
+
+    if (info.thumbnail && image && figure) {
+      image.src = info.thumbnail;
+      image.alt = info.title || event.name;
+      if (caption) caption.textContent = info.title || '';
+      figure.style.display = 'block';
+    }
+    if (info.extract && wikiSection && wikiExtract) {
+      wikiExtract.textContent = info.extract;
+      wikiSection.style.display = 'block';
+    }
+    // Lien Wikipédia direct vers la page trouvée
+    const wikiLink = document.getElementById('detailWikipediaLink');
+    if (wikiLink && info.pageUrl) {
+      wikiLink.href = info.pageUrl;
+      wikiLink.style.display = 'inline-flex';
+    }
+  });
+}
+
 export function showDetailPage(event) {
   const detailPage = document.getElementById('detailPage');
   if (!detailPage) return;
+
+  // Enrichissement à la volée pour les fiches sans métadonnées (ex. événements pays)
+  if (!event._themes) event._themes = detectEventThemes(event);
+  if (event._year === undefined) {
+    const parsed = parseHistoricalDate(event.date);
+    event._year = parsed ? parsed.year : null;
+  }
 
   const era = state.timelineData?.eras.find((entry) => entry.id === event.era);
   const badge = era ? era.icon : '📜';
@@ -100,6 +205,12 @@ export function showDetailPage(event) {
   document.getElementById('detailDate').textContent = event.date;
   document.getElementById('detailTitle').textContent = event.name;
   document.getElementById('detailSummary').textContent = generateDetailedSummary(event);
+
+  document.getElementById('detailCauses').textContent = generateCauses(event);
+  document.getElementById('detailConsequences').textContent = generateConsequences(event);
+
+  renderRelatedEvents(event);
+  loadWikiEnrichment(event);
 
   const peopleSection = document.getElementById('detailPeopleSection');
   const peopleEl = document.getElementById('detailPeople');

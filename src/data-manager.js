@@ -1,5 +1,5 @@
 import { state } from './state.js';
-import { mergeTimelineEvents } from './utils.js';
+import { mergeTimelineEvents, detectEventThemes, parseHistoricalDate } from './utils.js';
 
 export async function loadData() {
   const controller = new AbortController();
@@ -33,6 +33,10 @@ export async function loadData() {
       state.eventById = new Map();
       state.timelineData.events.forEach((event, idx) => {
         if (!event.id) event.id = `evt-${idx}`;
+        // Enrichissement : thèmes (filtres) + année numérique (frise interactive)
+        event._themes = detectEventThemes(event);
+        const parsed = parseHistoricalDate(event.date);
+        event._year = parsed ? parsed.year : null;
         state.eventById.set(event.id, event);
       });
     }

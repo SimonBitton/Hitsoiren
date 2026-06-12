@@ -12,6 +12,17 @@
   <meta property="og:image" content="favicon-histoiren.png">
   <link rel="icon" type="image/png" href="favicon-histoiren.png">
 
+  <!-- Thème (anti-FOUC, doit s'exécuter avant le rendu) -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('histoiren:theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
+      } catch (e) { document.documentElement.dataset.theme = 'light'; }
+    })();
+  </script>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +33,7 @@
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/views.css">
+  <link rel="stylesheet" href="css/features.css">
   <link rel="stylesheet" href="css/os-specific.css">
 
   <!-- OS Detection & Adaptations (must be early to avoid FOUC) -->
@@ -40,7 +52,21 @@
     <button class="nav-tab active" data-view="presentation" role="tab" aria-selected="true" tabindex="0" type="button">🏛 Présentation</button>
     <button class="nav-tab" data-view="timeline" role="tab" aria-selected="false" tabindex="-1" type="button">📜 Chronologie</button>
     <button class="nav-tab" data-view="countries" role="tab" aria-selected="false" tabindex="-1" type="button">🌍 Par Pays</button>
+    <button class="nav-tab" data-view="apprendre" role="tab" aria-selected="false" tabindex="-1" type="button">🎓 Apprendre</button>
   </nav>
+
+  <!-- Bascule mode sombre -->
+  <button id="themeToggle" class="theme-toggle" type="button" aria-label="Basculer le mode sombre" title="Mode sombre / clair">
+    <svg class="theme-icon-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+      <circle cx="12" cy="12" r="4.5" fill="currentColor"/>
+      <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/>
+      </g>
+    </svg>
+    <svg class="theme-icon-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+      <path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" fill="currentColor"/>
+    </svg>
+  </button>
 
   <!-- Bouton toggle sidebar -->
   <button id="sidebarToggle" class="sidebar-toggle" aria-label="Ouvrir le menu de navigation" aria-expanded="false">
@@ -93,7 +119,17 @@
           <div class="feature-card">
             <div class="feature-icon" aria-hidden="true">🔍</div>
             <h3>Recherche avancée</h3>
-            <p>Trouvez rapidement les événements qui vous intéressent grâce à notre moteur de recherche.</p>
+            <p>Trouvez vos événements par personnage, date, thème ou époque, avec des filtres intelligents.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">🕰️</div>
+            <h3>Frise interactive</h3>
+            <p>Zoomez et déplacez-vous sur une véritable ligne du temps pour visualiser les grandes périodes.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">🎓</div>
+            <h3>Mode apprentissage</h3>
+            <p>Testez vos connaissances avec des quiz et des flashcards, et suivez votre score.</p>
           </div>
         </section>
 
@@ -157,6 +193,18 @@
       </div>
     </div>
 
+    <!-- ── Vue Apprendre (Quiz & Flashcards) ── -->
+    <div id="view-apprendre" class="view-container">
+      <header>
+        <div class="ornament">Histoiren</div>
+        <h1>Mode <span>Apprentissage</span></h1>
+        <p>Quiz, flashcards et défis pour mémoriser l'histoire en s'amusant.</p>
+      </header>
+      <div id="quizRoot" class="quiz-root" aria-live="polite">
+        <!-- Contenu injecté par quiz.js -->
+      </div>
+    </div>
+
     <!-- ── Page de détail ── -->
     <div id="detailPage" class="detail-page" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
       <div class="detail-shell">
@@ -179,10 +227,31 @@
 
           <h1 id="detailTitle" class="detail-title"></h1>
 
+          <figure id="detailFigure" class="detail-figure" style="display: none;">
+            <img id="detailImage" class="detail-image" alt="" loading="lazy">
+            <figcaption id="detailImageCaption" class="detail-image-caption"></figcaption>
+          </figure>
+
           <div class="detail-body">
             <div class="detail-section">
               <h3>📝 Résumé</h3>
               <p id="detailSummary" class="detail-summary"></p>
+            </div>
+
+            <div class="detail-section" id="detailWikiSection" style="display: none;">
+              <h3>📖 Le saviez-vous ? <span class="detail-source-tag">d'après Wikipédia</span></h3>
+              <p id="detailWikiExtract" class="detail-context-text"></p>
+            </div>
+
+            <div class="detail-grid-two">
+              <div class="detail-section detail-causes" id="detailCausesSection">
+                <h3>🌱 Causes</h3>
+                <p id="detailCauses" class="detail-context-text"></p>
+              </div>
+              <div class="detail-section detail-consequences" id="detailConsequencesSection">
+                <h3>🎯 Conséquences</h3>
+                <p id="detailConsequences" class="detail-context-text"></p>
+              </div>
             </div>
 
             <div class="detail-section" id="detailPeopleSection" style="display: none;">
@@ -193,6 +262,11 @@
             <div class="detail-section" id="detailContextSection" style="display: none;">
               <h3>🔍 Contexte historique</h3>
               <p id="detailContext" class="detail-context-text"></p>
+            </div>
+
+            <div class="detail-section" id="detailRelatedSection" style="display: none;">
+              <h3>🔗 Événements liés</h3>
+              <div id="detailRelated" class="detail-related"></div>
             </div>
 
             <div class="detail-actions">

@@ -2,14 +2,27 @@
 
 Site statique (un seul `index.html`) qui présente une **frise chronologique interactive** de l'histoire mondiale, avec :
 - 📜 Chronologie complète de la Préhistoire à nos jours
+- 🕰️ **Frise interactive zoomable** (glisser / zoomer / cliquer pour ouvrir une fiche)
 - 🌍 Histoire organisée par pays
+- 🎓 **Mode apprentissage** : quiz, flashcards et score de progression
+- 🌙 **Mode sombre** (avec mémorisation du choix)
+- 🔍 **Recherche & filtres avancés** : par personnage, pays, date, thème, époque
+- 🔗 **Événements liés** pour suivre les chaînes historiques
+- 🖼️ **Images & extraits Wikipédia** récupérés automatiquement dans les fiches
 - 📊 Statistiques et analyses
-- 🔍 Recherche instantanée
 - 📱 Interface responsive
 - 🏆 Top 50 des dates les plus importantes
-- 📖 **Résumés détaillés** (5+ lignes) pour chaque événement
-- ✅ **Vérification des dates** via WikiData
-- 📈 **Centaines de milliers d'événements** disponibles
+- 📖 **Fiches détaillées** : résumé, causes, conséquences, personnages, contexte
+
+## Nouveautés de cette version
+
+- **Frise interactive** (`src/frise.js`) — bande chronologique à échelle signée-logarithmique : zoom (boutons ou Ctrl+molette), déplacement par glisser, points cliquables.
+- **Filtres avancés** — barre de filtres par époque et par thème (guerres, inventions, personnages, religion, art, exploration, politique) au-dessus de la chronologie.
+- **Recherche multi-champ** — la recherche couvre désormais le nom, le contexte, les personnages, la date, la catégorie et le thème.
+- **Mode apprentissage** (`src/quiz.js`) — quiz de 10 questions générées depuis la base, flashcards, score et meilleur score mémorisé.
+- **Mode sombre** (`src/theme.js`) — bascule en haut à droite, sans clignotement au chargement (script anti-FOUC).
+- **Fiches enrichies** — images et extraits réels via l'API Wikipédia (`src/wiki.js`), causes/conséquences, et **événements liés** (`src/related.js`).
+- **Animations au défilement** — apparition progressive des sections.
 
 ## Fonctionnalités principales
 

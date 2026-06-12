@@ -7,6 +7,8 @@ import { showDetailPage } from './detail-view.js';
 import { showCountryDetail, closeCountryModal } from './country-modal.js';
 import { getKeyModifier } from './os-detect.js';
 import { maybeStartOnboarding } from './onboarding.js';
+import { initTheme } from './theme.js';
+import { initLearn } from './quiz.js';
 import { debounce } from './utils.js';
 
 function cleanupDebugBadges() {
@@ -104,7 +106,7 @@ function bindTouchNavigation() {
   let startX = 0;
   let startY = 0;
   let isTracking = false;
-  const order = ['presentation', 'timeline', 'countries'];
+  const order = ['presentation', 'timeline', 'countries', 'apprendre'];
 
   root.addEventListener('touchstart', (event) => {
     if (event.touches.length !== 1) return;
@@ -158,6 +160,8 @@ async function init() {
   }
 
   cleanupDebugBadges();
+  initTheme();
+  initLearn();
   window.addEventListener('histoiren:start-tutorial', () => {
     maybeStartOnboarding(true);
   });

@@ -1,8 +1,9 @@
 import { state } from './state.js';
 import { renderTimeline, renderCountries, renderStats } from './ui-renderer.js';
 import { buildSidebarContent } from './sidebar.js';
+import { renderLearn } from './quiz.js';
 
-const VALID_VIEWS = new Set(['presentation', 'timeline', 'countries']);
+const VALID_VIEWS = new Set(['presentation', 'timeline', 'countries', 'apprendre']);
 
 function getRouteFromLocation() {
   const cleanPath = (window.location.pathname || '/').replace(/^\/+|\/+$/g, '');
@@ -43,7 +44,7 @@ export function setView(viewName, options = {}) {
   const sidebarToggle = document.getElementById('sidebarToggle');
   const sidebar = document.getElementById('quickNav');
   if (sidebarToggle && sidebar) {
-    const shouldHideSidebar = viewName === 'presentation';
+    const shouldHideSidebar = viewName === 'presentation' || viewName === 'apprendre';
     sidebarToggle.style.display = shouldHideSidebar ? 'none' : 'flex';
     sidebarToggle.setAttribute('aria-expanded', 'false');
     if (shouldHideSidebar) {
@@ -65,6 +66,8 @@ export function setView(viewName, options = {}) {
   } else if (viewName === 'presentation') {
     // Render stats inside the presentation view
     renderStats();
+  } else if (viewName === 'apprendre') {
+    renderLearn();
   }
 
   if (updateRoute && VALID_VIEWS.has(viewName)) {

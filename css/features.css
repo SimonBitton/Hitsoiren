@@ -38,6 +38,41 @@
 
 :root[data-theme='dark'] .main-nav { background: rgba(15, 17, 23, 0.82); }
 
+/* En-têtes et cartes de présentation : fonds clairs codés en dur → versions sombres */
+:root[data-theme='dark'] header {
+  background:
+    linear-gradient(180deg, rgba(24, 27, 36, 0.96), rgba(18, 21, 29, 0.9)),
+    radial-gradient(circle at 50% 0%, rgba(43, 75, 238, 0.22), transparent 50%);
+  border-color: rgba(42, 47, 60, 0.9);
+}
+:root[data-theme='dark'] .intro-card {
+  background:
+    linear-gradient(180deg, rgba(24, 27, 36, 0.98), rgba(18, 21, 29, 0.94)),
+    radial-gradient(circle at 0% 0%, rgba(43, 75, 238, 0.14), transparent 34%);
+}
+:root[data-theme='dark'] .feature-card {
+  background:
+    linear-gradient(180deg, rgba(24, 27, 36, 0.98), rgba(18, 21, 29, 0.94)),
+    linear-gradient(135deg, rgba(43, 75, 238, 0.12), rgba(124, 58, 237, 0.07));
+}
+:root[data-theme='dark'] .stat-card {
+  background:
+    linear-gradient(180deg, rgba(24, 27, 36, 0.99), rgba(18, 21, 29, 0.94)),
+    linear-gradient(135deg, rgba(43, 75, 238, 0.10), rgba(124, 58, 237, 0.05));
+}
+:root[data-theme='dark'] .stats-extra {
+  background:
+    linear-gradient(180deg, rgba(24, 27, 36, 0.99), rgba(18, 21, 29, 0.94)),
+    radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.10), transparent 30%);
+}
+:root[data-theme='dark'] .country-card {
+  background:
+    linear-gradient(180deg, rgba(24, 27, 36, 0.99), rgba(18, 21, 29, 0.94));
+}
+:root[data-theme='dark'] .sidebar-toggle {
+  background: rgba(24, 27, 36, 0.88);
+}
+
 /* Pastilles de catégorie — versions sombres lisibles */
 :root[data-theme='dark'] .cat-politique   { background: rgba(56, 189, 248, 0.16); color: #7dd3fc; }
 :root[data-theme='dark'] .cat-science     { background: rgba(74, 222, 128, 0.16); color: #86efac; }

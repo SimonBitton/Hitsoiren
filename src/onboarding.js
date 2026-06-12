@@ -139,63 +139,11 @@ export async function maybeStartOnboarding(force = false) {
   let currentStep = 0;
   let closed = false;
   const credit = overlay.querySelector('.intro-credit');
-  const allowedMouseTargets = '.onboarding-next, .onboarding-skip';
-  let mouseLockMode = null;
 
-  const blockMouseDuringOnboarding = (event) => {
-    if (closed) return;
-    const target = event.target;
-    if (target instanceof Element && target.closest(allowedMouseTargets)) return;
-    event.preventDefault();
-    event.stopPropagation();
-  };
-
-  const blockedMouseEvents = [
-    'click',
-    'dblclick',
-    'mousedown',
-    'mouseup',
-    'contextmenu',
-    'wheel'
-  ];
-
-  const frozenMouseEvents = [...blockedMouseEvents, 'mousemove'];
-
-  const detachMouseLockListeners = () => {
-    blockedMouseEvents.forEach((eventName) => {
-      window.removeEventListener(eventName, blockMouseDuringOnboarding, { capture: true });
-    });
-    frozenMouseEvents.forEach((eventName) => {
-      window.removeEventListener(eventName, blockMouseDuringOnboarding, { capture: true });
-    });
-  };
-
-  const setMouseLockMode = (mode) => {
-    if (mouseLockMode === mode) return;
-    mouseLockMode = mode;
-    detachMouseLockListeners();
-
-    document.body.classList.remove('onboarding-mouse-locked', 'onboarding-mouse-frozen');
-    if (mode === 'none') return;
-
-    const events = mode === 'frozen' ? frozenMouseEvents : blockedMouseEvents;
-    events.forEach((eventName) => {
-      window.addEventListener(eventName, blockMouseDuringOnboarding, { capture: true, passive: false });
-    });
-
-    if (mode === 'frozen') {
-      document.body.classList.add('onboarding-mouse-frozen');
-      return;
-    }
-    document.body.classList.add('onboarding-mouse-locked');
-  };
-
-  // Intro "Bienvenue" : souris figée quelques secondes.
-  setMouseLockMode('frozen');
-
-  const releaseMouseLock = () => {
-    setMouseLockMode('none');
-  };
+  // L'overlay (position:fixed, z-index très élevé) couvre déjà toute la page :
+  // inutile de bloquer/figer la souris globalement — c'est précisément ce qui
+  // donnait l'impression d'un site « gelé » où plus aucun bouton ne répond.
+  const releaseMouseLock = () => {};
 
   const typeCredit = async (content) => {
     if (!credit) return;
@@ -251,6 +199,11 @@ export async function maybeStartOnboarding(force = false) {
   };
 
   skipBtn.addEventListener('click', finish);
+  // Cliquer en dehors de la carte / du splash / des boutons ferme l'introduction.
+  overlay.addEventListener('click', (event) => {
+    if (event.target.closest('.onboarding-card, .intro-splash, .onboarding-skip, .onboarding-next')) return;
+    finish();
+  });
   next.addEventListener('click', async () => {
     if (currentStep >= STEPS.length - 1) {
       await finish();
@@ -271,8 +224,6 @@ export async function maybeStartOnboarding(force = false) {
   await wait(1700);
   splash.classList.add('is-hidden');
   overlay.classList.add('is-guided');
-  // Étapes guidées : souris non utilisable, mais sans figer son mouvement.
-  setMouseLockMode('locked');
   await wait(220);
   card.classList.add('is-visible');
 

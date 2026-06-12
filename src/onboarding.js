@@ -1,6 +1,5 @@
 import { setView } from './router.js';
-
-const INTRO_SEEN_KEY = 'histoiren_intro_seen_v1';
+import { markOnboardingSeen, readAppState } from './app-state.js';
 
 const STEPS = [
   {
@@ -120,14 +119,10 @@ function setHighlightRect(highlight, rect) {
   highlight.style.height = `${Math.round(rect.height + 16)}px`;
 }
 
-export function resetOnboardingIntro() {
-  localStorage.removeItem(INTRO_SEEN_KEY);
-}
-
 export async function maybeStartOnboarding(force = false) {
-  if (!force && localStorage.getItem(INTRO_SEEN_KEY) === '1') return;
+  const appState = readAppState();
+  if (!force && appState.onboardingSeen) return;
   if (document.querySelector('.onboarding-overlay')) return;
-  if (force) resetOnboardingIntro();
 
   const overlay = createOverlay();
   const splash = overlay.querySelector('.intro-splash');
@@ -218,7 +213,7 @@ export async function maybeStartOnboarding(force = false) {
     closed = true;
     window.removeEventListener('resize', handleResize);
     releaseMouseLock();
-    localStorage.setItem(INTRO_SEEN_KEY, '1');
+    markOnboardingSeen();
     setView('presentation');
     overlay.classList.add('is-exiting');
     await wait(450);

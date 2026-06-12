@@ -1,15 +1,22 @@
+import { readAppState } from './app-state.js';
+
+const persistedAppState = readAppState();
+
 export const state = {
   era: 'all',
   type: 'all',
   timelineSearch: '',
   countrySearch: '',
-  currentView: 'timeline',
+  worldMapRegion: 'ameriques',
+  currentView: persistedAppState.lastView || 'presentation',
   timelineData: null,
   countriesData: [],
   eventById: null,
   sidebarOpen: false,
   detailSource: 'timeline',
-  detailCountryId: null
+  detailCountryId: null,
+  hasVisited: Boolean(persistedAppState.hasVisited),
+  onboardingSeen: Boolean(persistedAppState.onboardingSeen)
 };
 
 export const eraConfigs = {

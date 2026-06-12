@@ -8235,6 +8235,83 @@
       "people": "Hamas",
       "category": "Politique",
       "catSlug": "politique"
+    },
+    {
+      "id": "evt-modernes-add3-29-mai-1453",
+      "era": "modernes",
+      "major": true,
+      "date": "29 mai 1453",
+      "name": "Chute de Constantinople",
+      "context": "Fin de l'Empire byzantin et basculement des équilibres méditerranéens.",
+      "people": "Mehmed II",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "id": "evt-modernes-add3-31-octobre-1517",
+      "era": "modernes",
+      "major": true,
+      "date": "31 octobre 1517",
+      "name": "Publication des 95 thèses de Luther",
+      "context": "Déclenchement symbolique de la Réforme protestante en Europe.",
+      "people": "Martin Luther",
+      "category": "Culture",
+      "catSlug": "culture"
+    },
+    {
+      "id": "evt-modernes-add3-24-octobre-1648",
+      "era": "modernes",
+      "major": false,
+      "date": "24 octobre 1648",
+      "name": "Traités de Westphalie",
+      "context": "Nouvelle architecture diplomatique européenne et affirmation de l'État moderne.",
+      "people": "Royaumes européens",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "id": "evt-modernes-add3-4-juillet-1776",
+      "era": "modernes",
+      "major": true,
+      "date": "4 juillet 1776",
+      "name": "Déclaration d'indépendance des États-Unis",
+      "context": "Rupture fondatrice pour la République américaine et diffusion d'idées révolutionnaires.",
+      "people": "Thomas Jefferson, John Adams, Benjamin Franklin",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "id": "evt-contemporain-add3-24-octobre-1945",
+      "era": "contemporain",
+      "major": true,
+      "date": "24 octobre 1945",
+      "name": "Création de l'Organisation des Nations unies",
+      "context": "Mise en place d'une institution mondiale destinée à prévenir de nouveaux conflits majeurs.",
+      "people": "États fondateurs de l'ONU",
+      "category": "Politique",
+      "catSlug": "politique"
+    },
+    {
+      "id": "evt-contemporain-add3-20-juillet-1969",
+      "era": "contemporain",
+      "major": true,
+      "date": "20 juillet 1969",
+      "name": "Premiers pas de l'homme sur la Lune",
+      "context": "Apollo 11 symbolise la victoire technologique et scientifique de la conquête spatiale.",
+      "people": "Neil Armstrong, Buzz Aldrin, Michael Collins",
+      "category": "Science",
+      "catSlug": "science"
+    },
+    {
+      "id": "evt-contemporain-add3-9-novembre-1989",
+      "era": "contemporain",
+      "major": true,
+      "date": "9 novembre 1989",
+      "name": "Chute du mur de Berlin",
+      "context": "L'un des symboles les plus forts de la fin de la guerre froide en Europe.",
+      "people": "Citoyens de Berlin",
+      "category": "Politique",
+      "catSlug": "politique"
     }
   ]
 }

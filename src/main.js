@@ -3,10 +3,12 @@ import { loadData, getEventById } from './data-manager.js';
 import { initRouter, setView } from './router.js';
 import { toggleSidebar, buildSidebarContent } from './sidebar.js';
 import { renderTimeline, renderCountries } from './ui-renderer.js';
+import { renderWorldMap, selectWorldMapRegion } from './world-map-react.js';
 import { showDetailPage } from './detail-view.js';
 import { showCountryDetail, closeCountryModal } from './country-modal.js';
 import { getKeyModifier } from './os-detect.js';
 import { maybeStartOnboarding } from './onboarding.js';
+import { markAppVisited } from './app-state.js';
 import { debounce } from './utils.js';
 
 function cleanupDebugBadges() {
@@ -104,7 +106,7 @@ function bindTouchNavigation() {
   let startX = 0;
   let startY = 0;
   let isTracking = false;
-  const order = ['presentation', 'timeline', 'countries'];
+  const order = ['presentation', 'timeline', 'world-map', 'countries'];
 
   root.addEventListener('touchstart', (event) => {
     if (event.touches.length !== 1) return;
@@ -158,9 +160,6 @@ async function init() {
   }
 
   cleanupDebugBadges();
-  window.addEventListener('histoiren:start-tutorial', () => {
-    maybeStartOnboarding(true);
-  });
   initRouter();
   window.addEventListener('histoiren:set-view', (event) => {
     const targetView = event.detail?.view;
@@ -168,6 +167,8 @@ async function init() {
   });
   bindSearch();
   bindTouchNavigation();
+  state.hasVisited = true;
+  markAppVisited();
 
   const sidebarToggle = document.getElementById('sidebarToggle');
   if (sidebarToggle) sidebarToggle.addEventListener('click', toggleSidebar);
@@ -186,5 +187,9 @@ window.showDetail = function showDetail(id, source = 'timeline') {
 
 window.showCountryDetail = showCountryDetail;
 window.closeCountryModal = closeCountryModal;
+window.selectWorldMapRegion = function selectWorldMapRegionAndRefresh(regionId) {
+  selectWorldMapRegion(regionId);
+  buildSidebarContent();
+};
 
 init();

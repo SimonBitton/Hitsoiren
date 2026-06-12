@@ -146,6 +146,7 @@ export function renderCountries() {
   };
 }
 
+
 export function renderStats() {
   const container = document.getElementById('presentationStats');
   if (!container) return;

@@ -24,10 +24,12 @@ body {
   line-height: 1.5;
   min-height: 100vh;
   overflow-x: hidden;
-  /* Halos subtils — ADN visuel Ovyn */
+  /* Halos subtils — ADN visuel Histoiren */
   background-image:
-    radial-gradient(circle at 0% 0%,   rgba(43, 75, 238, 0.06) 0%, transparent 50%),
-    radial-gradient(circle at 100% 0%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);
+    radial-gradient(circle at 0% 0%,   rgba(43, 75, 238, 0.10) 0%, transparent 42%),
+    radial-gradient(circle at 100% 0%, rgba(16, 185, 129, 0.06) 0%, transparent 42%),
+    radial-gradient(circle at 50% 100%, rgba(124, 58, 237, 0.06) 0%, transparent 38%);
+  background-attachment: fixed;
   overflow-x: clip;
   touch-action: pan-y;
   -webkit-tap-highlight-color: transparent;

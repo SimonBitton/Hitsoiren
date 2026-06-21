@@ -592,15 +592,20 @@ body.onboarding-mouse-frozen * {
   100% { box-shadow: 0 0 0 14px rgba(99, 131, 255, 0); }
 }
 
-@media (max-width: 768px) {
-  .intro-logo-wrap {
-    width: 104px;
-    height: 104px;
+@media (max-width: 767px) {
+  .onboarding-card {
+    left: 0.75rem !important;
+    right: 0.75rem !important;
+    width: auto !important;
+    max-width: none;
+    transform: none !important;
+    bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px)) !important;
+    top: auto !important;
   }
 
-  .onboarding-card {
-    border-radius: 14px;
-    padding: 0.8rem;
+  .onboarding-skip {
+    top: max(0.75rem, env(safe-area-inset-top));
+    right: 0.75rem;
   }
 }
 

@@ -1,5 +1,5 @@
 import { state } from './state.js';
-import { escapeHtml } from './utils.js';
+import { escapeHtml, getAppleFlagEmojiHtml } from './utils.js';
 import { showDetailPage } from './detail-view.js';
 
 export function closeCountryModal() {
@@ -46,7 +46,7 @@ export function showCountryDetail(countryId) {
       <div class="country-modal-content">
         <div class="modal-header">
           <button class="close-modal" data-action="close-country-modal" aria-label="Fermer">&times;</button>
-          <h2>${escapeHtml(country.flag)} ${escapeHtml(country.name)}</h2>
+           <h2>${getAppleFlagEmojiHtml(country.flag, country.name)} ${escapeHtml(country.name)}</h2>
           <p>Chronologie nationale</p>
         </div>
         <div class="modal-body">

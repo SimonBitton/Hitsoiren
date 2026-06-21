@@ -279,3 +279,12 @@ export function sanitizeExternalUrl(rawValue) {
     return null;
   }
 }
+
+export function getAppleFlagEmojiHtml(flagEmoji, countryName = '') {
+  if (!flagEmoji || typeof flagEmoji !== 'string') return '';
+  const codePoints = [...flagEmoji].map((char) => char.codePointAt(0).toString(16));
+  const filename = codePoints.join('-').toLowerCase() + '.png';
+  const url = `https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${filename}`;
+  return `<img class="apple-flag" src="${url}" alt="${escapeHtml(countryName || flagEmoji)}" />`;
+}
+

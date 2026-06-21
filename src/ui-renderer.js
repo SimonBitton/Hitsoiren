@@ -1,5 +1,5 @@
 import { state, eraConfigs } from './state.js';
-import { compareHistoricalDates, escapeHtml, getCategoryClass, getCategoryLabel, normalizeText, eventMatchesSearch, THEME_DEFINITIONS } from './utils.js';
+import { compareHistoricalDates, escapeHtml, getCategoryClass, getCategoryLabel, normalizeText, eventMatchesSearch, THEME_DEFINITIONS, getAppleFlagEmojiHtml } from './utils.js';
 import { renderFriseBand } from './frise.js';
 import { renderWorldMap } from './worldmap.js';
 import { getContinentOf, getContinentMeta } from './continents.js';
@@ -68,31 +68,52 @@ function bindFilterBar(container) {
     const { filter, value } = chip.dataset;
     if (filter === 'era') state.timelineEra = value;
     if (filter === 'theme') state.timelineTheme = value;
-    renderTimeline();
+    renderActiveTimelineView();
   });
 }
 
-function bindTimelineClicks(container) {
-  container.onclick = (event) => {
-    const eventCard = event.target.closest('.event');
-    if (!eventCard) return;
-    const eventId = eventCard.dataset.id;
-    if (eventId && window.showDetail) window.showDetail(eventId);
-  };
-}
-
-export function renderTimeline() {
-  const container = document.getElementById('timelineContent');
-  if (!container || !state.timelineData) return;
-
+function getTimelineFilterData() {
   const search = normalizeText(state.timelineSearch);
   const filtersActive = hasActiveFilters(search);
   const groupedByEra = groupEventsByEra(state.timelineData.events, search);
   const filteredFlat = [...groupedByEra.values()].flat();
-  const totalMatches = filteredFlat.length;
+  return { search, filtersActive, groupedByEra, filteredFlat, totalMatches: filteredFlat.length };
+}
+
+export function renderActiveTimelineView() {
+  if (state.currentView === 'frise') renderFriseView();
+  else if (state.currentView === 'timeline') renderTimelineList();
+}
+
+export function renderFriseView() {
+  const container = document.getElementById('friseContent');
+  if (!container || !state.timelineData) return;
+
+  const { filtersActive, filteredFlat, totalMatches } = getTimelineFilterData();
 
   let html = renderFilterBar();
   html += '<div id="friseBandSlot"></div>';
+
+  if (filtersActive) {
+    html += `<p class="filter-result-count" role="status">${totalMatches} événement${totalMatches > 1 ? 's' : ''} trouvé${totalMatches > 1 ? 's' : ''}</p>`;
+  }
+
+  if (filtersActive && totalMatches === 0) {
+    html += '<p class="empty-state">Aucun événement ne correspond à ces critères. Essayez d\'élargir vos filtres.</p>';
+  }
+
+  container.innerHTML = html;
+  bindFilterBar(container);
+  renderFriseBand(document.getElementById('friseBandSlot'), filteredFlat);
+}
+
+export function renderTimelineList() {
+  const container = document.getElementById('timelineContent');
+  if (!container || !state.timelineData) return;
+
+  const { filtersActive, groupedByEra, totalMatches } = getTimelineFilterData();
+
+  let html = renderFilterBar();
 
   if (filtersActive) {
     html += `<p class="filter-result-count" role="status">${totalMatches} événement${totalMatches > 1 ? 's' : ''} trouvé${totalMatches > 1 ? 's' : ''}</p>`;
@@ -182,8 +203,22 @@ export function renderTimeline() {
   container.innerHTML = html;
   bindTimelineClicks(container);
   bindFilterBar(container);
-  renderFriseBand(document.getElementById('friseBandSlot'), filteredFlat);
   observeReveals(container);
+}
+
+function bindTimelineClicks(container) {
+  container.onclick = (event) => {
+    const eventCard = event.target.closest('.event');
+    if (!eventCard) return;
+    const eventId = eventCard.dataset.id;
+    if (eventId && window.showDetail) window.showDetail(eventId);
+  };
+}
+
+/** @deprecated Use renderActiveTimelineView, renderFriseView or renderTimelineList */
+export function renderTimeline() {
+  renderFriseView();
+  renderTimelineList();
 }
 
 let revealObserver = null;
@@ -225,7 +260,7 @@ export function renderCountries() {
 
   container.innerHTML = filtered.map((country) => `
     <button class="country-card" type="button" data-country-id="${country.id}" aria-label="Ouvrir la chronologie de ${escapeHtml(country.name)}">
-      <div class="country-flag">${country.flag}</div>
+      <div class="country-flag">${getAppleFlagEmojiHtml(country.flag, country.name)}</div>
       <div class="country-info">
         <h3>${escapeHtml(country.name)}</h3>
         <p>${country.events.length} Événements</p>

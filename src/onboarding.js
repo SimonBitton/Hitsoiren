@@ -3,10 +3,16 @@ import { markOnboardingSeen, readAppState } from './app-state.js';
 
 const STEPS = [
   {
+    view: 'frise',
+    selector: '#view-frise .frise',
+    title: 'Frise interactive',
+    description: 'Zoomez et faites glisser la ligne du temps pour visualiser les grandes périodes historiques.'
+  },
+  {
     view: 'timeline',
     selector: '#view-timeline .search-container',
     title: 'Recherche instantanée',
-    description: 'Tapez une date, un événement ou un personnage pour filtrer la chronologie en direct.'
+    description: 'Tapez une date, un événement ou un personnage pour filtrer la liste chronologique en direct.'
   },
   {
     view: 'timeline',
@@ -24,6 +30,10 @@ const STEPS = [
 
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function waitForFrame() {
+  return new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 }
 
 function tryPlayWhoosh() {
@@ -109,6 +119,15 @@ function placeCardNearTarget(card, rect) {
 
   card.style.top = `${Math.round(top)}px`;
   card.style.left = `${Math.round(left)}px`;
+  card.style.bottom = 'auto';
+  card.style.transform = 'none';
+}
+
+function centerCard(card) {
+  card.style.top = 'auto';
+  card.style.left = '50%';
+  card.style.bottom = 'calc(5.5rem + env(safe-area-inset-bottom, 0px))';
+  card.style.transform = 'translateX(-50%)';
 }
 
 function setHighlightRect(highlight, rect) {
@@ -117,6 +136,19 @@ function setHighlightRect(highlight, rect) {
   highlight.style.left = `${Math.round(rect.left - 8)}px`;
   highlight.style.width = `${Math.round(rect.width + 16)}px`;
   highlight.style.height = `${Math.round(rect.height + 16)}px`;
+}
+
+async function findStepTarget(step) {
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    const target = document.querySelector(step.selector);
+    const rect = target?.getBoundingClientRect();
+    if (rect && rect.width > 0 && rect.height > 0) {
+      return { target, rect };
+    }
+    await wait(120);
+    await waitForFrame();
+  }
+  return { target: null, rect: null };
 }
 
 export async function maybeStartOnboarding(force = false) {
@@ -140,18 +172,12 @@ export async function maybeStartOnboarding(force = false) {
   let closed = false;
   const credit = overlay.querySelector('.intro-credit');
 
-  // L'overlay (position:fixed, z-index très élevé) couvre déjà toute la page :
-  // inutile de bloquer/figer la souris globalement — c'est précisément ce qui
-  // donnait l'impression d'un site « gelé » où plus aucun bouton ne répond.
-  const releaseMouseLock = () => {};
-
   const typeCredit = async (content) => {
     if (!credit) return;
     credit.textContent = '';
     credit.classList.add('is-visible');
     for (let i = 0; i < content.length; i += 1) {
       credit.textContent += content[i];
-      // Slightly irregular cadence for a more natural feel.
       await wait(content[i] === ' ' ? 30 : 45);
     }
   };
@@ -160,7 +186,6 @@ export async function maybeStartOnboarding(force = false) {
     if (closed) return;
     closed = true;
     window.removeEventListener('resize', handleResize);
-    releaseMouseLock();
     markOnboardingSeen();
     setView('presentation');
     overlay.classList.add('is-exiting');
@@ -171,10 +196,10 @@ export async function maybeStartOnboarding(force = false) {
   const runStep = async () => {
     const step = STEPS[currentStep];
     setView(step.view);
-    await wait(220);
+    await waitForFrame();
+    await wait(180);
 
-    const target = document.querySelector(step.selector);
-    const rect = target?.getBoundingClientRect();
+    const { target, rect } = await findStepTarget(step);
 
     title.textContent = step.title;
     text.textContent = step.description;
@@ -182,24 +207,20 @@ export async function maybeStartOnboarding(force = false) {
     progressBar.setAttribute('aria-valuenow', String(currentStep + 1));
     progressFill.style.width = `${((currentStep + 1) / STEPS.length) * 100}%`;
 
-    if (rect && rect.width > 0 && rect.height > 0) {
+    if (rect) {
       setHighlightRect(highlight, rect);
       placeCardNearTarget(card, rect);
       target.classList.add('onboarding-target-active');
       setTimeout(() => target.classList.remove('onboarding-target-active'), 700);
     } else {
       highlight.style.opacity = '0';
-      card.style.top = 'auto';
-      card.style.left = '50%';
-      card.style.bottom = '20px';
-      card.style.transform = 'translateX(-50%)';
+      centerCard(card);
     }
 
     next.textContent = currentStep === STEPS.length - 1 ? 'Terminer' : 'Suivant';
   };
 
   skipBtn.addEventListener('click', finish);
-  // Cliquer en dehors de la carte / du splash / des boutons ferme l'introduction.
   overlay.addEventListener('click', (event) => {
     if (event.target.closest('.onboarding-card, .intro-splash, .onboarding-skip, .onboarding-next')) return;
     finish();
@@ -221,10 +242,10 @@ export async function maybeStartOnboarding(force = false) {
 
   tryPlayWhoosh();
   await typeCredit('Créé par Simon Bitton');
-  await wait(1700);
+  await wait(900);
   splash.classList.add('is-hidden');
   overlay.classList.add('is-guided');
-  await wait(220);
+  await wait(180);
   card.classList.add('is-visible');
 
   await runStep();

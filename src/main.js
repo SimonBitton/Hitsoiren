@@ -2,7 +2,7 @@ import { state } from './state.js';
 import { loadData, getEventById } from './data-manager.js';
 import { initRouter, setView } from './router.js';
 import { toggleSidebar, buildSidebarContent } from './sidebar.js';
-import { renderTimeline, renderCountries } from './ui-renderer.js';
+import { renderFriseView, renderTimelineList, renderCountries } from './ui-renderer.js';
 import { showDetailPage } from './detail-view.js';
 import { showCountryDetail, closeCountryModal } from './country-modal.js';
 import { getKeyModifier } from './os-detect.js';
@@ -37,10 +37,12 @@ function cleanupDebugBadges() {
 
 function bindSearch() {
   const searchInput = document.getElementById('searchInput');
+  const friseSearchInput = document.getElementById('friseSearchInput');
   const countrySearchInput = document.getElementById('countrySearchInput');
 
   const syncSearchInputs = () => {
     if (searchInput && searchInput.value !== state.timelineSearch) searchInput.value = state.timelineSearch;
+    if (friseSearchInput && friseSearchInput.value !== state.timelineSearch) friseSearchInput.value = state.timelineSearch;
     if (countrySearchInput && countrySearchInput.value !== state.countrySearch) countrySearchInput.value = state.countrySearch;
   };
 
@@ -48,12 +50,18 @@ function bindSearch() {
 
   window.addEventListener('histoiren:sync-search-inputs', syncSearchInputs);
 
+  const onTimelineSearch = debounce((event) => {
+    state.timelineSearch = event.target.value;
+    renderFriseView();
+    renderTimelineList();
+  });
+
   if (searchInput) {
-    const onTimelineSearch = debounce((event) => {
-      state.timelineSearch = event.target.value;
-      renderTimeline();
-    });
     searchInput.addEventListener('input', onTimelineSearch);
+  }
+
+  if (friseSearchInput) {
+    friseSearchInput.addEventListener('input', onTimelineSearch);
   }
 
   if (countrySearchInput) {
@@ -73,6 +81,9 @@ function bindSearch() {
       if (activeView.id === 'view-timeline' && searchInput) {
         searchInput.focus();
         searchInput.select();
+      } else if (activeView.id === 'view-frise' && friseSearchInput) {
+        friseSearchInput.focus();
+        friseSearchInput.select();
       } else if (activeView.id === 'view-countries' && countrySearchInput) {
         countrySearchInput.focus();
         countrySearchInput.select();
@@ -81,7 +92,9 @@ function bindSearch() {
 
     // Échap pour effacer la recherche
     if (event.key === 'Escape') {
-      if (document.activeElement === searchInput || document.activeElement === countrySearchInput) {
+      if (document.activeElement === searchInput
+        || document.activeElement === friseSearchInput
+        || document.activeElement === countrySearchInput) {
         document.activeElement.value = '';
         document.activeElement.dispatchEvent(new Event('input'));
         document.activeElement.blur();
@@ -107,11 +120,11 @@ function bindTouchNavigation() {
   let startX = 0;
   let startY = 0;
   let isTracking = false;
-  const order = ['presentation', 'timeline', 'countries', 'apprendre'];
+  const order = ['frise', 'timeline', 'presentation', 'countries', 'apprendre'];
 
   root.addEventListener('touchstart', (event) => {
     if (event.touches.length !== 1) return;
-    if (event.target.closest('input, textarea, button, a, .country-modal, .detail-page')) return;
+    if (event.target.closest('input, textarea, button, a, .country-modal, .detail-page, .frise, .frise-viewport, .onboarding-overlay')) return;
     startX = event.touches[0].clientX;
     startY = event.touches[0].clientY;
     isTracking = true;
@@ -163,7 +176,9 @@ async function init() {
   cleanupDebugBadges();
   initTheme();
   initLearn();
+  let tutorialQueued = false;
   window.addEventListener('histoiren:start-tutorial', () => {
+    tutorialQueued = true;
     maybeStartOnboarding(true);
   });
   initRouter();
@@ -180,9 +195,10 @@ async function init() {
   const sidebarToggle = document.getElementById('sidebarToggle');
   if (sidebarToggle) sidebarToggle.addEventListener('click', toggleSidebar);
 
-  renderTimeline();
+  renderFriseView();
+  renderTimelineList();
   buildSidebarContent();
-  maybeStartOnboarding();
+  if (!tutorialQueued) maybeStartOnboarding();
 }
 
 window.showDetail = function showDetail(id, source = 'timeline') {

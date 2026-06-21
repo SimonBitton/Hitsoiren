@@ -1,10 +1,10 @@
 import { state } from './state.js';
 import { setLastView } from './app-state.js';
-import { renderTimeline, renderCountries, renderStats } from './ui-renderer.js';
+import { renderFriseView, renderTimelineList, renderCountries, renderStats } from './ui-renderer.js';
 import { buildSidebarContent } from './sidebar.js';
 import { renderLearn } from './quiz.js';
 
-const VALID_VIEWS = new Set(['presentation', 'timeline', 'countries', 'apprendre']);
+const VALID_VIEWS = new Set(['presentation', 'frise', 'timeline', 'countries', 'apprendre']);
 
 function getRouteFromLocation() {
   const cleanPath = (window.location.pathname || '/').replace(/^\/+|\/+$/g, '');
@@ -28,9 +28,11 @@ export function setView(viewName, options = {}) {
   state.currentView = viewName;
   
   document.querySelectorAll('.nav-tab').forEach(tab => {
-    tab.classList.toggle('active', tab.dataset.view === viewName);
-    tab.setAttribute('aria-selected', String(tab.dataset.view === viewName));
-    tab.setAttribute('tabindex', tab.dataset.view === viewName ? '0' : '-1');
+    const isActive = tab.dataset.view === viewName;
+    tab.classList.toggle('active', isActive);
+    tab.classList.toggle('nav-tab--home', tab.dataset.view === 'presentation');
+    tab.setAttribute('aria-selected', String(isActive));
+    tab.setAttribute('tabindex', isActive ? '0' : '-1');
   });
   
   document.querySelectorAll('.view-container').forEach(container => {
@@ -41,31 +43,15 @@ export function setView(viewName, options = {}) {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
-  // Hide sidebar on views that do not use quick navigation
-  const sidebarToggle = document.getElementById('sidebarToggle');
-  const sidebar = document.getElementById('quickNav');
-  if (sidebarToggle && sidebar) {
-    const shouldHideSidebar = viewName === 'presentation' || viewName === 'apprendre';
-    sidebarToggle.style.display = shouldHideSidebar ? 'none' : 'flex';
-    sidebarToggle.setAttribute('aria-expanded', 'false');
-    if (shouldHideSidebar) {
-      sidebar.classList.remove('active');
-      sidebarToggle.classList.remove('active');
-      document.querySelector('main')?.classList.remove('sidebar-open');
-      state.sidebarOpen = false;
-    }
-  }
-
-  if (viewName === 'timeline' || viewName === 'countries') {
-    buildSidebarContent();
-  }
+  buildSidebarContent();
 
   if (viewName === 'countries') {
     renderCountries();
+  } else if (viewName === 'frise') {
+    renderFriseView();
   } else if (viewName === 'timeline') {
-    renderTimeline();
+    renderTimelineList();
   } else if (viewName === 'presentation') {
-    // Render stats inside the presentation view
     renderStats();
   } else if (viewName === 'apprendre') {
     renderLearn();
@@ -85,6 +71,10 @@ export function setView(viewName, options = {}) {
 function handleRoute() {
   const route = getRouteFromLocation();
   if (route === 'tuto') {
+    if (window.location.pathname !== '/presentation') {
+      window.history.replaceState({}, '', '/presentation');
+    }
+    setView('presentation', { updateRoute: false });
     window.dispatchEvent(new CustomEvent('histoiren:start-tutorial'));
     return;
   }

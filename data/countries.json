@@ -6089,7 +6089,76 @@
     "flag": "🇪🇬",
     "events": [
       {
+        "date": "≈ 3100 av. J.-C.",
+        "isoDate": "-3100-01-01",
+        "year": -3100,
+        "name": "Unification de l’Égypte par le pharaon Narmer",
+        "context": "Narmer unit la Haute et la Basse-Égypte, fondant la première dynastie thinite.",
+        "category": "Politique",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "≈ 2560 av. J.-C.",
+        "isoDate": "-2560-01-01",
+        "year": -2560,
+        "name": "Construction de la Grande Pyramide de Gizeh",
+        "context": "Érigée pour le pharaon Khéops, elle reste la plus haute structure humaine pendant plus de 3 800 ans.",
+        "category": "Science",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "1279–1213 av. J.-C.",
+        "isoDate": "-1279-01-01",
+        "year": -1279,
+        "name": "Règne de Ramsès II (Le Grand)",
+        "context": "Âge d’or militaire, diplomatique (traité de paix de Qadesh) et architectural (Abou Simbel).",
+        "category": "Politique",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "332 av. J.-C.",
+        "isoDate": "-0332-01-01",
+        "year": -332,
+        "name": "Conquête de l’Égypte par Alexandre le Grand",
+        "context": "Fondation d’Alexandrie, qui devient le phare culturel et scientifique du monde antique sous la dynastie des Ptolémées.",
+        "category": "Politique",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "30 av. J.-C.",
+        "isoDate": "-0030-01-01",
+        "year": -30,
+        "name": "Mort de Cléopâtre VII et annexion romaine",
+        "context": "Le suicide de la reine Cléopâtre met fin à la dynastie lagide et à l’Égypte indépendante antique.",
+        "category": "Politique",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "641",
+        "isoDate": "0641-01-01",
+        "year": 641,
+        "name": "Conquête arabo-musulmane de l’Égypte",
+        "context": "Les troupes du général Amr ibn al-As s'emparent de l'Égypte byzantine, entamant l'islamisation et l'arabisation du pays.",
+        "category": "Politique",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
         "date": "28 février 1922",
+        "isoDate": "1922-02-28",
+        "year": 1922,
+        "name": "Déclaration d’indépendance de l’Égypte par le Royaume-Uni",
         "isoDate": "1922-02-28",
         "year": 1922,
         "name": "Déclaration d’indépendance de l’Égypte par le Royaume-Uni",
@@ -7961,7 +8030,87 @@
     "flag": "🇬🇷",
     "events": [
       {
+        "date": "776 av. J.-C.",
+        "isoDate": "-0776-07-01",
+        "year": -776,
+        "name": "Premiers Jeux olympiques de l’Antiquité à Olympie",
+        "context": "Unification culturelle symbolique des cités grecques par le sport et la trêve sacrée.",
+        "category": "Culture",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "≈ 750 av. J.-C.",
+        "isoDate": "-0750-01-01",
+        "year": -750,
+        "name": "Grande colonisation grecque de la Méditerranée",
+        "context": "Fondation de nombreuses cités-colonies (Marseille, Naples, Syracuse) et diffusion de la culture grecque.",
+        "category": "Exploration",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "13 septembre 490 av. J.-C.",
+        "isoDate": "-0490-09-13",
+        "year": -490,
+        "name": "Bataille de Marathon",
+        "context": "Victoire décisive des Athéniens face à la première invasion de l’Empire perse.",
+        "category": "Politique",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "461–429 av. J.-C.",
+        "isoDate": "-0461-01-01",
+        "year": -461,
+        "name": "Âge d’or d’Athènes (Siècle de Périclès)",
+        "context": "Apogée démocratique, philosophique et artistique (construction du Parthénon, théâtre classique).",
+        "category": "Culture",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "334–323 av. J.-C.",
+        "isoDate": "-0334-01-01",
+        "year": -334,
+        "name": "Campagnes d’Alexandre le Grand et période hellénistique",
+        "context": "Conquêtes exceptionnelles diffusant la culture et la langue grecques jusqu’aux frontières de l’Inde.",
+        "category": "Exploration",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "11 mai 330",
+        "isoDate": "0330-05-11",
+        "year": 330,
+        "name": "Inauguration de Constantinople (Nouvelle Rome)",
+        "context": "Constantin Ier fonde la nouvelle capitale impériale, posant les bases de l’Empire byzantin de culture grecque.",
+        "category": "Politique",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "29 mai 1453",
+        "isoDate": "1453-05-29",
+        "year": 1453,
+        "name": "Chute de Constantinople aux mains des Ottomans",
+        "context": "Fin de l’Empire byzantin et début de la longue domination ottomane sur la Grèce.",
+        "category": "Politique",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
         "date": "25 mars 1821",
+        "isoDate": "1821-03-25",
+        "year": 1821,
+        "name": "Début traditionnel de la guerre d’indépendance grecque",
         "isoDate": "1821-03-25",
         "year": 1821,
         "name": "Début traditionnel de la guerre d’indépendance grecque",
@@ -10301,7 +10450,76 @@
     "flag": "🇮🇹",
     "events": [
       {
+        "date": "753 av. J.-C.",
+        "isoDate": "-0753-04-21",
+        "year": -753,
+        "name": "Fondation légendaire de Rome",
+        "context": "Selon la tradition romaine, la ville est fondée par Romulus sur le mont Palatin.",
+        "category": "Culture",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "509 av. J.-C.",
+        "isoDate": "-0509-01-01",
+        "year": -509,
+        "name": "Fondation de la République romaine",
+        "context": "Chute de la royauté étrusque et instauration du régime républicain avec des consuls élus.",
+        "category": "Politique",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "15 mars 44 av. J.-C.",
+        "isoDate": "-0044-03-15",
+        "year": -44,
+        "name": "Assassinat de Jules César",
+        "context": "César est assassiné aux Ides de Mars par un groupe de sénateurs conspirateurs, précipitant la fin de la République.",
+        "category": "Politique",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "27 av. J.-C.",
+        "isoDate": "-0027-01-01",
+        "year": -27,
+        "name": "Octave devient Auguste et fonde l’Empire romain",
+        "context": "Début d’une période de paix relative (Pax Romana) et de domination hégémonique sur la Méditerranée.",
+        "category": "Politique",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "476",
+        "isoDate": "0476-09-04",
+        "year": 476,
+        "name": "Chute de l’Empire romain d’Occident",
+        "context": "Le dernier empereur Romulus Augustule est déposé par le chef germain Odoacre, marquant la fin de l’Antiquité en Italie.",
+        "category": "Politique",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
+        "date": "1450–1550",
+        "isoDate": "1450-01-01",
+        "year": 1450,
+        "name": "Apogée de la Renaissance italienne",
+        "context": "Essor culturel et scientifique extraordinaire (Florence, Venise, Rome) porté par Léonard de Vinci, Michel-Ange et Galilée.",
+        "category": "Culture",
+        "source": {
+          "type": "manual"
+        }
+      },
+      {
         "date": "17 mars 1861",
+        "isoDate": "1861-03-17",
+        "year": 1861,
+        "name": "Proclamation du Royaume d’Italie",
         "isoDate": "1861-03-17",
         "year": 1861,
         "name": "Proclamation du Royaume d’Italie",

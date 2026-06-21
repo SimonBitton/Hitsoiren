@@ -63,7 +63,7 @@
   --sidebar-width:256px;
 
   /* ── Typographie ── */
-  --font-sans:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans:    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   --font-mono:    "SF Mono", SFMono-Regular, ui-monospace, Menlo, monospace;
 
   /* ── Ombres ── */

@@ -1,4 +1,5 @@
 import { state } from './state.js';
+import { getAppleFlagEmojiHtml } from './utils.js';
 
 let timelineObserver = null;
 
@@ -69,7 +70,7 @@ function buildCountriesSidebar() {
 
     html += `
       <a href="#" data-type="country" data-country-id="${country.id}">
-        ${country.flag} ${country.name}
+        ${getAppleFlagEmojiHtml(country.flag, country.name)} ${country.name}
         <span class="sidebar-pill">${country.events.length}</span>
       </a>
     `;
@@ -165,9 +166,13 @@ export function buildSidebarContent() {
   const sidebarToggle = document.getElementById('sidebarToggle');
   if (!sidebarLinks) return;
 
+  const hideSidebar = state.currentView === 'presentation'
+    || state.currentView === 'apprendre'
+    || state.currentView === 'frise';
+
   if (state.currentView === 'timeline') {
     if (quickNav) quickNav.style.display = '';
-    if (sidebarToggle) sidebarToggle.style.display = '';
+    if (sidebarToggle) sidebarToggle.style.display = 'flex';
     sidebarLinks.innerHTML = buildTimelineSidebar();
   } else if (state.currentView === 'countries') {
     sidebarLinks.innerHTML = '';
@@ -175,9 +180,15 @@ export function buildSidebarContent() {
     if (sidebarToggle) sidebarToggle.style.display = 'none';
     state.sidebarOpen = false;
     document.querySelector('main')?.classList.remove('sidebar-open');
+  } else if (hideSidebar) {
+    sidebarLinks.innerHTML = '';
+    if (quickNav) quickNav.style.display = 'none';
+    if (sidebarToggle) sidebarToggle.style.display = 'none';
+    state.sidebarOpen = false;
+    document.querySelector('main')?.classList.remove('sidebar-open');
   } else {
     if (quickNav) quickNav.style.display = '';
-    if (sidebarToggle) sidebarToggle.style.display = '';
+    if (sidebarToggle) sidebarToggle.style.display = 'flex';
     sidebarLinks.innerHTML = '';
   }
 

@@ -1038,3 +1038,266 @@ footer { margin: 0; padding: 2.5rem; color: var(--color-text-muted); border-top:
   .filter-chip.active,
   .quiz-start-btn.primary { forced-color-adjust: none; }
 }
+
+/* ------------------------------------------------------------------
+   NOUVELLE DIRECTION 2026.08
+   Atelier cartographique: plus lumineux, plus precis, moins austere.
+------------------------------------------------------------------- */
+
+body {
+  background:
+    radial-gradient(circle at 8% 4%, rgba(168, 67, 50, 0.08) 0%, transparent 36%),
+    radial-gradient(circle at 94% 12%, rgba(63, 102, 82, 0.08) 0%, transparent 34%),
+    linear-gradient(180deg, #f8f3e8 0%, #f4ecdf 100%);
+  background-attachment: fixed;
+}
+
+.main-nav {
+  margin: 0.8rem auto 0;
+  width: min(1360px, calc(100% - 1.8rem));
+  min-height: 72px;
+  border: 1px solid rgba(157, 140, 117, 0.38);
+  border-radius: 18px;
+  box-shadow: 0 14px 40px rgba(37, 34, 29, 0.11);
+}
+
+.main-nav::before {
+  right: 1.1rem;
+  left: 1.1rem;
+  bottom: 0.35rem;
+  border-radius: 999px;
+}
+
+.nav-tab {
+  border-radius: 10px;
+  margin: 0.32rem 0.24rem;
+  padding-inline: 1.1rem;
+}
+
+.nav-tab::after {
+  right: 0.8rem;
+  left: 0.8rem;
+  bottom: 0.2rem;
+  border-radius: 999px;
+}
+
+main {
+  max-width: 1420px;
+  padding-top: clamp(1.2rem, 2vw, 2rem);
+}
+
+header.archive-hero {
+  border: 1px solid rgba(133, 121, 101, 0.22);
+  border-radius: 20px;
+  background: linear-gradient(145deg, #1e2422 0%, #232b28 45%, #1d2422 100%);
+  box-shadow: 0 24px 64px rgba(11, 13, 12, 0.33);
+}
+
+header.archive-hero::before {
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgba(238, 232, 220, 0.09) 50%, transparent 50.2%),
+    linear-gradient(rgba(238, 232, 220, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at 84% 24%, rgba(221, 114, 93, 0.22), transparent 44%);
+  background-size: 100% 100%, 100% 42px, auto;
+}
+
+.archive-hero-copy {
+  padding-inline: clamp(1.6rem, 5vw, 5.8rem);
+}
+
+.explore-index-rows button {
+  border-radius: 12px;
+  border-color: color-mix(in srgb, var(--color-border) 82%, #7a6b52);
+}
+
+.explore-index-rows button:hover {
+  box-shadow: 0 18px 34px rgba(38, 32, 24, 0.12);
+}
+
+.collection-ledger {
+  border-radius: 14px;
+  border-color: color-mix(in srgb, var(--color-border) 85%, #7a6c56);
+  box-shadow: 0 16px 36px rgba(33, 29, 24, 0.09);
+}
+
+.coverage-track {
+  border-radius: 999px;
+}
+
+.coverage-track i {
+  border-radius: 999px;
+}
+
+/* Frise revue */
+.frise {
+  border: 1px solid #8e7d63;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, #18211f 0%, #1d2724 100%);
+  box-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.06) inset,
+    0 22px 44px rgba(11, 13, 12, 0.34);
+}
+
+.frise-header {
+  padding: 1.1rem 1.4rem 0.9rem;
+  border-bottom: 1px solid rgba(232, 220, 197, 0.16);
+}
+
+.frise-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #f3e9d8;
+  font: 580 1.05rem/1 var(--font-serif);
+}
+
+.frise-hint {
+  color: #b5a993;
+}
+
+.frise-controls {
+  border-radius: 999px;
+  border: 1px solid rgba(243, 233, 216, 0.24);
+  overflow: hidden;
+}
+
+.frise-btn {
+  width: 40px;
+  height: 34px;
+}
+
+.frise-viewport {
+  min-height: 360px;
+  background: linear-gradient(180deg, rgba(216, 198, 166, 0.05) 0%, rgba(216, 198, 166, 0.01) 100%);
+}
+
+.frise-track {
+  min-height: 360px;
+}
+
+.frise-axis {
+  top: 174px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(245, 234, 214, 0.72) 8%, rgba(245, 234, 214, 0.72) 92%, transparent);
+}
+
+.frise-tick {
+  top: 182px;
+}
+
+.frise-tick span {
+  color: #c8baa1;
+  font-size: 0.64rem;
+}
+
+.frise-event {
+  top: 174px;
+}
+
+.frise-event-dot {
+  border: 1px solid #f3e9d8;
+}
+
+.frise-ribbon {
+  top: 14px;
+  height: 24px;
+  opacity: 0.4;
+  border-radius: 999px;
+}
+
+.frise-ribbon-label {
+  font-size: 0.66rem;
+}
+
+.frise-flag {
+  max-width: 142px;
+  border-radius: 8px;
+  background: #111816;
+}
+
+.frise-flag-year {
+  color: #f0c889;
+}
+
+.frise-meta {
+  padding: 0.9rem 1.2rem 1rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(220px, 28%);
+  gap: 1rem;
+  align-items: center;
+  border-top: 1px solid rgba(232, 220, 197, 0.16);
+}
+
+.frise-range {
+  margin: 0;
+  color: #b9ac95;
+  font: 550 0.67rem/1.4 var(--font-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.frise-focus-shell {
+  display: grid;
+  gap: 0.16rem;
+  justify-items: end;
+}
+
+.frise-focus-label {
+  color: #978971;
+  font: 600 0.55rem/1 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.frise-focus-shell strong {
+  color: #f3e9d8;
+  font: 620 0.95rem/1 var(--font-serif);
+}
+
+.frise-scrubber-wrap {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.frise-scrubber-wrap span {
+  color: #978971;
+  font: 600 0.54rem/1 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.frise-scrubber {
+  width: 100%;
+  accent-color: #d36954;
+}
+
+.frise-a11y-hint {
+  padding-top: 0.2rem;
+  color: #8e8678;
+}
+
+@media (max-width: 767px) {
+  .main-nav {
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .frise {
+    border-radius: 0;
+    border-inline: 0;
+  }
+
+  .frise-meta {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+    padding: 0.9rem 1rem;
+  }
+
+  .frise-focus-shell {
+    justify-items: start;
+  }
+}

@@ -11,11 +11,18 @@ import { escapeHtml, getCategoryClass, getCategoryLabel } from './utils.js';
 
 const friseState = {
   zoom: 1,
-  events: []
+  events: [],
+  geometry: null
 };
 
 function signedLog(year) {
   return Math.sign(year) * Math.log10(1 + Math.abs(year));
+}
+
+function inverseSignedLog(value) {
+  if (!Number.isFinite(value)) return 0;
+  const abs = Math.pow(10, Math.abs(value)) - 1;
+  return Math.sign(value) * abs;
 }
 
 function formatYear(year) {
@@ -27,6 +34,21 @@ function formatYear(year) {
 function shorten(text, max = 26) {
   if (!text) return '';
   return text.length > max ? `${text.slice(0, max - 1).trim()}…` : text;
+}
+
+function buildTickValues(minYear, maxYear, zoom) {
+  const candidates = [
+    -3200000, -2000000, -1000000, -500000, -100000, -50000, -10000,
+    -5000, -3000, -2000, -1000, -500, -100,
+    0,
+    100, 300, 500, 800, 1000, 1200, 1400, 1500, 1600, 1700,
+    1800, 1850, 1900, 1914, 1945, 1960, 1989, 2000, 2010, 2020, 2026
+  ];
+  const inRange = candidates.filter((value) => value >= minYear && value <= maxYear);
+  const maxTickCount = zoom >= 8 ? 18 : zoom >= 4 ? 14 : 10;
+  if (inRange.length <= maxTickCount) return inRange;
+  const step = Math.ceil(inRange.length / maxTickCount);
+  return inRange.filter((_, index) => index % step === 0);
 }
 
 export function renderFriseBand(slot, events) {
@@ -54,6 +76,17 @@ export function renderFriseBand(slot, events) {
       </div>
       <div class="frise-viewport" id="friseViewport">
         <div class="frise-track" id="friseTrack"></div>
+      </div>
+      <div class="frise-meta" aria-live="polite">
+        <p class="frise-range" id="friseRangeLabel"></p>
+        <div class="frise-focus-shell">
+          <span class="frise-focus-label">focus</span>
+          <strong id="friseFocusYear">-</strong>
+        </div>
+        <label class="frise-scrubber-wrap" for="friseScrubber">
+          <span>navigation rapide</span>
+          <input id="friseScrubber" class="frise-scrubber" type="range" min="0" max="1000" value="0" step="1" aria-label="Navigation rapide dans la frise">
+        </label>
       </div>
       <div class="frise-tooltip" id="friseTooltip" hidden></div>
       <p class="frise-a11y-hint" id="friseA11yHint">Utilisez fleches gauche/droite pour defiler, + et - pour le zoom, 0 pour reinitialiser.</p>
@@ -104,8 +137,7 @@ function drawTrack() {
   }).join('');
 
   // ── Graduations ──
-  const tickValues = [-3000000, -100000, -10000, -3000, -1000, -500, 0, 500, 1000, 1500, 1800, 1900, 2000];
-  const ticks = tickValues
+  const ticks = buildTickValues(minYear, maxYear, friseState.zoom)
     .filter((value) => value >= minYear && value <= maxYear)
     .map((value) => `<div class="frise-tick" style="left:${posOf(value)}px"><span>${formatYear(value)}</span></div>`)
     .join('');
@@ -148,6 +180,21 @@ function drawTrack() {
     <div class="frise-ticks">${ticks}</div>
     ${markers}
   `;
+
+  friseState.geometry = {
+    minYear,
+    maxYear,
+    slMin,
+    slMax,
+    span,
+    trackWidth,
+    pad
+  };
+
+  const rangeLabel = document.getElementById('friseRangeLabel');
+  if (rangeLabel) {
+    rangeLabel.textContent = `${formatYear(minYear)} -> ${formatYear(maxYear)} · ${events.length.toLocaleString('fr-FR')} evenements`;
+  }
 }
 
 function setZoom(next) {
@@ -159,6 +206,8 @@ function bindFrise(slot) {
   const viewport = slot.querySelector('#friseViewport');
   const track = slot.querySelector('#friseTrack');
   const tooltip = slot.querySelector('#friseTooltip');
+  const scrubber = slot.querySelector('#friseScrubber');
+  const focusYear = slot.querySelector('#friseFocusYear');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   if (viewport) {
@@ -173,6 +222,36 @@ function bindFrise(slot) {
   slot.querySelector('[data-frise="reset"]')?.addEventListener('click', () => {
     setZoom(1);
     if (viewport) viewport.scrollLeft = 0;
+    syncViewportMeta();
+  });
+
+  const syncViewportMeta = () => {
+    if (!viewport || !scrubber || !focusYear || !friseState.geometry) return;
+    const maxScroll = Math.max(1, viewport.scrollWidth - viewport.clientWidth);
+    const progress = Math.max(0, Math.min(1, viewport.scrollLeft / maxScroll));
+    scrubber.value = String(Math.round(progress * 1000));
+
+    const centerPx = viewport.scrollLeft + viewport.clientWidth * 0.5;
+    const normalized = (centerPx - friseState.geometry.pad) / Math.max(1, friseState.geometry.trackWidth - friseState.geometry.pad * 2);
+    const centerSigned = friseState.geometry.slMin + friseState.geometry.span * Math.max(0, Math.min(1, normalized));
+    focusYear.textContent = formatYear(Math.round(inverseSignedLog(centerSigned)));
+  };
+
+  let scrollTicking = false;
+  viewport?.addEventListener('scroll', () => {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(() => {
+      scrollTicking = false;
+      syncViewportMeta();
+    });
+  }, { passive: true });
+
+  scrubber?.addEventListener('input', () => {
+    if (!viewport) return;
+    const maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+    viewport.scrollLeft = (Number(scrubber.value) / 1000) * maxScroll;
+    syncViewportMeta();
   });
 
   // Clic sur un événement → fiche détail
@@ -213,6 +292,7 @@ function bindFrise(slot) {
     const anchor = (viewport.scrollLeft + (event.clientX - rect.left)) / (track.offsetWidth || 1);
     setZoom(friseState.zoom * (event.deltaY < 0 ? 1.18 : 1 / 1.18));
     viewport.scrollLeft = anchor * track.offsetWidth - (event.clientX - rect.left);
+    syncViewportMeta();
   }, { passive: false });
 
   // Glisser pour déplacer
@@ -283,6 +363,7 @@ function bindFrise(slot) {
     setTimeout(() => { justDragged = false; }, 0);
     viewport?.classList.remove('grabbing');
     if (moved) runInertia();
+    syncViewportMeta();
   };
   viewport?.addEventListener('pointerup', endDrag);
   viewport?.addEventListener('pointercancel', endDrag);
@@ -314,7 +395,10 @@ function bindFrise(slot) {
       event.preventDefault();
       viewport.scrollLeft -= Math.max(120, viewport.clientWidth * 0.18);
     }
+    syncViewportMeta();
   });
+
+  syncViewportMeta();
 }
 
 let justDragged = false;

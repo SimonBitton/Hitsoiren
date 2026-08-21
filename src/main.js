@@ -12,6 +12,7 @@ import { initTheme } from './theme.js';
 import { initLearn } from './quiz.js';
 import { debounce } from './utils.js';
 import { initChronosphere } from './chronosphere.js';
+import { initAmbientMotion } from './ambient-motion.js';
 
 const MAX_SEARCH_LENGTH = 120;
 
@@ -201,6 +202,7 @@ async function init() {
   bindHomeNavigation();
   bindTouchNavigation();
   initChronosphere(state.timelineData.events);
+  initAmbientMotion();
   state.hasVisited = true;
   markAppVisited();
 

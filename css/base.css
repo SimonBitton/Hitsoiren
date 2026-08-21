@@ -28,11 +28,9 @@ body {
   min-height: 100dvh;
   min-height: -webkit-fill-available;
   overflow-x: hidden;
-  /* Halos subtils — ADN visuel Histoiren */
   background-image:
-    radial-gradient(circle at 0% 0%,   rgba(43, 75, 238, 0.10) 0%, transparent 42%),
-    radial-gradient(circle at 100% 0%, rgba(16, 185, 129, 0.06) 0%, transparent 42%),
-    radial-gradient(circle at 50% 100%, rgba(124, 58, 237, 0.06) 0%, transparent 38%);
+    radial-gradient(circle at 0% 0%, rgba(168, 67, 50, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(63, 102, 82, 0.07) 0%, transparent 42%);
   background-attachment: fixed;
   overflow-x: clip;
   touch-action: pan-y;

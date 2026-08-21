@@ -56,6 +56,7 @@ export function renderFriseBand(slot, events) {
         <div class="frise-track" id="friseTrack"></div>
       </div>
       <div class="frise-tooltip" id="friseTooltip" hidden></div>
+      <p class="frise-a11y-hint" id="friseA11yHint">Utilisez fleches gauche/droite pour defiler, + et - pour le zoom, 0 pour reinitialiser.</p>
     </section>
   `;
 
@@ -158,6 +159,14 @@ function bindFrise(slot) {
   const viewport = slot.querySelector('#friseViewport');
   const track = slot.querySelector('#friseTrack');
   const tooltip = slot.querySelector('#friseTooltip');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (viewport) {
+    viewport.tabIndex = 0;
+    viewport.setAttribute('role', 'region');
+    viewport.setAttribute('aria-label', 'Zone interactive de la frise');
+    viewport.setAttribute('aria-describedby', 'friseA11yHint');
+  }
 
   slot.querySelector('[data-frise="in"]')?.addEventListener('click', () => zoomAroundCenter(viewport, 1.6));
   slot.querySelector('[data-frise="out"]')?.addEventListener('click', () => zoomAroundCenter(viewport, 1 / 1.6));
@@ -211,17 +220,60 @@ function bindFrise(slot) {
   let moved = false;
   let startX = 0;
   let startScroll = 0;
+  let lastX = 0;
+  let lastMoveAt = 0;
+  let velocity = 0;
+  let inertiaFrame = 0;
+
+  const stopInertia = () => {
+    if (!inertiaFrame) return;
+    cancelAnimationFrame(inertiaFrame);
+    inertiaFrame = 0;
+  };
+
+  const runInertia = () => {
+    if (!viewport || prefersReducedMotion.matches) return;
+    stopInertia();
+
+    const tick = () => {
+      velocity *= 0.93;
+      if (Math.abs(velocity) < 0.08) {
+        inertiaFrame = 0;
+        return;
+      }
+      viewport.scrollLeft -= velocity;
+      const atStart = viewport.scrollLeft <= 0;
+      const atEnd = viewport.scrollLeft >= (viewport.scrollWidth - viewport.clientWidth);
+      if (atStart || atEnd) {
+        inertiaFrame = 0;
+        return;
+      }
+      inertiaFrame = requestAnimationFrame(tick);
+    };
+
+    inertiaFrame = requestAnimationFrame(tick);
+  };
+
   viewport?.addEventListener('pointerdown', (event) => {
     if (event.target.closest('.frise-event')) return;
+    stopInertia();
     dragging = true;
     moved = false;
     startX = event.clientX;
+    lastX = event.clientX;
+    lastMoveAt = performance.now();
+    velocity = 0;
     startScroll = viewport.scrollLeft;
     viewport.classList.add('grabbing');
     viewport.setPointerCapture(event.pointerId);
   });
   viewport?.addEventListener('pointermove', (event) => {
     if (!dragging) return;
+    const now = performance.now();
+    const dt = Math.max(1, now - lastMoveAt);
+    velocity = (event.clientX - lastX) / dt * 16;
+    lastX = event.clientX;
+    lastMoveAt = now;
     if (Math.abs(event.clientX - startX) > 4) moved = true;
     viewport.scrollLeft = startScroll - (event.clientX - startX);
   });
@@ -230,9 +282,39 @@ function bindFrise(slot) {
     justDragged = moved;
     setTimeout(() => { justDragged = false; }, 0);
     viewport?.classList.remove('grabbing');
+    if (moved) runInertia();
   };
   viewport?.addEventListener('pointerup', endDrag);
   viewport?.addEventListener('pointercancel', endDrag);
+
+  viewport?.addEventListener('keydown', (event) => {
+    if (!viewport) return;
+    if (event.key === '+' || event.key === '=') {
+      event.preventDefault();
+      zoomAroundCenter(viewport, 1.6);
+      return;
+    }
+    if (event.key === '-' || event.key === '_') {
+      event.preventDefault();
+      zoomAroundCenter(viewport, 1 / 1.6);
+      return;
+    }
+    if (event.key === '0') {
+      event.preventDefault();
+      setZoom(1);
+      viewport.scrollLeft = 0;
+      return;
+    }
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      viewport.scrollLeft += Math.max(120, viewport.clientWidth * 0.18);
+      return;
+    }
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      viewport.scrollLeft -= Math.max(120, viewport.clientWidth * 0.18);
+    }
+  });
 }
 
 let justDragged = false;

@@ -11,6 +11,8 @@ const VERTEX_SHADER = `
   attribute vec3 aColor;
   attribute float aSize;
   uniform vec2 uRotation;
+  uniform float uTime;
+  uniform float uScroll;
   uniform float uAspect;
   varying vec3 vColor;
 
@@ -21,6 +23,9 @@ const VERTEX_SHADER = `
     float sx = sin(uRotation.x);
 
     vec3 p = aPosition;
+    float drift = sin(uTime * 0.00045 + aPosition.y * 2.4 + aSize) * 0.035;
+    p += vec3(aPosition.x * drift, drift * 0.55, aPosition.z * drift);
+    p.y += (uScroll - 0.5) * 0.16;
     p = vec3(cy * p.x + sy * p.z, p.y, -sy * p.x + cy * p.z);
     p = vec3(p.x, cx * p.y - sx * p.z, sx * p.y + cx * p.z);
 
@@ -140,6 +145,8 @@ export function initChronosphere(events) {
   const colorLocation = gl.getAttribLocation(program, 'aColor');
   const sizeLocation = gl.getAttribLocation(program, 'aSize');
   const rotationLocation = gl.getUniformLocation(program, 'uRotation');
+  const timeLocation = gl.getUniformLocation(program, 'uTime');
+  const scrollLocation = gl.getUniformLocation(program, 'uScroll');
   const aspectLocation = gl.getUniformLocation(program, 'uAspect');
 
   gl.enableVertexAttribArray(positionLocation);
@@ -158,6 +165,7 @@ export function initChronosphere(events) {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const rotation = { x: -0.13, y: -0.45 };
   const target = { x: -0.13, y: -0.45 };
+  let scrollFactor = 0.5;
   let isVisible = true;
   let animationFrame = 0;
   let lastTime = performance.now();
@@ -188,6 +196,8 @@ export function initChronosphere(events) {
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.uniform2f(rotationLocation, rotation.x, rotation.y);
+    gl.uniform1f(timeLocation, time);
+    gl.uniform1f(scrollLocation, scrollFactor);
     gl.uniform1f(aspectLocation, canvas.width / Math.max(1, canvas.height));
     gl.drawArrays(gl.POINTS, 0, points.count);
 
@@ -210,7 +220,31 @@ export function initChronosphere(events) {
 
   stage.addEventListener('pointerleave', () => {
     target.x = -0.13;
+    target.y = -0.45;
   }, { passive: true });
+
+  stage.addEventListener('touchmove', (event) => {
+    if (!event.touches || event.touches.length !== 1 || prefersReducedMotion.matches) return;
+    const rect = stage.getBoundingClientRect();
+    const touch = event.touches[0];
+    target.y = ((touch.clientX - rect.left) / rect.width - 0.5) * 1.15;
+    target.x = ((touch.clientY - rect.top) / rect.height - 0.5) * 0.42 - 0.13;
+    requestDraw();
+  }, { passive: true });
+
+  stage.addEventListener('touchend', () => {
+    target.x = -0.13;
+    target.y = -0.45;
+  }, { passive: true });
+
+  const updateScrollFactor = () => {
+    const rect = stage.getBoundingClientRect();
+    const viewport = Math.max(window.innerHeight, 1);
+    const center = rect.top + rect.height * 0.5;
+    const normalized = 1 - center / viewport;
+    scrollFactor = Math.max(0, Math.min(1, (normalized + 1) * 0.5));
+    requestDraw();
+  };
 
   const resizeObserver = new ResizeObserver(requestDraw);
   resizeObserver.observe(stage);
@@ -227,5 +261,8 @@ export function initChronosphere(events) {
 
   prefersReducedMotion.addEventListener('change', requestDraw);
   document.addEventListener('visibilitychange', requestDraw);
+  window.addEventListener('scroll', updateScrollFactor, { passive: true });
+  window.addEventListener('resize', updateScrollFactor, { passive: true });
+  updateScrollFactor();
   requestDraw();
 }

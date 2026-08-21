@@ -31,6 +31,7 @@ export function setView(viewName, options = {}) {
   document.querySelectorAll('.nav-tab').forEach(tab => {
     const isActive = tab.dataset.view === viewName;
     tab.classList.toggle('active', isActive);
+    tab.setAttribute('aria-selected', String(isActive));
     if (isActive) tab.setAttribute('aria-current', 'page');
     else tab.removeAttribute('aria-current');
   });
@@ -68,6 +69,7 @@ export function setView(viewName, options = {}) {
   }
 
   window.dispatchEvent(new Event('histoiren:sync-search-inputs'));
+  window.dispatchEvent(new Event('histoiren:motion-refresh'));
 }
 
 function handleRoute() {

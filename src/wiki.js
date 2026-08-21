@@ -4,6 +4,17 @@
 ══════════════════════════════════════════════════ */
 
 const cache = new Map();
+const MAX_CACHE_ENTRIES = 120;
+const MAX_QUERY_LENGTH = 140;
+const MAX_RESPONSE_CHARACTERS = 260_000;
+
+function setCache(key, value) {
+  if (!cache.has(key) && cache.size >= MAX_CACHE_ENTRIES) {
+    const firstKey = cache.keys().next().value;
+    if (firstKey) cache.delete(firstKey);
+  }
+  cache.set(key, value);
+}
 
 function cleanQuery(name) {
   return (name || '')
@@ -11,7 +22,9 @@ function cleanQuery(name) {
     .replace(/[—–-].*$/, '')
     .replace(/\b(début|fin|apogée|naissance|mort|composition|invention|découverte)\b/gi, '')
     .replace(/\s+/g, ' ')
-    .trim();
+    .replace(/[^\p{L}\p{N}\s'.,:;!?-]/gu, '')
+    .trim()
+    .slice(0, MAX_QUERY_LENGTH);
 }
 
 export async function fetchWikiInfo(name) {
@@ -26,26 +39,38 @@ export async function fetchWikiInfo(name) {
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 6000);
-    const res = await fetch(url, { signal: controller.signal });
+    const res = await fetch(url, {
+      signal: controller.signal,
+      referrerPolicy: 'no-referrer'
+    });
     clearTimeout(timeout);
     if (!res.ok) throw new Error('http');
-    const data = await res.json();
+    const contentType = (res.headers.get('content-type') || '').toLowerCase();
+    if (!contentType.includes('application/json')) throw new Error('mime');
+    const raw = await res.text();
+    if (raw.length > MAX_RESPONSE_CHARACTERS) throw new Error('too-large');
+    const data = JSON.parse(raw);
     const pages = data?.query?.pages;
-    if (!pages) { cache.set(query, null); return null; }
+    if (!pages) { setCache(query, null); return null; }
 
     const page = Object.values(pages)[0];
-    if (!page || page.missing !== undefined) { cache.set(query, null); return null; }
+    if (!page || page.missing !== undefined) { setCache(query, null); return null; }
+
+    const title = typeof page.title === 'string' ? page.title.slice(0, 220) : '';
+    const thumbnail = typeof page.thumbnail?.source === 'string' ? page.thumbnail.source : null;
+    const extract = typeof page.extract === 'string' ? page.extract.trim().slice(0, 1200) : null;
+    const pageid = Number.isInteger(page.pageid) ? page.pageid : null;
 
     const info = {
-      title: page.title,
-      thumbnail: page.thumbnail?.source || null,
-      extract: (page.extract || '').trim() || null,
-      pageUrl: `https://fr.wikipedia.org/?curid=${page.pageid}`
+      title,
+      thumbnail,
+      extract: extract || null,
+      pageUrl: pageid ? `https://fr.wikipedia.org/?curid=${pageid}` : null
     };
-    cache.set(query, info);
+    setCache(query, info);
     return info;
   } catch {
-    cache.set(query, null);
+    setCache(query, null);
     return null;
   }
 }

@@ -39,15 +39,15 @@
   </noscript>
 
   <nav class="main-nav" aria-label="Navigation principale">
-    <button class="nav-brand nav-tab" data-view="presentation" type="button" aria-current="page">
+    <button class="nav-brand nav-tab" id="tab-presentation" data-view="presentation" type="button" aria-controls="view-presentation" aria-current="page">
       <span class="nav-brand-mark" aria-hidden="true">H</span>
       <span class="nav-brand-copy"><strong>Histoiren</strong><small>Atlas temporel</small></span>
     </button>
-    <div class="nav-track">
-      <button class="nav-tab" data-view="frise" type="button"><span class="nav-index" aria-hidden="true">01</span><span class="nav-label">Frise</span></button>
-      <button class="nav-tab" data-view="timeline" type="button"><span class="nav-index" aria-hidden="true">02</span><span class="nav-label">Index</span></button>
-      <button class="nav-tab" data-view="countries" type="button"><span class="nav-index" aria-hidden="true">03</span><span class="nav-label">Pays</span></button>
-      <button class="nav-tab" data-view="apprendre" type="button"><span class="nav-index" aria-hidden="true">04</span><span class="nav-label">Atelier</span></button>
+    <div class="nav-track" role="tablist" aria-label="Vues principales">
+      <button class="nav-tab" id="tab-frise" data-view="frise" type="button" aria-controls="view-frise"><span class="nav-index" aria-hidden="true">01</span><span class="nav-label">Frise</span></button>
+      <button class="nav-tab" id="tab-timeline" data-view="timeline" type="button" aria-controls="view-timeline"><span class="nav-index" aria-hidden="true">02</span><span class="nav-label">Index</span></button>
+      <button class="nav-tab" id="tab-countries" data-view="countries" type="button" aria-controls="view-countries"><span class="nav-index" aria-hidden="true">03</span><span class="nav-label">Pays</span></button>
+      <button class="nav-tab" id="tab-apprendre" data-view="apprendre" type="button" aria-controls="view-apprendre"><span class="nav-index" aria-hidden="true">04</span><span class="nav-label">Atelier</span></button>
     </div>
     <button id="themeToggle" class="theme-toggle" type="button" aria-label="Basculer le mode sombre" title="Mode sombre / clair">
       <svg class="theme-icon-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
@@ -80,7 +80,7 @@
   <main id="main-content">
 
     <!-- ── Vue Présentation ── -->
-    <div id="view-presentation" class="view-container active">
+    <div id="view-presentation" class="view-container active" role="region" aria-labelledby="tab-presentation">
       <header class="archive-hero">
         <div class="archive-hero-grid">
           <div class="archive-hero-copy">
@@ -141,7 +141,7 @@
     </div>
 
     <!-- ── Vue Frise ── -->
-    <div id="view-frise" class="view-container">
+    <div id="view-frise" class="view-container" role="region" aria-labelledby="tab-frise">
       <header class="view-header">
         <div class="view-kicker">01 / Navigation temporelle</div>
         <h1>Frise <em>chronologique</em></h1>
@@ -167,7 +167,7 @@
     </div>
 
     <!-- ── Vue Liste chronologique ── -->
-    <div id="view-timeline" class="view-container">
+    <div id="view-timeline" class="view-container" role="region" aria-labelledby="tab-timeline">
       <header class="view-header">
         <div class="view-kicker">02 / Index raisonné</div>
         <h1>Les faits, <em>époque par époque.</em></h1>
@@ -193,7 +193,7 @@
     </div>
 
     <!-- ── Vue Pays ── -->
-    <div id="view-countries" class="view-container">
+    <div id="view-countries" class="view-container" role="region" aria-labelledby="tab-countries">
       <header class="view-header">
         <div class="view-kicker">03 / Atlas politique</div>
         <h1>L’histoire <em>change de frontière.</em></h1>
@@ -225,7 +225,7 @@
     </div>
 
     <!-- ── Vue Apprendre (Quiz & Flashcards) ── -->
-    <div id="view-apprendre" class="view-container">
+    <div id="view-apprendre" class="view-container" role="region" aria-labelledby="tab-apprendre">
       <header class="view-header">
         <div class="view-kicker">04 / Atelier de mémoire</div>
         <h1>Apprendre par <em>rappel actif.</em></h1>

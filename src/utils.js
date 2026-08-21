@@ -274,10 +274,14 @@ export function eventMatchesSearch(event, normalizedSearch) {
 
 export function sanitizeExternalUrl(rawValue) {
   if (!rawValue || typeof rawValue !== 'string') return null;
+  if (rawValue.length > 2048) return null;
+  const trimmed = rawValue.trim();
+  if (!trimmed) return null;
+  if (/[^\x20-\x7E]/.test(trimmed)) return null;
   try {
-    const base = globalThis.location?.origin || 'https://histoiren.invalid';
-    const parsed = new URL(rawValue, base);
+    const parsed = new URL(trimmed);
     if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+    if (!parsed.hostname) return null;
     if (parsed.username || parsed.password) return null;
     return parsed.href;
   } catch {

@@ -63,8 +63,8 @@
   --sidebar-width:256px;
 
   /* ── Typographie ── */
-  --font-sans:    Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-serif:   "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --font-sans:    "Avenir Next", "Segoe UI Variable", "IBM Plex Sans", "Helvetica Neue", "Noto Sans", sans-serif;
+  --font-serif:   "Baskerville", "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   --font-mono:    "SF Mono", SFMono-Regular, ui-monospace, Menlo, monospace;
 
   /* ── Ombres ── */

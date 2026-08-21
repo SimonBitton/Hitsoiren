@@ -1,168 +1,75 @@
-# Histoiren — Frise chronologique mondiale premium
+# Histoiren
 
-Site statique (un seul `index.html`) qui présente une **frise chronologique interactive** de l'histoire mondiale, avec :
-- 📜 Chronologie complète de la Préhistoire à nos jours
-- 🕰️ **Frise interactive zoomable** (glisser / zoomer / cliquer pour ouvrir une fiche)
-- 🌍 Histoire organisée par pays
-- 🎓 **Mode apprentissage** : quiz, flashcards et score de progression
-- 🌙 **Mode sombre** (avec mémorisation du choix)
-- 🔍 **Recherche & filtres avancés** : par personnage, pays, date, thème, époque
-- 🔗 **Événements liés** pour suivre les chaînes historiques
-- 🖼️ **Images & extraits Wikipédia** récupérés automatiquement dans les fiches
-- 📊 Statistiques et analyses
-- 📱 Interface responsive
-- 🏆 Top 50 des dates les plus importantes
-- 📖 **Fiches détaillées** : résumé, causes, conséquences, personnages, contexte
+Histoiren est un atlas temporel francophone : frise mondiale zoomable, index par époque, 194 chronologies nationales, fiches enrichies et atelier de mémorisation.
 
-## Nouveautés de cette version
+## Expérience
 
-- **Frise interactive** (`src/frise.js`) — bande chronologique à échelle signée-logarithmique : zoom (boutons ou Ctrl+molette), déplacement par glisser, points cliquables.
-- **Filtres avancés** — barre de filtres par époque et par thème (guerres, inventions, personnages, religion, art, exploration, politique) au-dessus de la chronologie.
-- **Recherche multi-champ** — la recherche couvre désormais le nom, le contexte, les personnages, la date, la catégorie et le thème.
-- **Mode apprentissage** (`src/quiz.js`) — quiz de 10 questions générées depuis la base, flashcards, score et meilleur score mémorisé.
-- **Mode sombre** (`src/theme.js`) — bascule en haut à droite, sans clignotement au chargement (script anti-FOUC).
-- **Fiches enrichies** — images et extraits réels via l'API Wikipédia (`src/wiki.js`), causes/conséquences, et **événements liés** (`src/related.js`).
-- **Animations au défilement** — apparition progressive des sections.
+- Accueil éditorial avec une chronosphère WebGL en vraie 3D, pilotée par le pointeur et mise en pause hors écran.
+- Frise à échelle logarithmique, zoomable au clavier, aux boutons, au geste et à la molette modifiée.
+- Index filtrable par époque, thème, texte, date ou personnage.
+- Carte des continents et chronologies par pays.
+- Quiz et flashcards générés depuis le fonds local.
+- Thèmes clair et sombre, navigation mobile dédiée et prise en charge de `prefers-reduced-motion`.
 
-## Fonctionnalités principales
+## Stack
 
-### 1. Résumés détaillés
-Chaque événement dispose désormais d'un résumé complet d'au moins 5 lignes comprenant :
-- Contexte historique et période
-- Description détaillée de l'événement
-- Personnages clés impliqués
-- Signification historique
-- Impact et héritage
+Le produit reste volontairement léger : HTML sémantique, CSS, modules JavaScript natifs et WebGL, sans framework ni code serveur applicatif. Les données sont des fichiers JSON versionnés. L’enrichissement des fiches passe uniquement par l’API publique de Wikipédia.
 
-### 2. Vérification des dates
-Les dates peuvent être vérifiées automatiquement via l'API WikiData :
+Il n’existe actuellement ni authentification, ni compte, ni base de données distante, ni API privée, ni upload.
+
+## Lancer le projet
+
+Prérequis : Node.js 20 ou plus récent.
+
 ```bash
-npm run verify-dates
+npm install
+npm start
 ```
 
-### 3. Ajout massif d'événements
-Possibilité d'ajouter des centaines de milliers d'événements depuis WikiData :
+Le serveur local écoute par défaut sur `http://127.0.0.1:8000`. Les variables `PORT` et `HOST` permettent de modifier cette adresse. Le serveur applique localement les mêmes protections essentielles que le déploiement.
+
+## Vérifier le projet
+
 ```bash
-npm run add-massive-events
+npm run build
 ```
 
-## Technologies utilisées
+Cette commande exécute ESLint puis les tests Node : analyse des dates historiques, échappement HTML, filtrage des URL, politique de scripts, en-têtes de sécurité et bornes des jeux de données.
 
-- **HTML5** (structure sémantique)
-- **CSS3** (styles, responsive, animations)
-- **JavaScript (vanilla)** (interactions, filtres, navigation)
-- **WikiData API** (vérification et enrichissement des données)
+Commandes séparées :
 
-## Structure du projet
+```bash
+npm run lint
+npm test
+npm audit
+```
+
+## Structure
 
 ```text
-histoiren/
-├── index.html              # Page principale unique
-├── package.json            # Configuration du projet
-├── README.md               # Ce fichier
-├── css/
-│   ├── base.css           # Styles de base
-│   ├── components.css     # Composants UI
-│   ├── layout.css         # Mise en page
-│   ├── variables.css      # Variables CSS
-│   └── views.css          # Styles spécifiques aux vues
-├── src/
-│   ├── main.js            # Point d'entrée principal
-│   ├── detail-view.js     # Vue détail événement
-│   ├── country-modal.js   # Modal pays + navigation vers détail
-│   ├── router.js          # Gestion de la navigation
-│   ├── state.js           # Gestion de l'état
-│   ├── data-manager.js    # Chargement des données
-│   ├── ui-renderer.js     # Rendu de l'interface
-│   ├── sidebar.js         # Navigation latérale
-│   └── utils.js           # Fonctions utilitaires
-├── data/
-│   ├── timeline.json      # Données de la chronologie
-│   └── countries.json     # Données par pays
-├── scripts/
-│   ├── add-timeline-events.mjs    # Ajout d'événements manuels
-│   ├── generate-countries-from-csv.mjs # Génération countries.json depuis C.csv
-│   ├── import-csv-events.mjs      # Import CSV vers timeline.json
-│   ├── add-massive-events.mjs     # Ajout massif depuis WikiData
-│   └── verify-dates-wikidata.mjs  # Vérification des dates
-└── tests/
-    └── run-e2e.js         # Tests end-to-end
+index.html               structure des cinq vues et de la fiche détail
+css/editorial.css        direction artistique et responsive final
+css/*.css                styles fonctionnels historiques conservés
+src/main.js              initialisation et interactions globales
+src/chronosphere.js      scène WebGL 3D performante
+src/data-manager.js      chargement borné et validation des données
+src/frise.js             frise logarithmique interactive
+src/ui-renderer.js       rendu des index, pays et statistiques
+src/detail-view.js       fiches, relations et enrichissement Wikipédia
+src/quiz.js              quiz et flashcards
+data/*.json              fonds historique local
+tests/*.mjs              tests fonctionnels et de sécurité
+vercel.json              réécritures SPA et en-têtes de production
 ```
 
-## Lancer le site
+## Sécurité
 
-### Option 1 — Ouvrir directement le fichier
+Le JavaScript tiers a été supprimé. La production n’autorise que les scripts du même origin via CSP. Les contenus injectés sont échappés, les URL externes sont limitées à HTTP(S), les réponses JSON sont bornées et validées, les identifiants sont dédupliqués et les routes restent sur liste blanche.
 
-- Ouvre `index.html` dans ton navigateur.
+Le détail de l’audit et les limites du périmètre figurent dans [SECURITY.md](SECURITY.md).
 
-### Option 2 — Servir en local (recommandé)
+## Accessibilité et performance
 
-Depuis la racine du projet :
+Les événements sont de vrais boutons, les dialogues piègent et restaurent le focus, les états actifs sont exposés aux technologies d’assistance et toutes les fonctions essentielles sont disponibles sans pointeur. La 3D limite le ratio de pixels, utilise un seul buffer GPU, suspend sa boucle hors écran et se fige en mode mouvement réduit.
 
-```bash
-# Avec Python
-python3 -m http.server 8000
-
-# Ou avec npm
-npm start
-```
-
-Puis ouvre `http://localhost:8000` dans ton navigateur.
-
-## Scripts disponibles
-
-```bash
-# Lancer le serveur de développement
-npm start
-
-# Ajouter des événements manuels à la chronologie
-npm run add-events
-
-# Ajouter massivement des événements depuis WikiData (100k+)
-npm run add-massive-events
-
-# Vérifier les dates avec WikiData
-npm run verify-dates
-
-# Générer les événements par pays depuis C.csv
-npm run build:countries
-
-# Importer C.csv vers la timeline globale
-npm run import:csv-timeline
-
-# Lancer les tests end-to-end
-npm run test:e2e
-```
-
-## Organisation des époques
-
-Le projet couvre 5 grandes périodes historiques :
-
-1. **Préhistoire** (≈ 3 300 000 av. J.-C. → ≈ 3 200 av. J.-C.)
-2. **Antiquité** (≈ 3 200 av. J.-C. → 476 ap. J.-C.)
-3. **Moyen Âge** (476 → 1492)
-4. **Temps Modernes** (1492 → 1789)
-5. **Époque Contemporaine** (1789 → nos jours)
-
-## Catégories d'événements
-
-- **Politique** : Guerres, traités, révolutions, lois
-- **Science** : Découvertes, inventions, avancées scientifiques
-- **Culture** : Art, littérature, philosophie, religion
-- **Exploration** : Voyages, découvertes géographiques
-
-## Contribution
-
-1. Fork le projet
-2. Crée ta branche (`git checkout -b feature/amélioration`)
-3. Commit tes changements (`git commit -am 'Ajoute nouvelle fonctionnalité'`)
-4. Push ta branche (`git push origin feature/amélioration`)
-5. Ouvre une Pull Request
-
-## Licence
-
-Ce projet est open source et peut être utilisé librement.
-
----
-
-Fait avec passion pour l'histoire ❤️
+Les visuels Wikipédia et les drapeaux sont chargés à la demande. Le favicon a été dimensionné pour le Web et les fichiers JSON bénéficient d’un cache avec revalidation.

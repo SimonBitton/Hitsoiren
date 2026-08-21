@@ -1,41 +1,41 @@
 /* ══════════════════════════════════════════════════
-   DESIGN TOKENS — Ovyn Design System v1.0
+   DESIGN TOKENS — Histoiren Editorial System
    Source de vérité unique pour Histoiren
 ══════════════════════════════════════════════════ */
 
 :root {
   /* ── Couleurs sémantiques ── */
-  --color-background:        #f6f6f8;
-  --color-foreground:        #111218;
-  --color-card:              #ffffff;
-  --color-card-foreground:   #111218;
-  --color-popover:           #ffffff;
-  --color-popover-foreground:#111218;
+  --color-background:        #eee8dc;
+  --color-foreground:        #20231f;
+  --color-card:              #f7f2e8;
+  --color-card-foreground:   #20231f;
+  --color-popover:           #f7f2e8;
+  --color-popover-foreground:#20231f;
 
-  --color-primary:           #2b4bee;
+  --color-primary:           #a84332;
   --color-primary-foreground:#ffffff;
-  --color-primary-hover:     #203bc4;
+  --color-primary-hover:     #843327;
 
-  --color-secondary:         #f1f5f9;
-  --color-secondary-foreground:#111218;
+  --color-secondary:         #e4ddcf;
+  --color-secondary-foreground:#20231f;
 
-  --color-muted:             #f1f5f9;
-  --color-muted-foreground:  #616889;
+  --color-muted:             #e4ddcf;
+  --color-muted-foreground:  #68675f;
 
-  --color-accent:            #2b4bee;
+  --color-accent:            #a84332;
   --color-accent-foreground: #ffffff;
 
   --color-destructive:       #ef4444;
-  --color-success:           #10b981;
-  --color-warning:           #f59e0b;
+  --color-success:           #3f6652;
+  --color-warning:           #a9742e;
 
-  --color-border:            #e5e7eb;
-  --color-input:             #e5e7eb;
-  --color-ring:              #2b4bee;
+  --color-border:            #c8bfb0;
+  --color-input:             #c8bfb0;
+  --color-ring:              #a84332;
 
-  --color-text-primary:      #111218;
-  --color-text-secondary:    #616889;
-  --color-text-muted:        #94a3b8;
+  --color-text-primary:      #20231f;
+  --color-text-secondary:    #68675f;
+  --color-text-muted:        #8c887d;
 
   /* ── Aliases courts (compatibilité interne) ── */
   --ink:          var(--color-text-primary);
@@ -45,44 +45,45 @@
   --text-muted:   var(--color-text-muted);
   --accent:       var(--color-primary);
   --accent-strong:var(--color-primary-hover);
-  --accent-soft:  rgba(43, 75, 238, 0.10);
+  --accent-soft:  rgba(168, 67, 50, 0.10);
   --gold:         var(--color-warning);
   --gold-dark:    #d97706;
   --rust:         var(--color-destructive);
   --olive:        var(--color-success);
-  --surface:      rgba(255, 255, 255, 0.86);
-  --surface-strong:rgba(255, 255, 255, 0.96);
+  --surface:      rgba(247, 242, 232, 0.88);
+  --surface-strong:rgba(247, 242, 232, 0.97);
 
   /* ── Tokens de forme ── */
-  --radius-sm:    6px;
-  --radius-md:    8px;
-  --radius-lg:    12px;
-  --radius-xl:    16px;
-  --radius-2xl:   20px;
-  --radius-3xl:   24px;
+  --radius-sm:    2px;
+  --radius-md:    3px;
+  --radius-lg:    5px;
+  --radius-xl:    7px;
+  --radius-2xl:   10px;
+  --radius-3xl:   14px;
   --sidebar-width:256px;
 
   /* ── Typographie ── */
-  --font-sans:    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-sans:    Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif:   "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   --font-mono:    "SF Mono", SFMono-Regular, ui-monospace, Menlo, monospace;
 
   /* ── Ombres ── */
-  --shadow-sm:    0 1px 3px rgba(17, 18, 24, 0.06), 0 1px 2px rgba(17, 18, 24, 0.04);
-  --shadow:       0 4px 16px rgba(17, 18, 24, 0.08), 0 2px 6px rgba(17, 18, 24, 0.05);
-  --shadow-lg:    0 10px 30px rgba(17, 18, 24, 0.10), 0 4px 12px rgba(17, 18, 24, 0.06);
-  --shadow-xl:    0 20px 40px rgba(17, 18, 24, 0.12), 0 8px 20px rgba(17, 18, 24, 0.07);
+  --shadow-sm:    0 1px 0 rgba(32, 35, 31, 0.08);
+  --shadow:       0 12px 34px rgba(32, 35, 31, 0.08);
+  --shadow-lg:    0 22px 60px rgba(32, 35, 31, 0.12);
+  --shadow-xl:    0 32px 80px rgba(11, 13, 12, 0.22);
   --shadow-soft:  var(--shadow-sm);
-  --shadow-primary: 0 4px 16px rgba(43, 75, 238, 0.25);
+  --shadow-primary: 0 6px 20px rgba(168, 67, 50, 0.22);
 
   /* ── Motion ── */
   --transition-colors: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
   --transition-all:    all 0.2s ease;
-  --glass:        blur(12px) saturate(160%);
+  --glass:        blur(14px) saturate(110%);
 
   /* ── Couleurs d'ères (timeline) ── */
-  --era-prehist:      #64748b;
-  --era-antiquite:    #7c3aed;
-  --era-moyen-age:    #2563eb;
-  --era-modernes:     #059669;
-  --era-contemporain: #1e293b;
+  --era-prehist:      #8c7048;
+  --era-antiquite:    #a84332;
+  --era-moyen-age:    #4d6657;
+  --era-modernes:     #a9742e;
+  --era-contemporain: #28322e;
 }

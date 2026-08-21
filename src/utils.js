@@ -1,5 +1,5 @@
 export function normalizeText(value) {
-  return (value || '')
+  return String(value ?? '')
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
@@ -26,11 +26,14 @@ export function parseHistoricalDate(text) {
   const clean = normalizeText(text)
     .replace(/≈|vers|ca\.?|env\.?/g, ' ')
     .replace(/[–—]/g, '-')
+    .replace(/[\u00a0\u202f]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 
-  const digits = [...clean.matchAll(/\d+/g)].map((match) => ({
-    value: parseInt(match[0], 10),
+  // Conserve les séparateurs de milliers : « 500 000 av. J.-C. » est une
+  // seule année, pas les nombres 500 puis 000.
+  const digits = [...clean.matchAll(/\d{1,3}(?:[ .]\d{3})+|\d+/g)].map((match) => ({
+    value: Number.parseInt(match[0].replace(/[ .]/g, ''), 10),
     index: match.index ?? 0
   })).filter((match) => !Number.isNaN(match.value));
 
@@ -38,13 +41,13 @@ export function parseHistoricalDate(text) {
 
   const hasMonth = MONTH_NAMES.some((month) => clean.includes(month));
   const hasBce = clean.includes('av. j.-c');
-  const hasCe = clean.includes('ap. j.-c');
-  const hasRangeHint = /\b(de|du|des|a|à|entre)\b/.test(clean) || clean.includes('-');
-  const hasYearKeyword = clean.includes('annee');
-
-  let yearIndex = digits.length - 1;
-  if (digits.length > 1 && !hasMonth && !hasBce && !hasCe && (hasRangeHint || hasYearKeyword)) {
-    yearIndex = 0;
+  // Les données commencent généralement par l'année (« 2012 (4 juillet) »).
+  // Pour la forme française « 4 juillet 1776 », le premier nombre > 31 est
+  // l'année. Cela évite de confondre jour du mois et année.
+  let yearIndex = 0;
+  if (hasMonth) {
+    const explicitYearIndex = digits.findIndex((entry) => entry.value > 31);
+    yearIndex = explicitYearIndex >= 0 ? explicitYearIndex : digits.length - 1;
   }
 
   let year = digits[yearIndex].value;
@@ -186,7 +189,7 @@ export function estimateYearFromText(text) {
 }
 
 export function escapeHtml(value) {
-  return (value || '')
+  return String(value ?? '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
@@ -272,8 +275,10 @@ export function eventMatchesSearch(event, normalizedSearch) {
 export function sanitizeExternalUrl(rawValue) {
   if (!rawValue || typeof rawValue !== 'string') return null;
   try {
-    const parsed = new URL(rawValue, window.location.origin);
+    const base = globalThis.location?.origin || 'https://histoiren.invalid';
+    const parsed = new URL(rawValue, base);
     if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+    if (parsed.username || parsed.password) return null;
     return parsed.href;
   } catch {
     return null;
@@ -285,6 +290,5 @@ export function getAppleFlagEmojiHtml(flagEmoji, countryName = '') {
   const codePoints = [...flagEmoji].map((char) => char.codePointAt(0).toString(16));
   const filename = codePoints.join('-').toLowerCase() + '.png';
   const url = `https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${filename}`;
-  return `<img class="apple-flag" src="${url}" alt="${escapeHtml(countryName || flagEmoji)}" />`;
+  return `<img class="apple-flag" src="${url}" alt="${escapeHtml(countryName || flagEmoji)}" width="64" height="64" loading="lazy" decoding="async" referrerpolicy="no-referrer" />`;
 }
-

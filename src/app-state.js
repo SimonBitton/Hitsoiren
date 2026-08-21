@@ -6,14 +6,17 @@ const DEFAULT_APP_STATE = {
   lastView: 'presentation'
 };
 
+const VALID_VIEWS = new Set(['presentation', 'frise', 'timeline', 'countries', 'apprendre']);
+
 function safeParse(rawValue) {
   if (!rawValue) return { ...DEFAULT_APP_STATE };
   try {
     const parsed = JSON.parse(rawValue);
     if (!parsed || typeof parsed !== 'object') return { ...DEFAULT_APP_STATE };
     return {
-      ...DEFAULT_APP_STATE,
-      ...parsed
+      hasVisited: Boolean(parsed.hasVisited),
+      onboardingSeen: Boolean(parsed.onboardingSeen),
+      lastView: VALID_VIEWS.has(parsed.lastView) ? parsed.lastView : DEFAULT_APP_STATE.lastView
     };
   } catch {
     return { ...DEFAULT_APP_STATE };
@@ -28,8 +31,17 @@ export function readAppState() {
 export function writeAppState(patch) {
   if (typeof window === 'undefined') return { ...DEFAULT_APP_STATE, ...patch };
   const current = readAppState();
-  const next = { ...current, ...patch };
-  window.localStorage.setItem(APP_STATE_KEY, JSON.stringify(next));
+  const next = {
+    hasVisited: patch.hasVisited === undefined ? current.hasVisited : Boolean(patch.hasVisited),
+    onboardingSeen: patch.onboardingSeen === undefined ? current.onboardingSeen : Boolean(patch.onboardingSeen),
+    lastView: VALID_VIEWS.has(patch.lastView) ? patch.lastView : current.lastView
+  };
+  try {
+    window.localStorage.setItem(APP_STATE_KEY, JSON.stringify(next));
+  } catch {
+    // Le stockage peut être indisponible en navigation privée : l'application
+    // reste pleinement utilisable pour la session courante.
+  }
   return next;
 }
 
@@ -51,4 +63,3 @@ export function setLastView(viewName) {
     lastView: viewName
   });
 }
-

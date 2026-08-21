@@ -2,6 +2,12 @@
 .DS_Store
 node_modules/
 .npm-cache/
-package-lock.json
 .idea
 .vscode
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx

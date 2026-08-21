@@ -1,5 +1,4 @@
 import { state } from './state.js';
-import { getAppleFlagEmojiHtml } from './utils.js';
 
 let timelineObserver = null;
 
@@ -42,41 +41,6 @@ function buildTimelineSidebar() {
     <a href="#view-timeline" data-target="view-timeline" data-type="section">🔎 Recherche</a>
     <a href="#view-timeline" data-target="view-timeline" data-type="section">⬆️ Haut de page</a>
   `;
-}
-
-function buildCountriesSidebar() {
-  const sorted = [...state.countriesData].sort((left, right) => left.name.localeCompare(right.name, 'fr'));
-
-  let currentLetter = '';
-  const letters = Array.from(new Set(sorted.map((country) => country.name.charAt(0).toUpperCase())));
-
-  let html = `
-    <div class="sidebar-section-label">Raccourcis</div>
-    <a href="#view-countries" data-target="view-countries" data-type="section">🔎 Recherche</a>
-    <a href="#view-countries" data-target="view-countries" data-type="section">⬆️ Haut de page</a>
-
-    <div class="sidebar-section-label">Lettres</div>
-    ${letters.map((letter) => `<a href="#" data-type="letter" data-letter="${letter}">${letter}</a>`).join('')}
-
-    <div class="sidebar-section-label">Pays</div>
-  `;
-
-  sorted.forEach((country) => {
-    const firstLetter = country.name.charAt(0).toUpperCase();
-    if (firstLetter !== currentLetter) {
-      currentLetter = firstLetter;
-      html += `<div class="sidebar-letter">${currentLetter}</div>`;
-    }
-
-    html += `
-      <a href="#" data-type="country" data-country-id="${country.id}">
-        ${getAppleFlagEmojiHtml(country.flag, country.name)} ${country.name}
-        <span class="sidebar-pill">${country.events.length}</span>
-      </a>
-    `;
-  });
-
-  return html;
 }
 
 function bindSidebarInteractions(sidebarLinks) {
@@ -171,24 +135,24 @@ export function buildSidebarContent() {
     || state.currentView === 'frise';
 
   if (state.currentView === 'timeline') {
-    if (quickNav) quickNav.style.display = '';
-    if (sidebarToggle) sidebarToggle.style.display = 'flex';
+    if (quickNav) quickNav.hidden = false;
+    if (sidebarToggle) sidebarToggle.hidden = false;
     sidebarLinks.innerHTML = buildTimelineSidebar();
   } else if (state.currentView === 'countries') {
     sidebarLinks.innerHTML = '';
-    if (quickNav) quickNav.style.display = 'none';
-    if (sidebarToggle) sidebarToggle.style.display = 'none';
+    if (quickNav) quickNav.hidden = true;
+    if (sidebarToggle) sidebarToggle.hidden = true;
     state.sidebarOpen = false;
     document.querySelector('main')?.classList.remove('sidebar-open');
   } else if (hideSidebar) {
     sidebarLinks.innerHTML = '';
-    if (quickNav) quickNav.style.display = 'none';
-    if (sidebarToggle) sidebarToggle.style.display = 'none';
+    if (quickNav) quickNav.hidden = true;
+    if (sidebarToggle) sidebarToggle.hidden = true;
     state.sidebarOpen = false;
     document.querySelector('main')?.classList.remove('sidebar-open');
   } else {
-    if (quickNav) quickNav.style.display = '';
-    if (sidebarToggle) sidebarToggle.style.display = 'flex';
+    if (quickNav) quickNav.hidden = false;
+    if (sidebarToggle) sidebarToggle.hidden = false;
     sidebarLinks.innerHTML = '';
   }
 

@@ -131,7 +131,7 @@ function renderRelatedEvents(event) {
 
   const related = findRelatedEvents(event, 4);
   if (related.length === 0) {
-    section.style.display = 'none';
+    section.hidden = true;
     return;
   }
 
@@ -147,7 +147,7 @@ function renderRelatedEvents(event) {
     const btn = clickEvent.target.closest('.related-event');
     if (btn && window.showDetail) window.showDetail(btn.dataset.id);
   };
-  section.style.display = 'block';
+  section.hidden = false;
 }
 
 let wikiRequestToken = 0;
@@ -159,8 +159,8 @@ function loadWikiEnrichment(event) {
   const wikiExtract = document.getElementById('detailWikiExtract');
 
   // Réinitialise pendant le chargement
-  if (figure) figure.style.display = 'none';
-  if (wikiSection) wikiSection.style.display = 'none';
+  if (figure) figure.hidden = true;
+  if (wikiSection) wikiSection.hidden = true;
 
   const token = ++wikiRequestToken;
   fetchWikiInfo(event.name).then((info) => {
@@ -170,17 +170,17 @@ function loadWikiEnrichment(event) {
       image.src = info.thumbnail;
       image.alt = info.title || event.name;
       if (caption) caption.textContent = info.title || '';
-      figure.style.display = 'block';
+      figure.hidden = false;
     }
     if (info.extract && wikiSection && wikiExtract) {
       wikiExtract.textContent = info.extract;
-      wikiSection.style.display = 'block';
+      wikiSection.hidden = false;
     }
     // Lien Wikipédia direct vers la page trouvée
     const wikiLink = document.getElementById('detailWikipediaLink');
     if (wikiLink && info.pageUrl) {
       wikiLink.href = info.pageUrl;
-      wikiLink.style.display = 'inline-flex';
+      wikiLink.hidden = false;
     }
   });
 }
@@ -188,6 +188,8 @@ function loadWikiEnrichment(event) {
 export function showDetailPage(event) {
   const detailPage = document.getElementById('detailPage');
   if (!detailPage) return;
+  if (typeof detailPage._cleanup === 'function') detailPage._cleanup();
+  const returnFocusTo = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
   // Enrichissement à la volée pour les fiches sans métadonnées (ex. événements pays)
   if (!event._themes) event._themes = detectEventThemes(event);
@@ -216,29 +218,29 @@ export function showDetailPage(event) {
   const peopleEl = document.getElementById('detailPeople');
   if (event.people && event.people.trim()) {
     peopleEl.textContent = event.people;
-    peopleSection.style.display = 'block';
+    peopleSection.hidden = false;
   } else {
-    peopleSection.style.display = 'none';
+    peopleSection.hidden = true;
   }
 
   const contextSection = document.getElementById('detailContextSection');
   const contextEl = document.getElementById('detailContext');
   if (event.context && event.context.length > 100) {
     contextEl.textContent = event.context;
-    contextSection.style.display = 'block';
+    contextSection.hidden = false;
   } else {
-    contextSection.style.display = 'none';
+    contextSection.hidden = true;
   }
 
   const searchQuery = encodeURIComponent(event.name);
   document.getElementById('detailSearchLink').href = `https://www.google.com/search?q=${searchQuery}`;
 
   const wikiLink = document.getElementById('detailWikipediaLink');
-  if (event.source?.eventQid) {
-    wikiLink.href = `https://fr.wikipedia.org/wiki/Special:EntityPage/${event.source.eventQid}`;
-    wikiLink.style.display = 'inline-flex';
+  if (typeof event.source?.eventQid === 'string' && /^Q\d{1,12}$/.test(event.source.eventQid)) {
+    wikiLink.href = `https://fr.wikipedia.org/wiki/Special:EntityPage/${encodeURIComponent(event.source.eventQid)}`;
+    wikiLink.hidden = false;
   } else {
-    wikiLink.style.display = 'none';
+    wikiLink.hidden = true;
   }
 
   const pressLinkEl = document.getElementById('detailPressLink');
@@ -246,16 +248,21 @@ export function showDetailPage(event) {
   const safePressUrl = sanitizeExternalUrl(possiblePressUrl);
   if (safePressUrl) {
     pressLinkEl.href = safePressUrl;
-    pressLinkEl.style.display = 'inline-flex';
+    pressLinkEl.hidden = false;
   } else {
-    pressLinkEl.style.display = 'none';
+    pressLinkEl.hidden = true;
   }
 
   const backBtn = document.getElementById('detailBackBtn');
-  backBtn.onclick = () => {
+  const closeDetail = () => {
     detailPage.classList.remove('active');
+    detailPage.hidden = true;
+    document.body.classList.remove('dialog-open');
+    if (typeof detailPage._cleanup === 'function') detailPage._cleanup();
+    returnFocusTo?.focus({ preventScroll: true });
     if (state.detailSource === 'timeline') {
-      const eventEl = document.querySelector(`[data-id="${event.id}"]`);
+      const safeId = globalThis.CSS?.escape ? CSS.escape(event.id) : String(event.id).replace(/["\\]/g, '\\$&');
+      const eventEl = document.querySelector(`[data-id="${safeId}"]`);
       if (eventEl) eventEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
@@ -264,13 +271,37 @@ export function showDetailPage(event) {
       window.showCountryDetail(state.detailCountryId);
     }
   };
+  backBtn.onclick = closeDetail;
 
-  const onEscape = (keyboardEvent) => {
-    if (keyboardEvent.key !== 'Escape') return;
-    backBtn.click();
+  const onKeydown = (keyboardEvent) => {
+    if (keyboardEvent.key === 'Escape') {
+      keyboardEvent.preventDefault();
+      closeDetail();
+      return;
+    }
+    if (keyboardEvent.key !== 'Tab') return;
+    const focusable = [...detailPage.querySelectorAll('button:not([disabled]), a[href]:not([hidden])')]
+      .filter((element) => !element.hidden);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (keyboardEvent.shiftKey && document.activeElement === first) {
+      keyboardEvent.preventDefault();
+      last.focus();
+    } else if (!keyboardEvent.shiftKey && document.activeElement === last) {
+      keyboardEvent.preventDefault();
+      first.focus();
+    }
   };
-  document.addEventListener('keydown', onEscape, { once: true });
+  document.addEventListener('keydown', onKeydown);
+  detailPage._cleanup = () => {
+    document.removeEventListener('keydown', onKeydown);
+    detailPage._cleanup = null;
+  };
 
+  detailPage.hidden = false;
+  document.body.classList.add('dialog-open');
   detailPage.classList.add('active');
   detailPage.scrollTop = 0;
+  backBtn.focus({ preventScroll: true });
 }

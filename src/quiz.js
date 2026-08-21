@@ -67,7 +67,11 @@ function buildQuestions() {
 }
 
 function getBestScore() {
-  return Number.parseInt(localStorage.getItem(BEST_SCORE_KEY) || '0', 10) || 0;
+  try {
+    return Number.parseInt(localStorage.getItem(BEST_SCORE_KEY) || '0', 10) || 0;
+  } catch {
+    return 0;
+  }
 }
 
 function root() {
@@ -88,8 +92,8 @@ function renderMenu() {
         <label class="filter-label">Choisis une époque</label>
         <div class="filter-chips">
           ${eras.map((era) => `
-            <button class="filter-chip ${quiz.era === era.id ? 'active' : ''}" data-quiz-era="${era.id}" type="button">
-              ${era.icon || ''} ${escapeHtml(era.name)}
+            <button class="filter-chip ${quiz.era === era.id ? 'active' : ''}" data-quiz-era="${escapeHtml(era.id)}" type="button" aria-pressed="${quiz.era === era.id}">
+              <span aria-hidden="true">${escapeHtml(era.icon || '')}</span> ${escapeHtml(era.name)}
             </button>`).join('')}
         </div>
       </div>
@@ -121,7 +125,7 @@ function renderQuiz() {
           <button class="quiz-option" data-quiz-answer="${escapeHtml(opt)}" type="button">${escapeHtml(opt)}</button>
         `).join('')}
       </div>
-      <button class="quiz-next" data-quiz-next type="button" style="display:none">Suivant →</button>
+      <button class="quiz-next" data-quiz-next type="button" hidden>Suivant →</button>
     </div>
   `;
 }
@@ -140,7 +144,7 @@ function handleAnswer(value) {
   });
   const nextBtn = root().querySelector('[data-quiz-next]');
   if (nextBtn) {
-    nextBtn.style.display = 'inline-flex';
+    nextBtn.hidden = false;
     nextBtn.textContent = quiz.index + 1 >= quiz.questions.length ? 'Voir le résultat →' : 'Suivant →';
   }
 }
@@ -155,7 +159,9 @@ function nextQuestion() {
 function renderResult() {
   const total = quiz.questions.length;
   const best = getBestScore();
-  if (quiz.score > best) localStorage.setItem(BEST_SCORE_KEY, String(quiz.score));
+  if (quiz.score > best) {
+    try { localStorage.setItem(BEST_SCORE_KEY, String(quiz.score)); } catch { /* facultatif */ }
+  }
   const isRecord = quiz.score > best;
 
   const pct = total ? Math.round((quiz.score / total) * 100) : 0;

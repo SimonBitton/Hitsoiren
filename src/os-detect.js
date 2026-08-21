@@ -3,8 +3,6 @@
  * (iOS, Android, macOS, Windows, Linux)
  */
 
-const TWEMOJI_OS = new Set(['windows', 'linux']);
-
 export function detectOS() {
   const ua = navigator.userAgent || '';
   const platform = navigator.platform || '';
@@ -38,43 +36,6 @@ function applyPlatformAttributes(os) {
   document.documentElement.dataset.osApplied = '1';
 }
 
-function debounce(fn, ms) {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), ms);
-  };
-}
-
-function parseTwemoji(root = document.body) {
-  if (!window.twemoji) return;
-  window.twemoji.parse(root, {
-    folder: 'svg',
-    ext: '.svg',
-    className: 'emoji'
-  });
-}
-
-function loadTwemoji() {
-  if (window.__twemojiLoaded) return;
-  window.__twemojiLoaded = true;
-
-  const script = document.createElement('script');
-  script.src = 'https://cdn.jsdelivr.net/npm/twemoji@14/dist/twemoji.min.js';
-  script.async = true;
-  script.onload = () => {
-    parseTwemoji();
-    const scheduleParse = debounce(() => parseTwemoji(), 200);
-    const observer = new MutationObserver((mutations) => {
-      const hasNewNodes = mutations.some((m) => m.addedNodes.length > 0);
-      if (hasNewNodes) scheduleParse();
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-    window.__twemojiObserver = observer;
-  };
-  document.head.appendChild(script);
-}
-
 function adaptKeyboardShortcuts(os) {
   if (os !== 'mac' && os !== 'ios') return;
   document.querySelectorAll('[data-shortcut]').forEach((el) => {
@@ -99,9 +60,6 @@ export function applyOSAdaptations() {
   applyPlatformAttributes(detectedOS);
   adaptKeyboardShortcuts(detectedOS);
 
-  if (TWEMOJI_OS.has(detectedOS)) {
-    loadTwemoji();
-  }
 }
 
 export function getKeyModifier() {

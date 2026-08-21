@@ -34,24 +34,24 @@ function renderFilterBar() {
   const themes = [{ key: 'all', label: 'Tous', icon: '✨' }, ...THEME_DEFINITIONS];
 
   const eraChips = eras.map((era) => `
-    <button class="filter-chip ${state.timelineEra === era.id ? 'active' : ''}" data-filter="era" data-value="${era.id}" type="button">
-      <span aria-hidden="true">${era.icon || ''}</span> ${escapeHtml(era.name)}
+    <button class="filter-chip ${state.timelineEra === era.id ? 'active' : ''}" data-filter="era" data-value="${escapeHtml(era.id)}" type="button" aria-pressed="${state.timelineEra === era.id}">
+      <span aria-hidden="true">${escapeHtml(era.icon || '')}</span> ${escapeHtml(era.name)}
     </button>
   `).join('');
 
   const themeChips = themes.map((theme) => `
-    <button class="filter-chip ${state.timelineTheme === theme.key ? 'active' : ''}" data-filter="theme" data-value="${theme.key}" type="button">
-      <span aria-hidden="true">${theme.icon || ''}</span> ${escapeHtml(theme.label)}
+    <button class="filter-chip ${state.timelineTheme === theme.key ? 'active' : ''}" data-filter="theme" data-value="${escapeHtml(theme.key)}" type="button" aria-pressed="${state.timelineTheme === theme.key}">
+      <span aria-hidden="true">${escapeHtml(theme.icon || '')}</span> ${escapeHtml(theme.label)}
     </button>
   `).join('');
 
   return `
     <div class="filter-bar" id="timelineFilterBar">
-      <div class="filter-row">
+      <div class="filter-row" role="group" aria-label="Filtrer par époque">
         <span class="filter-label">Époque</span>
         <div class="filter-chips">${eraChips}</div>
       </div>
-      <div class="filter-row">
+      <div class="filter-row" role="group" aria-label="Filtrer par thème">
         <span class="filter-label">Thème</span>
         <div class="filter-chips">${themeChips}</div>
       </div>
@@ -124,18 +124,18 @@ export function renderTimelineList() {
     if (eraEvents.length === 0 && filtersActive) return '';
 
     return `
-      <section class="era-section reveal" id="era-${era.id}">
+      <section class="era-section reveal" id="era-${escapeHtml(era.id)}">
         <div class="era-header">
-          <div class="era-badge">${era.icon}</div>
+          <div class="era-badge" aria-hidden="true">${escapeHtml(era.icon)}</div>
           <div class="era-title-block">
-            <h2>${era.name}</h2>
-            <p>${era.subtitle}</p>
+            <h2>${escapeHtml(era.name)}</h2>
+            <p>${escapeHtml(era.subtitle)}</p>
           </div>
         </div>
         <div class="events-list">
           ${eraEvents.map((event) => `
-            <div class="event ${event.major ? 'major' : ''}" data-id="${event.id}">
-              <div class="event-dot"></div>
+            <button class="event ${event.major ? 'major' : ''}" data-id="${escapeHtml(event.id)}" type="button">
+              <span class="event-dot" aria-hidden="true"></span>
               <div class="event-content">
                 <span class="event-date">${escapeHtml(event.date)}</span>
                 <div class="event-text">
@@ -145,7 +145,7 @@ export function renderTimelineList() {
                 </div>
                 <span class="event-cat ${getCategoryClass(event.category)}">${escapeHtml(getCategoryLabel(event.category))}</span>
               </div>
-            </div>
+            </button>
           `).join('')}
         </div>
       </section>
@@ -181,8 +181,8 @@ export function renderTimelineList() {
         </div>
         <div class="events-list top50-list">
           ${sortedEvents.map((event, index) => `
-            <div class="event top50-event ${event.major ? 'major' : ''}" data-id="${event.id}">
-              <div class="event-dot"></div>
+            <button class="event top50-event ${event.major ? 'major' : ''}" data-id="${escapeHtml(event.id)}" type="button">
+              <span class="event-dot" aria-hidden="true"></span>
               <div class="event-content">
                 <span class="top50-rank">#${index + 1}</span>
                 <span class="event-date">${escapeHtml(event.date)}</span>
@@ -193,7 +193,7 @@ export function renderTimelineList() {
                 </div>
                 <span class="event-cat ${getCategoryClass(event.category)}">${escapeHtml(getCategoryLabel(event.category))}</span>
               </div>
-            </div>
+            </button>
           `).join('')}
         </div>
       </section>
@@ -259,7 +259,7 @@ export function renderCountries() {
   }
 
   container.innerHTML = filtered.map((country) => `
-    <button class="country-card" type="button" data-country-id="${country.id}" aria-label="Ouvrir la chronologie de ${escapeHtml(country.name)}">
+    <button class="country-card" type="button" data-country-id="${escapeHtml(country.id)}" aria-label="Ouvrir la chronologie de ${escapeHtml(country.name)}">
       <div class="country-flag">${getAppleFlagEmojiHtml(country.flag, country.name)}</div>
       <div class="country-info">
         <h3>${escapeHtml(country.name)}</h3>
@@ -315,34 +315,44 @@ export function renderStats() {
     eraStats[event.era] = (eraStats[event.era] || 0) + 1;
   });
 
-  container.innerHTML = `
-    <div class="stats-grid">
-      <div class="stat-card"><strong>${totalEvents}</strong><span>Événements chronologiques</span></div>
-      <div class="stat-card"><strong>${totalCountries}</strong><span>Pays documentés</span></div>
-      <div class="stat-card"><strong>${Object.keys(categories).length}</strong><span>Catégories thématiques</span></div>
-      <div class="stat-card"><strong>${state.timelineData?.eras.length || 0}</strong><span>Grandes époques</span></div>
-    </div>
-    <div class="stats-extra">
-      <h3>Répartition par catégorie</h3>
-      <div class="stats-grid" style="margin-top: 1rem;">
-        ${Object.entries(categories).map(([category, count]) => `
-          <div class="stat-card" style="padding: 1rem;">
-            <strong style="font-size: 1.5rem;">${count}</strong>
-            <span style="font-size: 0.7rem;">${category}</span>
-          </div>
-        `).join('')}
+  const categoryMax = Math.max(1, ...Object.values(categories));
+  const eraMax = Math.max(1, ...Object.values(eraStats));
+  const coverageRows = (entries, max, type) => entries.map(([key, count]) => {
+    const label = type === 'era' ? (eraConfigs[key]?.label || key) : key;
+    const percentage = Math.max(3, Math.round((count / max) * 100));
+    return `
+      <div class="coverage-row">
+        <span>${escapeHtml(label)}</span>
+        <div class="coverage-track" role="img" aria-label="${escapeHtml(label)} : ${count} événements">
+          <i data-coverage="${percentage}"></i>
+        </div>
+        <strong>${count}</strong>
       </div>
-    </div>
-    <div class="stats-extra" style="margin-top: 2rem;">
-      <h3>Événements par époque</h3>
-      <div class="stats-grid" style="margin-top: 1rem;">
-        ${Object.entries(eraStats).map(([era, count]) => `
-          <div class="stat-card" style="padding: 1rem;">
-            <strong style="font-size: 1.5rem;">${count}</strong>
-            <span style="font-size: 0.7rem;">${eraConfigs[era]?.label || era}</span>
-          </div>
-        `).join('')}
+    `;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="collection-ledger">
+      <dl class="collection-totals">
+        <div><dt>Événements mondiaux</dt><dd>${totalEvents}</dd></div>
+        <div><dt>Pays documentés</dt><dd>${totalCountries}</dd></div>
+        <div><dt>Époques structurantes</dt><dd>${state.timelineData?.eras.length || 0}</dd></div>
+        <div><dt>Entrées nationales</dt><dd>${state.countriesData.reduce((sum, country) => sum + country.events.length, 0).toLocaleString('fr-FR')}</dd></div>
+      </dl>
+      <div class="coverage-panels">
+        <section class="coverage-panel" aria-labelledby="category-coverage-title">
+          <h3 id="category-coverage-title">Répartition thématique</h3>
+          ${coverageRows(Object.entries(categories), categoryMax, 'category')}
+        </section>
+        <section class="coverage-panel" aria-labelledby="era-coverage-title">
+          <h3 id="era-coverage-title">Couverture par époque</h3>
+          ${coverageRows(Object.entries(eraStats), eraMax, 'era')}
+        </section>
       </div>
     </div>
   `;
+
+  container.querySelectorAll('[data-coverage]').forEach((bar) => {
+    bar.style.setProperty('--coverage', `${bar.dataset.coverage}%`);
+  });
 }

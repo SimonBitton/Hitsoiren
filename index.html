@@ -1,48 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr">
-<script defer src="https://insight-deck-zmav.vercel.app/insightdeck.js" data-site-id="c4095a65-5e40-43f5-8be6-ff7730ebab4c" data-tracking-key="ef1d9a483c3e4a338ea3a6c281d1d9d0"></script>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Histoiren — Chronologie Mondiale</title>
   <meta name="description" content="Explorez l'histoire du monde à travers une frise chronologique interactive et détaillée.">
-  <meta name="theme-color" content="#2b4bee">
+  <meta name="theme-color" content="#a84332">
   <meta property="og:title" content="Histoiren — Chronologie Mondiale">
   <meta property="og:description" content="Frise chronologique interactive de l'histoire mondiale, avec exploration par époque et par pays.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="favicon-histoiren.png">
   <link rel="icon" type="image/png" href="favicon-histoiren.png">
 
-  <!-- Plateforme (anti-FOUC, avant le rendu) -->
-  <script>
-    (function () {
-      var ua = navigator.userAgent || '';
-      var platform = navigator.platform || '';
-      var maxTouch = navigator.maxTouchPoints || 0;
-      var os = 'unknown';
-      if (/android/i.test(ua)) os = 'android';
-      else if (/iphone|ipad|ipod/i.test(ua)) os = 'ios';
-      else if (platform === 'MacIntel' && maxTouch > 1) os = 'ios';
-      else if (/mac/i.test(platform) || /macintosh/i.test(ua)) os = 'mac';
-      else if (/win/i.test(platform) || /windows/i.test(ua)) os = 'windows';
-      else if (/linux/i.test(platform) || /linux/i.test(ua)) os = 'linux';
-      document.documentElement.dataset.os = os;
-      if ('ontouchstart' in window || maxTouch > 0) {
-        document.documentElement.dataset.touch = 'true';
-      }
-    })();
-  </script>
-
-  <!-- Thème (anti-FOUC, doit s'exécuter avant le rendu) -->
-  <script>
-    (function () {
-      try {
-        var saved = localStorage.getItem('histoiren:theme');
-        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
-      } catch (e) { document.documentElement.dataset.theme = 'light'; }
-    })();
-  </script>
+  <script src="src/bootstrap.js"></script>
 
   <!-- Polices système natives (pas de chargement externe) -->
 
@@ -54,49 +24,53 @@
   <link rel="stylesheet" href="css/views.css">
   <link rel="stylesheet" href="css/features.css">
   <link rel="stylesheet" href="css/os-specific.css">
+  <link rel="stylesheet" href="css/editorial.css">
 
   <!-- OS Detection & Adaptations (must be early to avoid FOUC) -->
   <script src="src/os-detect.js" type="module"></script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Aller au contenu</a>
   <noscript>
-    <div style="position:fixed;inset:0;background:#f6f6f8;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:2rem;text-align:center;gap:1rem;">
-      <h1 style="font-family:system-ui,sans-serif;font-size:1.5rem;color:#111218;">JavaScript requis</h1>
-      <p style="font-family:system-ui,sans-serif;color:#616889;">Veuillez activer JavaScript pour utiliser Histoiren.</p>
+    <div class="noscript-message">
+      <h1>JavaScript requis</h1>
+      <p>Veuillez activer JavaScript pour utiliser Histoiren.</p>
     </div>
   </noscript>
 
-  <!-- Navigation principale — Accueil au centre -->
-  <nav class="main-nav" role="tablist" aria-label="Navigation principale">
-    <button class="nav-tab" data-view="frise" role="tab" aria-selected="false" tabindex="-1" type="button"><span class="nav-icon" aria-hidden="true">🕰️</span><span class="nav-label">Frise</span></button>
-    <button class="nav-tab" data-view="timeline" role="tab" aria-selected="false" tabindex="-1" type="button"><span class="nav-icon" aria-hidden="true">📜</span><span class="nav-label">Liste</span></button>
-    <button class="nav-tab nav-tab--home active" data-view="presentation" role="tab" aria-selected="true" tabindex="0" type="button"><span class="nav-icon" aria-hidden="true">🏛</span><span class="nav-label">Accueil</span></button>
-    <button class="nav-tab" data-view="countries" role="tab" aria-selected="false" tabindex="-1" type="button"><span class="nav-icon" aria-hidden="true">🌍</span><span class="nav-label">Pays</span></button>
-    <button class="nav-tab" data-view="apprendre" role="tab" aria-selected="false" tabindex="-1" type="button"><span class="nav-icon" aria-hidden="true">🎓</span><span class="nav-label">Apprendre</span></button>
+  <nav class="main-nav" aria-label="Navigation principale">
+    <button class="nav-brand nav-tab" data-view="presentation" type="button" aria-current="page">
+      <span class="nav-brand-mark" aria-hidden="true">H</span>
+      <span class="nav-brand-copy"><strong>Histoiren</strong><small>Atlas temporel</small></span>
+    </button>
+    <div class="nav-track">
+      <button class="nav-tab" data-view="frise" type="button"><span class="nav-index" aria-hidden="true">01</span><span class="nav-label">Frise</span></button>
+      <button class="nav-tab" data-view="timeline" type="button"><span class="nav-index" aria-hidden="true">02</span><span class="nav-label">Index</span></button>
+      <button class="nav-tab" data-view="countries" type="button"><span class="nav-index" aria-hidden="true">03</span><span class="nav-label">Pays</span></button>
+      <button class="nav-tab" data-view="apprendre" type="button"><span class="nav-index" aria-hidden="true">04</span><span class="nav-label">Atelier</span></button>
+    </div>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Basculer le mode sombre" title="Mode sombre / clair">
+      <svg class="theme-icon-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <circle cx="12" cy="12" r="4.5" fill="currentColor"/>
+        <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/>
+        </g>
+      </svg>
+      <svg class="theme-icon-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" fill="currentColor"/>
+      </svg>
+    </button>
   </nav>
 
-  <!-- Bascule mode sombre -->
-  <button id="themeToggle" class="theme-toggle" type="button" aria-label="Basculer le mode sombre" title="Mode sombre / clair">
-    <svg class="theme-icon-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-      <circle cx="12" cy="12" r="4.5" fill="currentColor"/>
-      <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/>
-      </g>
-    </svg>
-    <svg class="theme-icon-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-      <path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" fill="currentColor"/>
-    </svg>
-  </button>
-
   <!-- Bouton toggle sidebar -->
-  <button id="sidebarToggle" class="sidebar-toggle" aria-label="Ouvrir le menu de navigation" aria-expanded="false">
+  <button id="sidebarToggle" class="sidebar-toggle" aria-label="Ouvrir le menu de navigation" aria-expanded="false" hidden>
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
     </svg>
   </button>
 
   <!-- Sidebar -->
-  <aside class="quick-nav" id="quickNav" aria-label="Navigation rapide">
+  <aside class="quick-nav" id="quickNav" aria-label="Navigation rapide" hidden>
     <div class="quick-nav-title">Accès rapide</div>
     <div class="quick-nav-links" id="quickNavLinks">
       <!-- Contenu injecté par sidebar.js -->
@@ -107,55 +81,59 @@
 
     <!-- ── Vue Présentation ── -->
     <div id="view-presentation" class="view-container active">
-      <header>
-        <div class="ornament">Histoiren</div>
-        <h1><span>Bienvenue</span> sur Histoiren</h1>
-        <p>Votre portail vers l'histoire mondiale</p>
+      <header class="archive-hero">
+        <div class="archive-hero-grid">
+          <div class="archive-hero-copy">
+            <p class="folio">Atlas temporel · de 3,2 millions d’années à aujourd’hui</p>
+            <h1>Relier les dates.<br><em>Comprendre le monde.</em></h1>
+            <p class="hero-deck">Histoiren rassemble événements, pays et récits dans un instrument d’exploration vivant. Suivez une époque, rapprochez les faits, puis testez ce que vous retenez.</p>
+            <button class="hero-entry" type="button" data-home-view="frise">
+              <span>Commencer par la frise</span>
+              <span aria-hidden="true">↘</span>
+            </button>
+          </div>
+          <figure class="chronosphere-stage">
+            <canvas id="chronosphere" class="chronosphere" aria-label="Visualisation 3D des événements à travers les époques"></canvas>
+            <figcaption>
+              <span class="chronosphere-key" aria-hidden="true"></span>
+              Chaque point représente un événement du fonds. Déplacez le pointeur pour changer de perspective.
+            </figcaption>
+          </figure>
+        </div>
+        <div class="era-ruler" aria-label="Étendue chronologique">
+          <span>−3,2 Ma</span><span>Antiquité</span><span>Moyen Âge</span><span>Temps modernes</span><span>2026</span>
+        </div>
       </header>
 
       <div class="presentation-content">
-
-        <section class="intro-card" aria-labelledby="about-title">
-          <h2 id="about-title">📜 À propos d'Histoiren</h2>
-          <p>Histoiren est une chronologie interactive qui vous permet d'explorer les événements majeurs de l'histoire mondiale, de la préhistoire à nos jours. Découvrez les moments clés qui ont façonné notre civilisation.</p>
+        <section class="archive-intro" aria-labelledby="about-title">
+          <div class="section-folio">01 — Le fonds</div>
+          <div class="archive-intro-copy">
+            <h2 id="about-title">L’histoire devient lisible quand les faits cessent d’être isolés.</h2>
+            <p>Le fonds relie une chronologie mondiale à 194 récits nationaux. Chaque entrée peut être replacée dans son époque, rapprochée d’événements liés et enrichie par une source encyclopédique.</p>
+          </div>
+          <aside class="archive-note">
+            <span>Principe éditorial</span>
+            <p>Donner d’abord les repères, puis le contexte — jamais noyer la date sous l’interface.</p>
+          </aside>
         </section>
 
-        <section class="features-grid" aria-label="Fonctionnalités">
-          <div class="feature-card">
-            <div class="feature-icon" aria-hidden="true">📜</div>
-            <h3>Chronologie complète</h3>
-            <p>Parcourez les événements historiques organisés par époques, de la préhistoire à l'ère contemporaine.</p>
+        <section class="explore-index" aria-labelledby="explore-title">
+          <div class="explore-index-heading">
+            <div class="section-folio">02 — Modes d’exploration</div>
+            <h2 id="explore-title">Choisissez votre point d’entrée.</h2>
           </div>
-          <div class="feature-card">
-            <div class="feature-icon" aria-hidden="true">🌍</div>
-            <h3>Histoire par pays</h3>
-            <p>Explorez l'histoire nation par nation avec des événements spécifiques à chaque pays.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon" aria-hidden="true">📊</div>
-            <h3>Statistiques</h3>
-            <p>Analysez la répartition des événements par catégorie, époque et thématique.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon" aria-hidden="true">🔍</div>
-            <h3>Recherche avancée</h3>
-            <p>Trouvez vos événements par personnage, date, thème ou époque, avec des filtres intelligents.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon" aria-hidden="true">🕰️</div>
-            <h3>Frise interactive</h3>
-            <p>Zoomez et déplacez-vous sur une véritable ligne du temps pour visualiser les grandes périodes.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon" aria-hidden="true">🎓</div>
-            <h3>Mode apprentissage</h3>
-            <p>Testez vos connaissances avec des quiz et des flashcards, et suivez votre score.</p>
+          <div class="explore-index-rows">
+            <button type="button" data-home-view="frise"><span class="index-number">01</span><strong>Traverser le temps</strong><small>Une frise zoomable de la préhistoire au présent</small><span aria-hidden="true">→</span></button>
+            <button type="button" data-home-view="countries"><span class="index-number">02</span><strong>Changer d’échelle</strong><small>194 chronologies nationales sur une carte interactive</small><span aria-hidden="true">→</span></button>
+            <button type="button" data-home-view="apprendre"><span class="index-number">03</span><strong>Mettre sa mémoire à l’épreuve</strong><small>Quiz et cartes de révision générés depuis le fonds</small><span aria-hidden="true">→</span></button>
           </div>
         </section>
 
         <section class="stats-section-title" aria-labelledby="stats-title">
-          <h2 id="stats-title">📊 Statistiques</h2>
-          <p>Analyse de la base de données historique</p>
+          <div class="section-folio">03 — État de la collection</div>
+          <h2 id="stats-title">Le fonds, en chiffres.</h2>
+          <p>Une lecture transparente de la couverture éditoriale actuelle.</p>
         </section>
         <div id="presentationStats" class="stats-content" aria-live="polite"></div>
 
@@ -164,10 +142,10 @@
 
     <!-- ── Vue Frise ── -->
     <div id="view-frise" class="view-container">
-      <header>
-        <div class="ornament">Histoiren</div>
-        <h1><span>Frise</span> Chronologique</h1>
-        <p>Visualisez l'histoire sur une ligne du temps interactive — zoomez et explorez.</p>
+      <header class="view-header">
+        <div class="view-kicker">01 / Navigation temporelle</div>
+        <h1>Frise <em>chronologique</em></h1>
+        <p>Mesurez les écarts, zoomez sur une période et ouvrez chaque point pour retrouver son contexte.</p>
 
         <div class="search-container search-container-offset">
           <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
@@ -190,10 +168,10 @@
 
     <!-- ── Vue Liste chronologique ── -->
     <div id="view-timeline" class="view-container">
-      <header>
-        <div class="ornament">Histoiren</div>
-        <h1><span>Liste</span> Chronologique</h1>
-        <p>Parcourez les événements par époque, de la préhistoire à l'ère contemporaine.</p>
+      <header class="view-header">
+        <div class="view-kicker">02 / Index raisonné</div>
+        <h1>Les faits, <em>époque par époque.</em></h1>
+        <p>Recherchez un événement, un personnage ou une date, puis filtrez par période et par thème.</p>
 
         <div class="search-container search-container-offset">
           <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
@@ -216,15 +194,16 @@
 
     <!-- ── Vue Pays ── -->
     <div id="view-countries" class="view-container">
-      <header>
-        <h1>L'Histoire <span>par Pays</span></h1>
-        <p>Explorez les événements marquants nation par nation.</p>
+      <header class="view-header">
+        <div class="view-kicker">03 / Atlas politique</div>
+        <h1>L’histoire <em>change de frontière.</em></h1>
+        <p>Sélectionnez un continent, puis ouvrez la chronologie nationale d’un pays.</p>
       </header>
 
       <div id="worldMapContainer" class="worldmap-container"></div>
 
       <div class="countries-toolbar">
-        <div class="search-container search-container-offset" style="margin-top:0;">
+        <div class="search-container search-container-offset countries-search">
           <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>
@@ -247,10 +226,10 @@
 
     <!-- ── Vue Apprendre (Quiz & Flashcards) ── -->
     <div id="view-apprendre" class="view-container">
-      <header>
-        <div class="ornament">Histoiren</div>
-        <h1>Mode <span>Apprentissage</span></h1>
-        <p>Quiz, flashcards et défis pour mémoriser l'histoire en s'amusant.</p>
+      <header class="view-header">
+        <div class="view-kicker">04 / Atelier de mémoire</div>
+        <h1>Apprendre par <em>rappel actif.</em></h1>
+        <p>Choisissez une époque, répondez sans indice, puis révisez les dates qui résistent.</p>
       </header>
       <div id="quizRoot" class="quiz-root" aria-live="polite">
         <!-- Contenu injecté par quiz.js -->
@@ -258,7 +237,7 @@
     </div>
 
     <!-- ── Page de détail ── -->
-    <div id="detailPage" class="detail-page" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <div id="detailPage" class="detail-page" role="dialog" aria-modal="true" aria-labelledby="detailTitle" hidden>
       <div class="detail-shell">
 
         <div class="detail-header">
@@ -279,45 +258,45 @@
 
           <h1 id="detailTitle" class="detail-title"></h1>
 
-          <figure id="detailFigure" class="detail-figure" style="display: none;">
+          <figure id="detailFigure" class="detail-figure" hidden>
             <img id="detailImage" class="detail-image" alt="" loading="lazy">
             <figcaption id="detailImageCaption" class="detail-image-caption"></figcaption>
           </figure>
 
           <div class="detail-body">
             <div class="detail-section">
-              <h3>📝 Résumé</h3>
+              <h3>Résumé</h3>
               <p id="detailSummary" class="detail-summary"></p>
             </div>
 
-            <div class="detail-section" id="detailWikiSection" style="display: none;">
-              <h3>📖 Le saviez-vous ? <span class="detail-source-tag">d'après Wikipédia</span></h3>
+            <div class="detail-section" id="detailWikiSection" hidden>
+              <h3>Éclairage encyclopédique <span class="detail-source-tag">d’après Wikipédia</span></h3>
               <p id="detailWikiExtract" class="detail-context-text"></p>
             </div>
 
             <div class="detail-grid-two">
               <div class="detail-section detail-causes" id="detailCausesSection">
-                <h3>🌱 Causes</h3>
+                <h3>Causes</h3>
                 <p id="detailCauses" class="detail-context-text"></p>
               </div>
               <div class="detail-section detail-consequences" id="detailConsequencesSection">
-                <h3>🎯 Conséquences</h3>
+                <h3>Conséquences</h3>
                 <p id="detailConsequences" class="detail-context-text"></p>
               </div>
             </div>
 
-            <div class="detail-section" id="detailPeopleSection" style="display: none;">
-              <h3>👤 Personnages clés</h3>
+            <div class="detail-section" id="detailPeopleSection" hidden>
+              <h3>Personnages clés</h3>
               <p id="detailPeople" class="detail-people"></p>
             </div>
 
-            <div class="detail-section" id="detailContextSection" style="display: none;">
-              <h3>🔍 Contexte historique</h3>
+            <div class="detail-section" id="detailContextSection" hidden>
+              <h3>Contexte historique</h3>
               <p id="detailContext" class="detail-context-text"></p>
             </div>
 
-            <div class="detail-section" id="detailRelatedSection" style="display: none;">
-              <h3>🔗 Événements liés</h3>
+            <div class="detail-section" id="detailRelatedSection" hidden>
+              <h3>Événements liés</h3>
               <div id="detailRelated" class="detail-related"></div>
             </div>
 
@@ -328,14 +307,14 @@
                 </svg>
                 Rechercher sur Google
               </a>
-              <a id="detailWikipediaLink" href="#" target="_blank" rel="noopener noreferrer" class="detail-action-btn secondary" style="display: none;">
+              <a id="detailWikipediaLink" href="#" target="_blank" rel="noopener noreferrer" class="detail-action-btn secondary" hidden>
                 <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/>
                   <path d="M11 7h2v2h-2zm0 4h2v6h-2z" fill="currentColor"/>
                 </svg>
                 Article Wikipédia
               </a>
-              <a id="detailPressLink" href="#" target="_blank" rel="noopener noreferrer" class="detail-action-btn tertiary" style="display: none;">
+              <a id="detailPressLink" href="#" target="_blank" rel="noopener noreferrer" class="detail-action-btn tertiary" hidden>
                 <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                   <path d="M3 5h18v14H3z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M3 9h18M7 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>

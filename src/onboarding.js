@@ -74,6 +74,9 @@ function tryPlayWhoosh() {
 function createOverlay() {
   const overlay = document.createElement('div');
   overlay.className = 'onboarding-overlay';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-labelledby', 'onboardingIntroTitle');
   overlay.innerHTML = `
     <button class="onboarding-skip" type="button" aria-label="Passer l'introduction">Passer</button>
 
@@ -81,7 +84,7 @@ function createOverlay() {
       <div class="intro-logo-wrap">
         <img src="favicon-histoiren.png" alt="Logo Histoiren" class="intro-logo" />
       </div>
-      <h2 class="intro-title">Bienvenue sur Histoiren</h2>
+      <h2 class="intro-title" id="onboardingIntroTitle">Bienvenue sur Histoiren</h2>
       <p class="intro-subtitle">Explorez l'histoire mondiale de façon interactive.</p>
       <p class="intro-credit" aria-label="Créé par Simon Bitton"></p>
     </section>
@@ -157,6 +160,17 @@ export async function maybeStartOnboarding(force = false) {
   if (document.querySelector('.onboarding-overlay')) return;
 
   const overlay = createOverlay();
+  const background = [
+    document.querySelector('.main-nav'),
+    document.getElementById('sidebarToggle'),
+    document.getElementById('quickNav'),
+    document.getElementById('main-content'),
+    document.querySelector('footer')
+  ].filter(Boolean);
+  background.forEach((element) => {
+    element.inert = true;
+    element.setAttribute('aria-hidden', 'true');
+  });
   const splash = overlay.querySelector('.intro-splash');
   const skipBtn = overlay.querySelector('.onboarding-skip');
   const highlight = overlay.querySelector('.onboarding-highlight');
@@ -176,6 +190,10 @@ export async function maybeStartOnboarding(force = false) {
     if (!credit) return;
     credit.textContent = '';
     credit.classList.add('is-visible');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      credit.textContent = content;
+      return;
+    }
     for (let i = 0; i < content.length; i += 1) {
       credit.textContent += content[i];
       await wait(content[i] === ' ' ? 30 : 45);
@@ -186,11 +204,17 @@ export async function maybeStartOnboarding(force = false) {
     if (closed) return;
     closed = true;
     window.removeEventListener('resize', handleResize);
+    document.removeEventListener('keydown', handleKeydown);
     markOnboardingSeen();
     setView('presentation');
     overlay.classList.add('is-exiting');
     await wait(450);
     overlay.remove();
+    background.forEach((element) => {
+      element.inert = false;
+      element.removeAttribute('aria-hidden');
+    });
+    document.querySelector('[data-home-view="frise"]')?.focus({ preventScroll: true });
   };
 
   const runStep = async () => {
@@ -221,6 +245,27 @@ export async function maybeStartOnboarding(force = false) {
   };
 
   skipBtn.addEventListener('click', finish);
+  const handleKeydown = (event) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      finish();
+      return;
+    }
+    if (event.key !== 'Tab') return;
+    const focusable = [...overlay.querySelectorAll('button:not([disabled])')]
+      .filter((element) => element.offsetParent !== null);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+  document.addEventListener('keydown', handleKeydown);
   overlay.addEventListener('click', (event) => {
     if (event.target.closest('.onboarding-card, .intro-splash, .onboarding-skip, .onboarding-next')) return;
     finish();
@@ -241,6 +286,7 @@ export async function maybeStartOnboarding(force = false) {
   window.addEventListener('resize', handleResize);
 
   tryPlayWhoosh();
+  skipBtn.focus({ preventScroll: true });
   await typeCredit('Créé par Simon Bitton');
   await wait(900);
   splash.classList.add('is-hidden');

@@ -2,7 +2,7 @@ import { state } from './state.js';
 import { loadData, getEventById } from './data-manager.js';
 import { initRouter, setView } from './router.js';
 import { toggleSidebar, buildSidebarContent } from './sidebar.js';
-import { renderFriseView, renderTimelineList, renderCountries } from './ui-renderer.js';
+import { renderActiveTimelineView, renderCountries } from './ui-renderer.js';
 import { showDetailPage } from './detail-view.js';
 import { showCountryDetail, closeCountryModal } from './country-modal.js';
 import { getKeyModifier } from './os-detect.js';
@@ -11,6 +11,9 @@ import { markAppVisited } from './app-state.js';
 import { initTheme } from './theme.js';
 import { initLearn } from './quiz.js';
 import { debounce } from './utils.js';
+import { initChronosphere } from './chronosphere.js';
+
+const MAX_SEARCH_LENGTH = 120;
 
 function cleanupDebugBadges() {
   const ids = ['js-loaded', 'jsLoaded', 'js-status', 'debug-status'];
@@ -51,9 +54,8 @@ function bindSearch() {
   window.addEventListener('histoiren:sync-search-inputs', syncSearchInputs);
 
   const onTimelineSearch = debounce((event) => {
-    state.timelineSearch = event.target.value;
-    renderFriseView();
-    renderTimelineList();
+    state.timelineSearch = event.target.value.slice(0, MAX_SEARCH_LENGTH);
+    renderActiveTimelineView();
   });
 
   if (searchInput) {
@@ -66,7 +68,7 @@ function bindSearch() {
 
   if (countrySearchInput) {
     const onCountrySearch = debounce((event) => {
-      state.countrySearch = event.target.value;
+      state.countrySearch = event.target.value.slice(0, MAX_SEARCH_LENGTH);
       renderCountries();
     });
     countrySearchInput.addEventListener('input', onCountrySearch);
@@ -111,6 +113,14 @@ function bindSearch() {
       searchInput.title = `Appuyez sur ${modifier}+K pour rechercher rapidement`;
     }
   }
+}
+
+function bindHomeNavigation() {
+  document.getElementById('view-presentation')?.addEventListener('click', (event) => {
+    const entry = event.target.closest('[data-home-view]');
+    if (!entry) return;
+    setView(entry.dataset.homeView);
+  });
 }
 
 function bindTouchNavigation() {
@@ -188,15 +198,15 @@ async function init() {
   });
   window.addEventListener('histoiren:countries-refresh', () => renderCountries());
   bindSearch();
+  bindHomeNavigation();
   bindTouchNavigation();
+  initChronosphere(state.timelineData.events);
   state.hasVisited = true;
   markAppVisited();
 
   const sidebarToggle = document.getElementById('sidebarToggle');
   if (sidebarToggle) sidebarToggle.addEventListener('click', toggleSidebar);
 
-  renderFriseView();
-  renderTimelineList();
   buildSidebarContent();
   if (!tutorialQueued) maybeStartOnboarding();
 }

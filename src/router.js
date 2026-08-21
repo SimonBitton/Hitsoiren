@@ -23,6 +23,7 @@ function updatePath(viewName) {
 }
 
 export function setView(viewName, options = {}) {
+  if (!VALID_VIEWS.has(viewName)) return;
   const { updateRoute = true } = options;
   const previousView = state.currentView;
   state.currentView = viewName;
@@ -30,13 +31,14 @@ export function setView(viewName, options = {}) {
   document.querySelectorAll('.nav-tab').forEach(tab => {
     const isActive = tab.dataset.view === viewName;
     tab.classList.toggle('active', isActive);
-    tab.classList.toggle('nav-tab--home', tab.dataset.view === 'presentation');
-    tab.setAttribute('aria-selected', String(isActive));
-    tab.setAttribute('tabindex', isActive ? '0' : '-1');
+    if (isActive) tab.setAttribute('aria-current', 'page');
+    else tab.removeAttribute('aria-current');
   });
   
   document.querySelectorAll('.view-container').forEach(container => {
-    container.classList.toggle('active', container.id === `view-${viewName}`);
+    const isActive = container.id === `view-${viewName}`;
+    container.classList.toggle('active', isActive);
+    container.setAttribute('aria-hidden', String(!isActive));
   });
   
   if (viewName !== previousView) {
@@ -89,11 +91,6 @@ function handleRoute() {
 export function initRouter() {
   document.querySelectorAll('.nav-tab').forEach(tab => {
     tab.addEventListener('click', () => setView(tab.dataset.view));
-    tab.addEventListener('keydown', (event) => {
-      if (event.key !== 'Enter' && event.key !== ' ') return;
-      event.preventDefault();
-      setView(tab.dataset.view);
-    });
   });
 
   window.addEventListener('popstate', handleRoute);

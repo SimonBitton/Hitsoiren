@@ -57,7 +57,7 @@ export function renderWorldMap(container) {
       const paths = shape.paths.map((d) => `<path d="${d}" />`).join('');
       const [lx, ly] = shape.label;
       return `
-        <g class="wm-continent" data-continent="${c.key}" style="--c:${c.color}"
+        <g class="wm-continent wm-${c.key}" data-continent="${c.key}"
            role="button" tabindex="0" aria-label="${c.label} — ${counts[c.key]} pays">
           ${paths}
           <text class="wm-label" x="${lx}" y="${ly}" text-anchor="middle">${c.label}</text>
